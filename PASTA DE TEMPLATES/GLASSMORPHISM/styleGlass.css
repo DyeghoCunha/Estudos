@@ -1,0 +1,297 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #644651;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root{
+    
+   
+
+   --border: 1px solid rgba(255, 255, 255, 0.5);
+   --bordertop: 1px solid rgba(255,255,255,0.75);
+   --borderleft:1px solid rgba(255,255,255,0.75);
+   --fundoVidro: rgba(255,255,255,0.1);
+   --boxshadow: 0 25px 45px rgba(0,0,0,0.05);
+   
+   
+   --color: #644651;
+   --blur: 10px;
+   --borderRad: 10px;
+
+
+   
+
+}
+
+body{
+    display: flex;
+    
+    transform-style: preserve-3d;
+    flex-direction: column;
+    background: url(./img/bg2.png);
+    /* background-size: cover; */
+    background-position: center;
+    /* background-repeat: no-repeat; */
+}
+
+.container__glass{
+    overflow-y:hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 80vh;
+    margin-left: 0px;
+    gap: 80px;
+   
+}
+
+/* ------------------Inicio do Cartão 1 ------------------------------------------------------------------------------------------------*/
+
+.container__glass__caixa{
+    position: relative;
+    border-radius: 1.5em;
+    transform-style: preserve-3d;
+    margin-left: 40px;
+}
+
+.container__glass__caixa .cartao__fundo{
+    position: relative;
+    transform-style: preserve-3d;
+    
+    width:18em;
+    min-height: 24em;
+    
+    
+    backdrop-filter: var(--blur);
+    background:var(--fundoVidro);
+    border: var(--border);
+    border-top: var(--bordertop);
+    border-left: var(--borderleft);
+    box-shadow: var(--boxshadow);
+
+    border-radius: 1.5em;
+}
+
+.elemento__a{
+    position: absolute;
+    top: 40px;
+    left: 30px;
+    width: 80px;
+    height: 80px;
+    transform: translateZ(80px);
+    
+    
+    background:var(--fundoVidro);
+    backdrop-filter: var(--blur);
+    border: var(--border);
+    border-top: var(--bordertop);
+    border-left: var(--borderleft);
+    border-radius: var(--borderRad);
+    box-shadow: var(--boxshadow);
+}
+
+.elemento__a.elemento__a__img{
+    top: 0;
+    left: initial;
+    right: 85px;
+    width: 120px;
+    height: 120px;
+    padding: 10px;
+    transform: translateZ(120px);
+}
+
+.elemento__a.elemento__a__img img{
+    position: absolute;
+    width: calc(100% - 20px);
+    
+    border: var(--border);
+    border-top: var(--bordertop);
+    border-left: var(--borderleft);
+    border-radius: var(--borderRad);
+    box-shadow: var(--boxshadow);
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.container__glass__caixa:hover .elemento__a.elemento__a__img img{
+    opacity: 1;
+}
+
+
+.container__glass__caixa__bloco{
+    display: flex;
+    transform-style: preserve-3d;
+    transform: translateZ(1px);
+    
+}
+
+/*----- ----------------------------------ITEM A--------------------------------------*/
+.caixa__item__a{
+    position: absolute;
+    top: 40px;
+    left: 30px;
+    width: 70px;
+    height: 80px;
+    transform: translateZ(80px);
+    
+    
+    background:var(--fundoVidro);
+    backdrop-filter: var(--blur);
+    border: var(--border);
+    border-top: var(--bordertop);
+    border-left: var(--borderleft);
+    border-radius: var(--borderRad);
+    box-shadow: var(--boxshadow);
+}
+
+
+
+.caixa__item__a.item__a__imagem::before{
+    display: block;
+    content: '';
+    position: absolute;
+    inset: 0;
+    
+    background: url(./img/css.png);
+    background-size: 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: 0.5s;
+
+}
+
+.container__glass__caixa:hover .caixa__item__a.item__a__imagem::before{
+    opacity: 1;
+    
+}
+/*----------------------------Efeitos do ITEM A-------------------*/
+.caixa__item__a.item__a__imagem{
+    transition: 1s;
+    opacity: 0;
+    transition-delay: 0.25px;
+}
+.container__glass__caixa:hover .caixa__item__a.item__a__imagem{
+    top:60px;
+    opacity: 1
+}
+
+
+/*-------------------------------FIM do ITEM A-----------------*/
+
+
+/*-----ITEM B-------------------------------------------------------------*/
+
+.caixa__item__b{
+    position: absolute;
+    top: 110px;
+    left: 100px;
+    width: 80px;
+    height: 80px;
+    transform: translateZ(100px);
+    
+    
+    background:var(--fundoVidro);
+    backdrop-filter: var(--blur);
+    border: var(--border);
+    border-top: var(--bordertop);
+    border-left: var(--borderleft);
+    border-radius: var(--borderRad);
+    box-shadow: var(--boxshadow);
+}
+
+.caixa__item__b.item__b__imagem::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url(./img/html.png);
+    background-size: 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: 0.5s;
+
+}
+
+.container__glass__caixa:hover .caixa__item__b.item__b__imagem::before{
+    opacity: 1;
+    
+}
+
+/*----------------------EFEITOS DO ITEM B----------------------------*/
+
+
+.caixa__item__b.item__b__imagem{
+    transition: 0.5s;
+    opacity: 0;
+    transition-delay: 0.25px;
+}
+.container__glass__caixa:hover .caixa__item__b.item__b__imagem{
+    top:-50px;
+    opacity: 1
+}
+
+
+/*--------------------------FIM DO ITEM B---------------------------------------*/
+
+
+
+/*--------------------- Titulo ------------------*/
+.elemento__a.elemento__a__titulo{
+    top: 235px;
+    left: initial;
+    right: 48px;
+    width: 100%;
+    padding: 10px;
+    text-align: right;
+    transform: translateZ(80px);
+    background: transparent;
+    backdrop-filter: var(--blur);
+    border: none;   
+    box-shadow: none;
+    color: var(--color);
+    transition: 0.5s;
+    opacity: 0;
+    transition-delay: 0.25px;
+
+}
+
+.container__glass__caixa:hover .elemento__a.elemento__a__titulo{
+    top:135px;
+    opacity: 1
+
+}
+
+/*-------------------Parágrafo---------------------------------*/
+
+.elemento__a.elemento__a__paragrafo{
+    top: 180px;
+    right: initial;
+    bottom:0;
+    left: 10;
+    width:79%;
+    min-height: 200px;
+    padding: 10px;
+    transform: translateZ(60px);
+    align-items: center;
+}
+
+.elemento__a.elemento__a__paragrafo p {
+    position: relative;
+    color: var(--color);
+    font-size: 0.85em;
+    transition: 0.5s;
+    opacity: 0;
+    transition-delay: 0.5s;
+}
+
+.container__glass__caixa:hover .elemento__a.elemento__a__paragrafo p{
+    opacity:1;
+
+} /*--------------------------------------FIM do CARD 1-----------------*/

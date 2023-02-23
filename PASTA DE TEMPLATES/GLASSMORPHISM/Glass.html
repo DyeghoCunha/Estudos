@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styleGlass.css">
+    <script src="https://use.fontawesome.com/ac1f95fcf3.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title></title>
+</head>
+
+
+<body>
+    
+
+    <section class="container__glass">
+        
+
+        <div class="container__glass__caixa">
+         <div class="container__glass__caixa__bloco">
+            <div class="caixa__item__a item__a__imagem"></div>
+            <div class="caixa__item__b item__b__imagem"></div>
+            
+         </div>
+            
+            <div class="elemento__a elemento__a__img">
+                <img src="./img/eu.png" alt="">
+            </div>
+
+            <div class="elemento__a elemento__a__titulo">
+                <h2>Dyegho Cunha</h2>
+            </div>
+            <div class="elemento__a elemento__a__paragrafo">
+            <p>Algum Slogan foda que eu não tenho ainda a menor ideia de qual vai ser....então só vou deixar bastante coisa escrita aqui pra parecer que eu sei alguma coisa</p> 
+            </div>
+            <div class="cartao__fundo"></div>
+        </div>
+       
+<!-- Colocar isto para que o card se movimente -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" integrity="sha512-RX/OFugt/bkgwRQg4B22KYE79dQhwaPp2IZaA/YyU3GMo/qY7GrXkiG6Dvvwnds6/DefCfwPTgCXnaC6nAgVYw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+     <script>
+        VanillaTilt.init(document.querySelector(".container__glass__caixa"), {
+		max: 15,
+		speed: 400,
+        glare:true,
+	});
+
+
+
+     </script>
+     </section>
+
+</body>
+</html>
