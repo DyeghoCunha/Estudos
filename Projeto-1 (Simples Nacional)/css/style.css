@@ -1,0 +1,65 @@
+@import url(./calculadora.css);
+@import url(./tabela.css);
+@import url(./formulario.css);
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #644651;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    width: 100vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-image: url(../img/fundo2.jpg);
+    background-position: center;
+    background-size: contain;
+    
+    
+}
+
+.cabecalho{
+    border-bottom: 1px solid inset #644651;
+
+    box-shadow: #644651ab 5px 5px 10px 5px inset,#644651ab 0px 2px 5px 1px ;
+   
+}
+.cabecalho h1{
+    /* color:rgb(204, 164, 85) ; */
+    text-shadow: #644651 1px 1px 1px inset;
+    background-image: url(../img/fundo1.jpg);
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color:transparent;
+    background-clip: text;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    
+    height: 90vh;
+    width: 100vw;
+    /* height: 90vw; */
+    overflow: hidden;
+    
+    
+}
+
+
+
+.footer{
+    
+    bottom: 0;
+    
+   
+    border-top: 1px solid black;
+    
+    
+    text-align: end;
+}

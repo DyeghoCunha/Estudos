@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://use.fontawesome.com/ac1f95fcf3.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    
+
+    <title>Calculadora Tributária</title>
+</head>
+<body>
+    <header class="cabecalho">
+        <h1 class="cabecalho__titulo"> Calculadora Tributária</h1>
+    </header>
+
+
+    <main class="container">
+
+        <table class="container__tabela">
+
+            <thead class="tabela__cabecalho">
+                <tr>
+                    <th class="cabecalho__nome">Empresa</th>
+                    <th class="cabecalho__nome">Cnae</th>
+                    <th class="cabecalho__nome">Faturamento</th>
+                    <th class="cabecalho__nome">Anexo</th>
+                    <th class="cabecalho__nome">Alíquota</th>
+                </tr>
+            </thead>
+
+            <tbody class="tabela__corpo">
+
+                <tr class="corpo__empresa">
+                    <td class="estilo-celula info-empresa">Teste 1</td>  
+                    <td class="estilo-celula info-cnae">1233414</td>
+                    <td class="estilo-celula info-faturamento"> 150.000,00</td>
+                    <td class="estilo-celula info-anexo">Anexo I</td>
+                    <td class="estilo-celula info-aliquota">13.5%</td>
+                </tr>
+
+                <tr class="corpo__empresa">
+                    <td class="estilo-celula info-empresa">Teste 2</td>  
+                    <td class="estilo-celula info-cnae">1233414</td>
+                    <td class="estilo-celula info-faturamento"> 150.000,00</td>
+                    <td class="estilo-celula info-anexo">Anexo I</td>
+                    <td class="estilo-celula info-aliquota">13.5%</td>
+                </tr>
+
+                <tr class="corpo__empresa">
+                    <td class="estilo-celula info-empresa">Teste 3</td>  
+                    <td class="estilo-celula info-cnae">1233414</td>
+                    <td class="estilo-celula info-faturamento"> 150.000,00</td>
+                    <td class="estilo-celula info-anexo">Anexo I</td>
+                    <td class="estilo-celula info-aliquota">13.5%</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <form class="container__formulario">
+            <label for="empresa">Empresa</label>
+            <input type="text" name="empresa" class="formulario-estilo" id="empresa" placeholder="Escreva o nome da empresa">
+
+            <label for="cnae">Cnae</label>
+            <input type="text" name="cnae" class="formulario-estilo" id="cnae" placeholder=" Escreva o CNAE da empresa">
+
+            <label for="faturamentoAcumulado">Faturamento Acumulado</label>
+            <input type="text" name="faturamentoAcumulado" class="formulario-estilo" id="faturamentoAcumulado" placeholder="Escreva o Faturamento Acumulado">
+
+            <button class="botao">Calcula</button>
+        </form>
+
+        
+        <div class="container__calculadora">
+            <button class="calculadora__botao b1" >1</button>
+            <button class="calculadora__botao b2" >2</button>
+            <button class="calculadora__botao b3" >3</button>
+            <button class="calculadora__botao b4" >4</button>
+            <button class="calculadora__botao b5" >5</button>
+            <button class="calculadora__botao b6" >6</button>
+            <button class="calculadora__botao b7" >7</button>
+            <button class="calculadora__botao b8" >8</button>
+            <button class="calculadora__botao b9" >9</button>
+            <button class="calculadora__botao b0" >0</button>
+            <button class="calculadora__botao bc">C</button>
+            <button class="calculadora__botao bp" >.</button>
+            <button class="calculadora__botao be">Enter</button>
+        </div>
+        
+    </main>
+    
+    
+    
+    
+    <footer class="footer">
+        <p>Um programa Teste feito por Dyegho Cunha</p>
+    </footer>
+
+
+    <script src="./js/main.js"></script>
+</body>
+</html>

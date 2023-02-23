@@ -1,0 +1,71 @@
+
+.container__calculadora{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows:  1fr 1fr 1fr 1fr 1fr;
+ 
+    grid-template-areas: "n1 n2 n3"
+                         "n4 n5 n6"
+                         "n7 n8 n9"
+                         "n0 np nc"
+                          ". ne ne";
+     
+     border: 1px solid #644651;
+     width:50%;
+     height: 50%;
+     justify-content: center;
+     align-content: center;
+ }
+ /* .container__botao{
+     
+     width: 100px;
+ } */
+ 
+ .container__calculadora .b1{
+     grid-area: n1;
+   
+ }
+  .container__calculadora .b2{
+     grid-area: n2;
+ }
+ .container__calculadora .b3{
+     grid-area:n3 ;
+ }
+ .container__calculadora .b4{
+     grid-area:n4 ;
+ }
+ .container__calculadora .b5{
+     grid-area: n5 ;
+ }
+ .container__calculadora .b6{
+     grid-area:n6 ;
+ }
+ .container__calculadora .b7{
+     grid-area:n7 ;
+ }
+ .container__calculadora .b8{
+     grid-area:n8 ;
+ }
+ .container__calculadora .b9{
+     grid-area:n9 ;
+ }
+ .container__calculadora .b0{
+     grid-area:n0 ;
+ }
+ .container__calculadora .bp{
+     grid-area:np ;
+ }
+ .container__calculadora .be{
+     grid-area:ne ;
+ }
+ .container__calculadora .b){
+     grid-area:n ;
+ } 
+ 
+ 
+ .calculadora__botao{
+     width: 2em;
+     height:2em;
+ 
+ }
+ 
