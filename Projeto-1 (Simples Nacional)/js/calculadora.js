@@ -1,53 +1,84 @@
 
-var tabelaEmpresa = document.querySelectorAll(".tabela__corpo")
-
-
 const botao = document.querySelector("#botao-calcula");
 
-var form = document.querySelector(".container__formulario");
-
-var empresa = obtemEmpresa(form);
-
-// console.log(empresa.nome)
-// console.log(empresa.cnae)
-// console.log(empresa.faturamento)
 
 
-function obtemEmpresa(form){
-    
-    var empresa = {
-        nome: form.empresa.value,
-        cnae: form.cnae.value,
-        faturamento: form.faturamentoAcumulado.value
-    }
-    return empresa;
-}
+
 
 botao.addEventListener("click", (event) =>{
     event.preventDefault();
 
-    adicionaTr();
+    var tabelaEmpresa = document.querySelector(".tabela__corpo")
+    var form = document.querySelector(".container__formulario");
+    var empresa = obtemEmpresa(form);
+
    
+
+    pacienteTr = montaTr(empresa);
+
+   tabelaEmpresa.appendChild(pacienteTr);
+
 
 })
 
-
-function adicionaTr(empresa){
-
-    var tabelaEmpresa = document.querySelectorAll(".tabela__corpo")
-
-    var empresaTr = document.createElement("tr")
-    var empresaTd = montaTd(empresa.nome)
-        
-    tabelaEmpresa.appendChield(empresaTr);
-
-
-
-    empresaTr.appendChild(empresaTd)
+function obtemEmpresa(form){
+    
+    var empresaObjeto = {
+        nome: form.empresa.value,
+        cnae: form.cnae.value,
+        faturamento: form.faturamentoAcumulado.value
+    }
+    return empresaObjeto;
 }
 
-function montaTd(dado){
+
+function montaTr(empresa){
+
+    var empresaTr = document.createElement("tr");
+
+    var nomeTd = montaTd(empresa.nome);
+    var cnaeTd = montaTd(empresa.cnae);
+    var faturamentoTd = montaTd(empresa.faturamento);
+
+        nomeTd.textContent = empresa.nome;
+        cnaeTd.textContent = empresa.cnae
+        faturamentoTd.textContent = empresa.faturamento;
+
+    var tabelaEmpresa = document.querySelector(".tabela__corpo")
+
+
+    tabelaEmpresa.appendChild(empresaTr);
+    
+    empresaTr.appendChild(nomeTd);
+    empresaTr.appendChild(cnaeTd);
+    empresaTr.appendChild(faturamentoTd);
+
+
+    return empresaTr
+
+}
+
+
+
+function montaTd(dado,classe){
+
     var td = document.createElement("td");
         td.textContent = dado;
-    return td.value;
+        td.classList.add("estilo-celula")
+
+        return td
+
 }
+
+
+
+
+
+
+
+
+
+
+    
+   
+
