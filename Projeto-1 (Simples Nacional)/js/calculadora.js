@@ -1,84 +1,96 @@
-
-const botao = document.querySelector("#botao-calcula");
-
-
-
-
-
-botao.addEventListener("click", (event) =>{
+const botao = document.querySelector("#botao-calcula")
+botao.addEventListener("click", (event)=>{
     event.preventDefault();
-
-    var tabelaEmpresa = document.querySelector(".tabela__corpo")
     var form = document.querySelector(".container__formulario");
-    var empresa = obtemEmpresa(form);
+    var empresa = empresaObj(form);
+    var empresaTr = montaTr(empresa);
+    var tabela = document.querySelector(".tabela__corpo");
 
-   
-
-    pacienteTr = montaTr(empresa);
-
-   tabelaEmpresa.appendChild(pacienteTr);
-
-
+    tabela.appendChild(empresaTr);  
 })
 
-function obtemEmpresa(form){
-    
-    var empresaObjeto = {
+function empresaObj(form){
+    var empresa={
         nome: form.empresa.value,
         cnae: form.cnae.value,
-        faturamento: form.faturamentoAcumulado.value
+        faturamento:form.faturamentoAcumulado.value,
+        anexo:buscaAnexo();
     }
-    return empresaObjeto;
+    return empresa;
 }
 
+function montaTd(dado,classe){
+    var td = document.createElement("td")
+        td.textContent = dado;
+        td.classList.add(classe)
+        return td;
+}
 
 function montaTr(empresa){
 
-    var empresaTr = document.createElement("tr");
-
-    var nomeTd = montaTd(empresa.nome);
-    var cnaeTd = montaTd(empresa.cnae);
-    var faturamentoTd = montaTd(empresa.faturamento);
-
-        nomeTd.textContent = empresa.nome;
-        cnaeTd.textContent = empresa.cnae
-        faturamentoTd.textContent = empresa.faturamento;
-
-    var tabelaEmpresa = document.querySelector(".tabela__corpo")
-
-
-    tabelaEmpresa.appendChild(empresaTr);
-    
+    var empresaTr = document.createElement("tr")  
+    var nomeTd = montaTd(empresa.nome,"estilo-celula");
+    var cnaeTd = montaTd(empresa.cnae,"estilo-celula");
+    var faturamentoTd = montaTd(empresa.faturamento,"estilo-celula");
+    var anexoTd = montaTd(empresa.anexo,"estilo-celula")
     empresaTr.appendChild(nomeTd);
     empresaTr.appendChild(cnaeTd);
     empresaTr.appendChild(faturamentoTd);
+    empresaTr.appendChild(anexoTd);
 
-
-    return empresaTr
-
+    return empresaTr;
 }
 
 
 
-function montaTd(dado,classe){
+function buscaAnexo(){
 
-    var td = document.createElement("td");
-        td.textContent = dado;
-        td.classList.add("estilo-celula")
+    var anexoI = [10,100,1000];
+    var anexoII= [20,200,2000];
+    var anexoIII=[30,300,3000];
+    var anexoIV= [40,400,4000];
+    var anexoV=  [50,500,5000];
 
-        return td
+    var form = document.querySelector(".container__formulario");
+    var empresa = empresaObj(form);
+    var cnae = empresa.cnae;
 
-}
-
-
-
-
-
-
-
+    for(var i = 0; i <anexoI.length;i++){
+        if(cnae==anexoI[i]){
+            console.log("AnexoI")
+            return "Anexo I"
+        }   
+    }
+    for(var i = 0; i <anexoII.length;i++){
+        if(cnae==anexoII[i]){
+            console.log("AnexoII")
+            return "Anexo II"
+        }   
+    }
+    for(var i = 0; i <anexoIII.length;i++){
+        if(cnae==anexoIII[i]){
+            console.log("AnexoIII")
+            return "Anexo III"
+        }   
+    }
+    for(var i = 0; i <anexoIV.length;i++){
+        if(cnae==anexoIV[i]){
+            return "Anexo IV"
+        }   
+    }
+    for(var i = 0; i <anexoV.length;i++){
+        if(cnae==anexoV[i]){
+            return "Anexo V"
+        }   
+    }
 
 
 
     
-   
 
+return cnae;
+
+}
+
+
+console.log(cnae)
