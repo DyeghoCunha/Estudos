@@ -1,4 +1,30 @@
-.titulo{
-    color:blue
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+:root{
+    --fonte:'Pacifico', cursive;
+    
 }
+
+
+
+
+.titulo{
+    font-family: var(--fonte);
+   /* transform: translateY(-50px);*/
+    
+}
+
+.imagem-carrossel{
+    object-fit: cover;
+    object-position: 0 80%;
+    height: 400px;
+    
+    
+}
+.imagem-carrossel2{
+    object-fit: cover;
+    object-position: 0 45%;
+    height: 400px;
+}
+
 
