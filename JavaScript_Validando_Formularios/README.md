@@ -69,3 +69,15 @@ Divide-se 340 por 11 e guarda-se o resto: 340 % 11 = 8
 Subtrai-se o resto de 11: 11 - 8 = 3. O segundo dígito verificador é 3.
 
 O CPF é válido se os dígitos verificadores calculados (8 e 3) são iguais aos dois últimos dígitos do CPF (09). Como os dígitos verificadores são iguais, o CPF 123.456.789-09 é considerado válido.
+
+## Valida Idade
+
+Define uma constante dataAtual que armazena a data e hora atuais usando o construtor new Date().
+
+Calcula a data que representa 18 anos após a data fornecida como parâmetro, utilizando o método getUTCFullYear() para obter o ano, getUTCMonth() para obter o mês, e getUTCDate() para obter o dia. Esses valores são passados para o construtor new Date() como argumentos.
+
+Compara a data atual (dataAtual) com a data de 18 anos após a data fornecida (dataMais18), usando o operador de comparação maior ou igual (>=).
+
+Se a data atual for maior ou igual a 18 anos após a data fornecida, a função retorna true, caso contrário, retorna false.
+
+Em resumo, a função verifica se a pessoa representada pela data fornecida tem pelo menos 18 anos de idade.
