@@ -2,6 +2,7 @@
     text-align: center;
     padding: 32px;
     background-blend-mode: multiply;
+    position: relative;
 }
 
 .time h3 {
@@ -17,4 +18,17 @@
     justify-content: space-around;
     margin-top: 32px;
     flex-wrap: wrap;
+}
+
+.input-cor {
+    position: absolute;
+    top: 20px;
+    right: 50px;
+
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: 4px 4px 8px #bfc7d4,
+        -4px -4px 8px #ffffff;
+    padding: 0;
+    margin: 0;
 }

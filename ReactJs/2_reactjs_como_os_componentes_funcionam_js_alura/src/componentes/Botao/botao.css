@@ -1,0 +1,32 @@
+:root{
+    --fundoBotao : #6278f77e;
+    --corLetraBotao: #fff;
+    --corHoverBotao:#95ffd4;
+    --corActiveBotao: #51ff00;
+}
+
+
+
+.botao {
+    background: var(--fundoBotao);
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 32px;
+    color: var(--corLetraBotao);
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+
+    box-shadow: 8px 8px 16px #e0e0e0, -8px -8px 16px #ffffff, inset 4px 4px 6px rgba(255, 255, 255, 0.4), inset -4px -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.botao:hover {
+    color: var(--corHoverBotao);
+}
+
+.botao:active {
+    box-shadow:inset 8px 8px 16px #e0e0e048, inset -8px -8px 16px #ffffff49, 4px 4px 6px rgba(255, 255, 255, 0.4),  -4px -4px 6px rgba(0, 0, 0, 0.1);
+
+    color: var(--corActiveBotao);
+}
