@@ -1,0 +1,22 @@
+##Git
+
+git config --global user.name "Nome"
+git config --globel user.email dyeghocunha@gmail.com
+git clone LINK DO PROJETO
+
+-----------
+git diff (Para ver o que foi alterado no git)
+
+git commit -m "Novo TITULO"
+
+git restore (voltar o arquivo para modifica;ao anterior)
+git restore --stagerd (nome do arquivo)  Para voltar o arquivo para staged
+
+git remote origin
+git push origin master
+
+git branch (para ver os ramos)
+
+git checkout {ramo} (para escolher o ramo
+
+git merge {ramo} para juntar o outro ramo ao ramo atual 
