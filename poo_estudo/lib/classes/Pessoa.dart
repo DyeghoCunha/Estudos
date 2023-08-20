@@ -4,6 +4,7 @@ class Pessoa {
 
   String nome;
   String endereco;
+
   TipoNotificacao _tipoNotificacao = TipoNotificacao.NENHUM;
 
   void setTipoNotificacao(TipoNotificacao tipoNotificacao){
