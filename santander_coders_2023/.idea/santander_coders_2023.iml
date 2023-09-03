@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/desafios/desafio_imc/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/desafios/desafio_imc/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/desafios/desafio_imc/build" />
+      <excludeFolder url="file://$MODULE_DIR$/desafios/equilibrando_saldo/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/desafios/equilibrando_saldo/build" />
+      <excludeFolder url="file://$MODULE_DIR$/desafios/equilibrando_saldo/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/Flutter/aula1/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/Flutter/aula1/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/Flutter/aula1/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
