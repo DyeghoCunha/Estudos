@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:imc_flutter/pages/home_page.dart';
 
+import 'pages/resultado_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal.shade400),
       ),
-      home: const HomePage(),
+      home:  HomePage(),
     );
   }
 }
