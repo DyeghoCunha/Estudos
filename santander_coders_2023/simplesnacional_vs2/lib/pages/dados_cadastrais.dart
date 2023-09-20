@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simplesnacional_vs2/service/app_storage.dart';
 
 import '../repositories/linguagens_repository.dart';
 import '../repositories/nivel_repository.dart';
@@ -19,18 +21,41 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
   DateTime? dataAbertura;
   var nivelRepository = NivelRepository();
   var linguagensRepository = LinguagensRepository();
-  var niveis = [];
-  var linguagensSelecionadas = [];
+  List<String>? niveis = [];
+  List<String> linguagensSelecionadas = [];
   var nivelSelecionado = "";
-  var linguagens = [];
+  List<String> linguagens = [];
   double salarioEscolhido = 0;
   int tempoExperiencia = 1;
+
+  final CHAVE_NIVEIS = "CHAVE_NIVEIS";
+
+  final CHAVE_LINGUAGENS_SELECIONADAS = "CHAVE_LINGUAGENS_SELECIONADAS";
+  final CHAVE_NIVEL_SELECIONADO = "CHAVE_NIVEL_SELECIONADO";
+  final CHAVE_LINGUAGENS = "CHAVE_LINGUAGENS";
+  final CHAVE_SALARIO_ESCOLHIDO = "CHAVE_SALARIO_ESCOLHIDO";
+  final CHAVE_TEMPO_EXPERIENCIA = "CHAVE_TEMPO_EXPERIENCIA";
+
+  late SharedPreferences storage;
+
+  AppStorage storageClass = AppStorage();
 
   @override
   void initState() {
     niveis = nivelRepository.retornaNiveis();
     linguagens = linguagensRepository.retornaLinguagens();
     super.initState();
+    carregarDados();
+  }
+
+  carregarDados() async {
+    storage = await SharedPreferences.getInstance();
+
+      niveis =  storage.getStringList(CHAVE_NIVEIS);
+      nomeController.text = await storageClass.getDadosCadastraisNome()??"";
+      setState(() {  });
+
+
   }
 
   @override
@@ -149,7 +174,7 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                               child: Text("Ramo de Atividade"),
                             ),
                             Column(
-                              children: niveis
+                              children: niveis!
                                   .map(
                                     (nivel) => RadioListTile(
                                       title: Text(nivel.toString()),
@@ -278,8 +303,8 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
-                              child: Text("Faturamento Mensal Médio: R\$ ${salarioEscolhido.round().toString()
-                              }"),
+                              child: Text(
+                                  "Faturamento Mensal Médio: R\$ ${salarioEscolhido.round().toString()}"),
                             ),
                             Slider(
                               thumbColor: Colors.blue,
@@ -303,7 +328,14 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                         height: 10,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+
+                        onPressed: () async {
+                          await storage.setStringList(CHAVE_LINGUAGENS, linguagens);
+                          await storage.setStringList(CHAVE_LINGUAGENS_SELECIONADAS, linguagensSelecionadas);
+                          await storage.setStringList(CHAVE_NIVEIS, niveis!);
+                          await storage.setDouble(CHAVE_SALARIO_ESCOLHIDO, salarioEscolhido);
+                          Navigator.pop(context);
+                        },
                         child: const Text("Salvar"),
                       ),
                     ],

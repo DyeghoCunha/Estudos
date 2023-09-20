@@ -11,12 +11,12 @@ class NumerosAleatorios extends StatefulWidget {
 }
 
 class _NumerosAleatoriosState extends State<NumerosAleatorios> {
-  int? numeroGerado;
+  int? numeroGerado = 0;
   final chaveNumeroAleatorio = "numero_aleatorio";
   final chaveQuantidade = "quantidade";
   final chaveListaNumeros = "lista";
   int? quantidade;
-  List<String>? listaDeNumeros;
+  List<String>? listaDeNumeros = [];
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _NumerosAleatoriosState extends State<NumerosAleatorios> {
     carregarDados();
   }
 
-  void carregarDados() async{
+  void carregarDados() async {
     final  storage = await SharedPreferences.getInstance();
 
     setState(() {
@@ -33,31 +33,42 @@ class _NumerosAleatoriosState extends State<NumerosAleatorios> {
       quantidade = storage.getInt(chaveQuantidade);
       listaDeNumeros = storage.getStringList(chaveListaNumeros);
     });
-  //  storage.getInt(chaveNumeroAleatorio);
   }
+
+
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Shared Preferences"),
       ),
       body: Container(
         alignment: Alignment.center,
+        color: Colors.teal.shade100,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text("O Número Gerado foi:", style: TextStyle(color: Colors.cyan,fontSize: 20, fontWeight:
             FontWeight.bold),),
             const SizedBox(height: 20,),
-            Text(numeroGerado ==null ? "Sem Numero Gerado": numeroGerado.toString(), style: const TextStyle
-              (fontSize: 60,
-                fontWeight: FontWeight
-                .w500,
-                color:
-            Colors.teal),),
-            Text(listaDeNumeros.toString(), style:const  TextStyle(color: Colors.cyan,fontSize: 20, fontWeight:
-            FontWeight.bold),),
+            Text(numeroGerado?.toString() ?? "Sem Número Gerado", style: const TextStyle(fontSize: 60, fontWeight: FontWeight.w500, color: Colors.teal),),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(listaDeNumeros?.toString() ?? "Nenhum número gerado ainda", style:const  TextStyle(color: Colors.cyan,fontSize: 20, fontWeight:
+                  FontWeight.bold),),
+                ),
+              ),
+            ),
+            Text(quantidade?.toString() ?? "Nenhum número gerado ainda", style:const  TextStyle(color: Colors.cyan,
+                fontSize: 20, fontWeight:
+                FontWeight.bold),),
+
           ],
         ),
       ),
@@ -65,18 +76,18 @@ class _NumerosAleatoriosState extends State<NumerosAleatorios> {
         onPressed: ()async  {
           final storage = await SharedPreferences.getInstance();
           var random = Random();
-
           setState(() {
-            numeroGerado = random.nextInt(1000);
+            numeroGerado = random.nextInt(100);
             if(numeroGerado != null){
               listaDeNumeros?.add(numeroGerado!.toString());
-               quantidade = listaDeNumeros?.length;
+              if (listaDeNumeros != null) {
+                quantidade = listaDeNumeros!.length;
+              }
             }
           });
           storage.setInt(chaveNumeroAleatorio, numeroGerado!);
           storage.setInt(chaveQuantidade, quantidade!);
           storage.setStringList(chaveListaNumeros, listaDeNumeros!);
-          print(quantidade);
         },
 
         child: const Icon(Icons.add),

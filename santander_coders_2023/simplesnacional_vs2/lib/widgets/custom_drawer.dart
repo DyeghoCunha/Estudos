@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplesnacional_vs2/pages/configuracoes_page.dart';
 import 'package:simplesnacional_vs2/pages/numeros_aleatorios.dart';
 
 import '../pages/dados_cadastrais.dart';
@@ -269,23 +270,34 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                           thickness: 1,
                         ),
                         child: const Divider()),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.settings,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Configurações",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w500,
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => ConfiguracoesPage(),
                           ),
-                        ),
-                      ],
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.settings,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Configurações",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     DividerTheme(
                         data: DividerThemeData(
@@ -294,9 +306,9 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                         ),
                         child: const Divider()),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (ctx)=> NumerosAleatorios() ));
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => NumerosAleatorios()));
                       },
                       child: Row(
                         children: [
