@@ -11,36 +11,34 @@ class ListViewH extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Expanded(
-        child: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color:Colors.transparent ),
-        child:  ListTile(
-          leading: Image.asset("assets/images/logo2.png"),
-          title: const Text("Simples Nacional"),
-          subtitle: const Text("Simule o cálculo da sua guia"),
-          trailing: PopupMenuButton<String>(
-            elevation: 10,
-            onSelected: (menu){},
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            itemBuilder: (BuildContext ctx){
-              return <PopupMenuEntry<String>>[
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color:Colors.transparent ),
+      child:  ListTile(
+        leading: Image.asset("assets/images/logo2.png"),
+        title: const Text("Simples Nacional"),
+        subtitle: const Text("Simule o cálculo da sua guia"),
+        trailing: PopupMenuButton<String>(
+          elevation: 10,
+          onSelected: (menu){},
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          itemBuilder: (BuildContext ctx){
+            return <PopupMenuEntry<String>>[
+            const  PopupMenuItem<String>(
+                  value: "teste1",
+                  child:Text("Teste 1")),
               const  PopupMenuItem<String>(
-                    value: "teste1",
-                    child:Text("Teste 1")),
-                const  PopupMenuItem<String>(
-                    value: "teste2",
-                    child:Text("Teste 2")),
-                const  PopupMenuItem<String>(
-                    value: "teste3",
-                    child:Text("Teste 3")),
-                const  PopupMenuItem<String>(
-                    value: "teste4",
-                    child:Text("Teste 4")),
-              ];
-            },
-          ),
+                  value: "teste2",
+                  child:Text("Teste 2")),
+              const  PopupMenuItem<String>(
+                  value: "teste3",
+                  child:Text("Teste 3")),
+              const  PopupMenuItem<String>(
+                  value: "teste4",
+                  child:Text("Teste 4")),
+            ];
+          },
         ),
-        ),
+      ),
       ),
     ),
   );

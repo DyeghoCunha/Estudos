@@ -1,46 +1,24 @@
 import 'dart:io';
 
-void main() {
-  final scanner = stdin;
+  import 'package:xml/xml.dart';
 
-    final entrada = scanner.readLineSync()!;
-    final partes = entrada.split(',');
+  void main() {
+    final xmlString = '''
+    <?xml version="1.0" encoding="UTF-8"?><nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe"><NFe xmlns="http://www.portalfiscal.inf.br/nfe"><infNFe versao="4.00" Id="NFe41230339886139000110650010000429051381698494"><ide><cUF>41</cUF><cNF>38169849</cNF><natOp>VENDA DE PRODUTOS</natOp><mod>65</mod><serie>1</serie><nNF>42905</nNF><dhEmi>2023-03-01T19:00:46-03:00</dhEmi><tpNF>1</tpNF><idDest>1</idDest><cMunFG>4119905</cMunFG><tpImp>4</tpImp><tpEmis>1</tpEmis><cDV>4</cDV><tpAmb>1</tpAmb><finNFe>1</finNFe><indFinal>1</indFinal><indPres>1</indPres><procEmi>0</procEmi><verProc>2.0.0</verProc></ide><emit><CNPJ>39886139000110</CNPJ><xNome>Silva e Vieira Rest. LTDA</xNome><xFant>Silva e Vieira Rest. LTDA - SA Ponta Grossa</xFant><enderEmit><xLgr>Rua Francisco Ribas</xLgr><nro>327</nro><xBairro>Centro</xBairro><cMun>4119905</cMun><xMun>Ponta Grossa</xMun><UF>PR</UF><CEP>84010260</CEP><cPais>1058</cPais><xPais>BRASIL</xPais><fone>42999903726</fone></enderEmit><IE>9087089972</IE><CRT>1</CRT></emit><dest><CPF>08098438970</CPF><xNome>Giseli</xNome><indIEDest>9</indIEDest></dest><det nItem="1"><prod><cProd>100299</cProd><cEAN>SEM GTIN</cEAN><xProd>Combinado Familia S.A (PROMOCAO)</xProd><NCM>21069090</NCM><EXTIPI>00</EXTIPI><CFOP>5102</CFOP><uCom>UN</uCom><qCom>1.0000</qCom><vUnCom>49.9900000000</vUnCom><vProd>49.99</vProd><cEANTrib>SEM GTIN</cEANTrib><uTrib>UN</uTrib><qTrib>1.0000</qTrib><vUnTrib>49.9900000000</vUnTrib><indTot>1</indTot></prod><imposto><ICMS><ICMSSN102><orig>0</orig><CSOSN>102</CSOSN></ICMSSN102></ICMS></imposto></det><total><ICMSTot><vBC>0.00</vBC><vICMS>0.00</vICMS><vICMSDeson>0.00</vICMSDeson><vFCP>0.00</vFCP><vBCST>0.00</vBCST><vST>0.00</vST><vFCPST>0.00</vFCPST><vFCPSTRet>0.00</vFCPSTRet><vProd>49.99</vProd><vFrete>0.00</vFrete><vSeg>0.00</vSeg><vDesc>0.00</vDesc><vII>0.00</vII><vIPI>0.00</vIPI><vIPIDevol>0.00</vIPIDevol><vPIS>0.00</vPIS><vCOFINS>0.00</vCOFINS><vOutro>0.00</vOutro><vNF>49.99</vNF></ICMSTot></total><transp><modFrete>9</modFrete></transp><pag><detPag><tPag>04</tPag><vPag>49.99</vPag><card><tpIntegra>2</tpIntegra></card></detPag></pag><infAdic><infCpl>Pedido: 3292</infCpl></infAdic><infRespTec><CNPJ>28678861000142</CNPJ><xContato>Douglas Medeiros</xContato><email>douglas@vocepede.com.br</email><fone>4730320788</fone></infRespTec></infNFe><infNFeSupl><qrCode>http://www.fazenda.pr.gov.br/nfce/qrcode?p=41230339886139000110650010000429051381698494|2|1|1|B10D9F46C2984238BED603D40EF40A3CF39D024C</qrCode><urlChave>http://www.fazenda.pr.gov.br/nfce/consulta</urlChave></infNFeSupl><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><Reference URI="#NFe41230339886139000110650010000429051381698494"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><DigestValue>00lbOr3hJo6JMG4aP66BCkAIFRc=</DigestValue></Reference></SignedInfo><SignatureValue>Ow4+nsLRJjDq9vEU/K7ZT2dkG6VR8gejyiSOdESCVjICQOdT8BZqHO/wkt7pEAs4JGD9sVpN1vaEIiEtlPHS5AhZnnJqvsunGaH+/vaeNJM3TUtgTkS/Z9NinvQDTqAXGw+iXDCH+frNvRTyvubEhU4B8TXxt/HuRimM60k/VSoZQEeXCSdSoNM7/oOCyx7InuMXmcmq3J1mBVlxH165HTVccbvaRw13mv0oBBX0MrfzQ552rkqlnyaCDEQlDzRmHGpIiq/pXc9TEs/l5SXJqwXJX7ObGFYXglwsSsbw+E89UNNa/Hqvhm7vxHUetuVQ0NJzNNxJWdxOxlLBBUo1rg==</SignatureValue><KeyInfo><X509Data><X509Certificate>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</X509Certificate></X509Data></KeyInfo></Signature></NFe><protNFe versao='4.00'><infProt Id='ID141230302145642'><tpAmb>1</tpAmb><verAplic>PR-v4_4_21</verAplic><chNFe>41230339886139000110650010000429051381698494</chNFe><dhRecbto>2023-03-01T19:00:49-03:00</dhRecbto><nProt>141230302145642</nProt><digVal>00lbOr3hJo6JMG4aP66BCkAIFRc=</digVal><cStat>301</cStat><xMotivo>Uso Denegado : Irregularidade fiscal do emitente</xMotivo></infProt></protNFe></nfeProc>
+  ''';
 
-    final data = partes[0];
-    final hora = partes[1];
-    final descricao = partes[2];
-    final valor = double.tryParse(partes[3]) ?? 0.0;
-    final transacao = Transacao(data, hora, descricao, valor);
-    transacao.imprimir();
-
-}
-
-class Transacao {
-  final String data;
-  final String hora;
-  final String descricao;
-  final double valor;
-
-  Transacao(this.data, this.hora, this.descricao, this.valor);
-
-  void imprimir() {
-    print(descricao);
-    print(data);
-    print(hora);  // Utilizando uma função auxiliar para formatar a hora
-    print(valor.toStringAsFixed(2));
-    print('');
+    final document = XmlDocument.parse(xmlString);
+    void extractAndPrintInfo(XmlElement element, [String prefix = '']) {
+      for (var child in element.children) {
+        if (child is XmlElement) {
+          final tag = child.name.local;
+          final text = child.text;
+          print('$prefix$tag: $text');
+          extractAndPrintInfo(child, '$prefix  ');
+        }
+      }
+    }
+    final nfe = document.rootElement;
+    extractAndPrintInfo(nfe, 'Informações Gerais:');
   }
 
-  String _formatHora(String hora) {
-    // Dividindo a hora em partes (horas, minutos e segundos)
-    final partesHora = hora.split(':');
-
-    // Formatando cada parte para ter 2 dígitos com zero à esquerda
-    final horaFormatada = partesHora[0].padLeft(2, '0');
-    final minutosFormatados = partesHora[1].padLeft(2, '0');
-    final segundosFormatados = partesHora[2].padLeft(2, '0');
-
-    // Combinando as partes formatadas novamente
-    return '$horaFormatada:$minutosFormatados:$segundosFormatados';
-  }
-}

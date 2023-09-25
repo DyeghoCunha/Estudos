@@ -194,20 +194,22 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (emailController.text.trim() == "dyeghocunha@gmail.com" &&
-                                senhaController.text.trim() == "12345") {
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=>const MainPage()),);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    "Erro ao "
-                                    "efetuar o login",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              );
-                            }
+
+                            // if (emailController.text.trim() == "dyeghocunha@gmail.com" &&
+                            //     senhaController.text.trim() == "12345") {
+                            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=>const MainPage()),);
+                            // } else {
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     const SnackBar(
+                            //       content: Text(
+                            //         "Erro ao "
+                            //         "efetuar o login",
+                            //         textAlign: TextAlign.center,
+                            //       ),
+                            //     ),
+                            //   );
+                            // }
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
