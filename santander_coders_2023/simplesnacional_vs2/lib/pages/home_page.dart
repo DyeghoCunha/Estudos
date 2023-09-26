@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplesnacional_vs2/pages/faturamentoDoze.dart';
 import '../widgets/custom_drawer.dart';
 import 'card_page.dart';
 import 'list_view_h.dart';
@@ -45,7 +46,8 @@ class _MainPageState extends State<MainPage> {
                     ),
                     const CardPage(),
                      ListViewH(),
-                    ListaDeTarefas(),
+                    //ListaDeTarefas(),
+                    FaturamentoDoze(),
                   ]),
             ),
             BottomNavigationBar(

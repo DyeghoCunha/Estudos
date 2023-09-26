@@ -3,8 +3,9 @@ import 'package:simplesnacional_vs2/pages/configuracoes_page.dart';
 import 'package:simplesnacional_vs2/pages/numeros_aleatorios.dart';
 
 import '../pages/dados_cadastrais.dart';
-import '../pages/hive_test.dart';
+import '../pages/faturamentoDoze.dart';
 import '../pages/login_page.dart';
+import '../repositories/hiveDb.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -339,7 +340,7 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                     InkWell(
                       onTap: () {
                         Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => HiveTest()));
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => HiveDb()));
                       },
                       child: Row(
                         children: [

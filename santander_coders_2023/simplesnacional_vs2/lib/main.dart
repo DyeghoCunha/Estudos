@@ -6,9 +6,11 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 void main() async {
+  //Hive
   WidgetsFlutterBinding.ensureInitialized();
   var documentsDirectory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(documentsDirectory.path);
+  // - - - -
   Intl.defaultLocale = 'pt_BR';
 
 

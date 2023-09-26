@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import '../model/faturamentoAnualModel.dart';
 
 
-class HiveTest extends StatefulWidget {
-  const HiveTest({Key? key}) : super(key: key);
+class FaturamentoDoze extends StatefulWidget {
+  const FaturamentoDoze({Key? key}) : super(key: key);
 
   @override
-  State<HiveTest> createState() => _HiveTestState();
+  State<FaturamentoDoze> createState() => _HiveTestState();
 }
 
-class _HiveTestState extends State<HiveTest> {
+class _HiveTestState extends State<FaturamentoDoze> {
   TextEditingController _faturamentoController = TextEditingController();
   TextEditingController _dataController = TextEditingController();
   List<int> years = List.generate(DateTime
@@ -31,12 +32,13 @@ class _HiveTestState extends State<HiveTest> {
     'Dezembro'
   ];
 
-  final faturamentoAnual = FaturamentoAnual(anos: {});
-  int selectedYear = DateTime
-      .now()
-      .year;
+  final _faturamentoAnual = FaturamentoAnual(anos: {});
+  int selectedYear = DateTime.now().year;
   String selectedMonth = 'Janeiro';
   List<TextEditingController> monthControllers = [];
+  late Box boxFaturamentoDoze;
+
+
 
   @override
   void initState() {
@@ -45,16 +47,28 @@ class _HiveTestState extends State<HiveTest> {
     for (int i = 0; i < 12; i++) {
       monthControllers.add(TextEditingController());
     }
+   _carregarHive();
   }
+
+  void _carregarHive()async{
+    if(Hive.isBoxOpen("box_faturamentoDoze")){
+      boxFaturamentoDoze = Hive.box("box_faturamentoDoze");
+    }else {
+      boxFaturamentoDoze = await Hive.openBox("box_faturamentoDoze");
+    }
+    // var faturamentoAnual =  boxFaturamentoDoze.get("faturamentoAnual");
+    // var faturamentoMes =  boxFaturamentoDoze.get("faturamentoMes");
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Simples Nacional'),
+        title: const Text('Simples Nacional'),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(image: AssetImage("assets/images/fundo3.png"),fit: BoxFit.cover)
         ),
         child: ListView(
@@ -62,10 +76,10 @@ class _HiveTestState extends State<HiveTest> {
           children: [
             ListTile(
               onTap: () {
-                print(faturamentoAnual.anos);
+                print(_faturamentoAnual.anos);
               },
-              subtitle: Text("Selecione o mês e ano que dejesa apurar o imposto"),
-              title: Text("Selecione a referência"),
+              subtitle: const Text("Selecione o mês e ano que dejesa apurar o imposto"),
+              title: const Text("Selecione a referência"),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -88,7 +102,7 @@ class _HiveTestState extends State<HiveTest> {
                       );
                     }).toList(),
                   ),
-                  SizedBox(width: 16), // Espaço entre os Dropdowns
+                  const SizedBox(width: 16), // Espaço entre os Dropdowns
                   // Dropdown para selecionar o mês
                   DropdownButton<String>(
                     value: selectedMonth,
@@ -111,13 +125,13 @@ class _HiveTestState extends State<HiveTest> {
                 ],
               ),
             ),
-            Divider(color: Colors.green,),
+            const Divider(color: Colors.green,),
             ListTile(
               onTap: () {
 
               },
-              subtitle: Text("É com este faturamento que será calculado o imposto"),
-              title: Text("Digite o Faturamento do mês atual"),
+              subtitle: const Text("É com este faturamento que será calculado o imposto"),
+              title: const Text("Digite o Faturamento do mês atual"),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -126,17 +140,17 @@ class _HiveTestState extends State<HiveTest> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: "Faturamento de ${selectedMonth} de ${selectedYear}",
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ),
             const Divider(color: Colors.green,),
             ListTile(
               onTap: () {
-                print(faturamentoAnual.anos);
+                print(_faturamentoAnual.anos[2023]!["Fevereiro"]);
               },
-              subtitle: Text("Para podermos calcular a sua alíquota"),
-              title: Text("Informe o Faturamento dos últimos 12 meses"),
+              subtitle: const Text("Para podermos calcular a sua alíquota"),
+              title: const Text("Informe o Faturamento dos últimos 12 meses"),
             ),
             for (int i = 0; i < 12; i++)
               Padding(
@@ -146,14 +160,21 @@ class _HiveTestState extends State<HiveTest> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: "Faturamento de ${getPreviousMonth(i)} de ${getPreviousYear(i)}",
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                   ),
                   onChanged: (value) {
-                    faturamentoAnual.adicionarFaturamento(getPreviousYear(i), getPreviousMonth(i),
+                    _faturamentoAnual.adicionarFaturamento(getPreviousYear(i), getPreviousMonth(i),
                         double.parse(monthControllers[i].text));
+
                   },
                 ),
               ),
+            ElevatedButton(onPressed: (){
+              boxFaturamentoDoze.put("faturamentoAnual",_faturamentoAnual.anos);
+              boxFaturamentoDoze.put("faturamentoMes",_faturamentoController.text);
+              print(_faturamentoAnual.anos);
+              print(_faturamentoController.text);
+            }, child: const Text("Calcular"),),
             const SizedBox(height: 50,),
           ],
         ),
