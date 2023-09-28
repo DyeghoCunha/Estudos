@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simplesnacional_vs2/pages/faturamentoDoze.dart';
 import '../widgets/custom_drawer.dart';
+import 'PaginaTeste.dart';
 import 'card_page.dart';
 import 'list_view_h.dart';
 import 'listaDeTarefas.dart';
@@ -36,19 +37,21 @@ class _MainPageState extends State<MainPage> {
                     });
                   },
                   children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                "assets/images/fundo4.png",
-                              ),
-                              fit: BoxFit.cover)),
-                    ),
+                    // Container(
+                    //   decoration: const BoxDecoration(
+                    //       image: DecorationImage(
+                    //           image: AssetImage(
+                    //             "assets/images/fundo4.png",
+                    //           ),
+                    //           fit: BoxFit.cover)),
+                    // ),
+                    const PaginaTeste(),
                     const CardPage(),
                      ListViewH(),
                     //ListaDeTarefas(),
                     FaturamentoDoze(),
-                  ]),
+                  ],
+              ),
             ),
             BottomNavigationBar(
               currentIndex: posicaoPagina,

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:simplesnacional_vs2/pages/configuracoes_page.dart';
 import 'package:simplesnacional_vs2/pages/numeros_aleatorios.dart';
 
 import '../pages/dados_cadastrais.dart';
+import '../pages/dados_cadastrais_hive.dart';
 import '../pages/faturamentoDoze.dart';
 import '../pages/login_page.dart';
+import '../pages/testeXML.dart';
 import '../repositories/hiveDb.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -314,10 +317,8 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                       },
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.line_style_outlined,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                         FaIcon(FontAwesomeIcons.squareRootVariable,color: Theme.of(context).colorScheme
+                             .primary,),
                           const SizedBox(
                             width: 10,
                           ),
@@ -361,6 +362,7 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                         ],
                       ),
                     ),
+
                     DividerTheme(
                         data: DividerThemeData(
                           color: Theme.of(context).colorScheme.primary,

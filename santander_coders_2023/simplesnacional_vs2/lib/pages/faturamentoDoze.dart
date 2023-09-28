@@ -67,117 +67,121 @@ class _HiveTestState extends State<FaturamentoDoze> {
       appBar: AppBar(
         title: const Text('Simples Nacional'),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage("assets/images/fundo3.png"),fit: BoxFit.cover)
-        ),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            ListTile(
-              onTap: () {
-                print(_faturamentoAnual.anos);
-              },
-              subtitle: const Text("Selecione o mês e ano que dejesa apurar o imposto"),
-              title: const Text("Selecione a referência"),
+      body: ListView(
+        shrinkWrap: true,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(image: AssetImage("assets/images/fundo3.png"),fit: BoxFit.cover)
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Dropdown para selecionar o ano
-                  DropdownButton<int>(
-                    value: selectedYear,
-                    onChanged: (int? newValue) {
-                      setState(() {
-                        selectedYear = newValue!;
-                      });
-                    },
-                    items: years.map((int year) {
-                      return DropdownMenuItem<int>(
-                        value: year,
-                        child: Text(year.toString()),
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(width: 16), // Espaço entre os Dropdowns
-                  // Dropdown para selecionar o mês
-                  DropdownButton<String>(
-                    value: selectedMonth,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedMonth = newValue!;
-                        selectedYear = DateTime
-                            .now()
-                            .year;
-                        updateMonthControllers();
-                      });
-                    },
-                    items: months.map((String month) {
-                      return DropdownMenuItem<String>(
-                        value: month,
-                        child: Text(month),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
-            const Divider(color: Colors.green,),
-            ListTile(
-              onTap: () {
-
-              },
-              subtitle: const Text("É com este faturamento que será calculado o imposto"),
-              title: const Text("Digite o Faturamento do mês atual"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _faturamentoController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: "Faturamento de ${selectedMonth} de ${selectedYear}",
-                  border: const OutlineInputBorder(),
+            child: Column(
+              children: [
+                ListTile(
+                  onTap: () {
+                    print(_faturamentoAnual.anos);
+                  },
+                  subtitle: const Text("Selecione o mês e ano que dejesa apurar o imposto"),
+                  title: const Text("Selecione a referência"),
                 ),
-              ),
-            ),
-            const Divider(color: Colors.green,),
-            ListTile(
-              onTap: () {
-                print(_faturamentoAnual.anos[2023]!["Fevereiro"]);
-              },
-              subtitle: const Text("Para podermos calcular a sua alíquota"),
-              title: const Text("Informe o Faturamento dos últimos 12 meses"),
-            ),
-            for (int i = 0; i < 12; i++)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: monthControllers[i],
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: "Faturamento de ${getPreviousMonth(i)} de ${getPreviousYear(i)}",
-                    border: const OutlineInputBorder(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Dropdown para selecionar o ano
+                      DropdownButton<int>(
+                        value: selectedYear,
+                        onChanged: (int? newValue) {
+                          setState(() {
+                            selectedYear = newValue!;
+                          });
+                        },
+                        items: years.map((int year) {
+                          return DropdownMenuItem<int>(
+                            value: year,
+                            child: Text(year.toString()),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(width: 16), // Espaço entre os Dropdowns
+                      // Dropdown para selecionar o mês
+                      DropdownButton<String>(
+                        value: selectedMonth,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedMonth = newValue!;
+                            selectedYear = DateTime
+                                .now()
+                                .year;
+                            updateMonthControllers();
+                          });
+                        },
+                        items: months.map((String month) {
+                          return DropdownMenuItem<String>(
+                            value: month,
+                            child: Text(month),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ),
-                  onChanged: (value) {
-                    _faturamentoAnual.adicionarFaturamento(getPreviousYear(i), getPreviousMonth(i),
-                        double.parse(monthControllers[i].text));
+                ),
+                const Divider(color: Colors.green,),
+                ListTile(
+                  onTap: () {
 
                   },
+                  subtitle: const Text("É com este faturamento que será calculado o imposto"),
+                  title: const Text("Digite o Faturamento do mês atual"),
                 ),
-              ),
-            ElevatedButton(onPressed: (){
-              boxFaturamentoDoze.put("faturamentoAnual",_faturamentoAnual.anos);
-              boxFaturamentoDoze.put("faturamentoMes",_faturamentoController.text);
-              print(_faturamentoAnual.anos);
-              print(_faturamentoController.text);
-            }, child: const Text("Calcular"),),
-            const SizedBox(height: 50,),
-          ],
-        ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _faturamentoController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: "Faturamento de ${selectedMonth} de ${selectedYear}",
+                      border: const OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const Divider(color: Colors.green,),
+                ListTile(
+                  onTap: () {
+                    print(_faturamentoAnual.anos[2023]!["Fevereiro"]);
+                  },
+                  subtitle: const Text("Para podermos calcular a sua alíquota"),
+                  title: const Text("Informe o Faturamento dos últimos 12 meses"),
+                ),
+                for (int i = 0; i < 12; i++)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: monthControllers[i],
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: "Faturamento de ${getPreviousMonth(i)} de ${getPreviousYear(i)}",
+                        border: const OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        _faturamentoAnual.adicionarFaturamento(getPreviousYear(i), getPreviousMonth(i),
+                            double.parse(monthControllers[i].text));
+
+                      },
+                    ),
+                  ),
+                ElevatedButton(onPressed: (){
+                  boxFaturamentoDoze.put("faturamentoAnual",_faturamentoAnual.anos);
+                  boxFaturamentoDoze.put("faturamentoMes",_faturamentoController.text);
+                  print(_faturamentoAnual.anos);
+                  print(_faturamentoController.text);
+                }, child: const Text("Calcular"),),
+                const SizedBox(height: 50,),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

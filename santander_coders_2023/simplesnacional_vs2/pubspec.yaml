@@ -41,19 +41,23 @@ dependencies:
   hive: ^2.2.3
   path_provider: ^2.1.1
   month_picker_dialog: ^2.0.2
+  sqflite: ^2.3.0
+  font_awesome_flutter: ^10.5.0
+
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_launcher_icons: ^0.13.1
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.6
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -97,3 +101,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_launcher_icons:
+ android: "launcher_icon"
+ ios: true
+ image_path: "assets/images/6.png"
+ min_sdk_android: 21 # android min sdk min:16, default 21
+ remove_alpha_ios: true

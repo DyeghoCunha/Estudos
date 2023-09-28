@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:simplesnacional_vs2/model/dadosCadastrais_model.dart';
+import 'package:simplesnacional_vs2/repositories/dadosCadastrais_repository.dart';
 import '../repositories/segmentoAtividade_repository.dart';
 import '../repositories/ramoAtividade_repository.dart';
 
-class DadosCadastrais extends StatefulWidget {
-  const DadosCadastrais({super.key});
+class DadosCadastraisHive extends StatefulWidget {
+  const DadosCadastraisHive({super.key});
 
   @override
-  State<DadosCadastrais> createState() => _DadosCadastraisState();
+  State<DadosCadastraisHive> createState() => _DadosCadastraisStateHive();
 }
 
-class _DadosCadastraisState extends State<DadosCadastrais> {
+class _DadosCadastraisStateHive extends State<DadosCadastraisHive> {
   TextEditingController nomeController = TextEditingController();
   TextEditingController cnpjController = TextEditingController();
   TextEditingController cepController = TextEditingController();
   TextEditingController inscricaoEstadualController = TextEditingController();
   TextEditingController dataAberturaController = TextEditingController();
 
-
+  late DadosCadastraisRepository dadosCadastraisRepository;
+  var dadosCadastraisModel = DadosCadastraisModel.vazio();
 
   DateTime? dataAbertura;
 
@@ -30,32 +33,34 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
 
   List<String> atividades = [];
   double salarioEscolhido = 0;
-  int tempoExperiencia = 1;
-
-  // final CHAVE_NIVEIS = "CHAVE_NIVEIS";
-  // final CHAVE_LINGUAGENS_SELECIONADAS = "CHAVE_LINGUAGENS_SELECIONADAS";
-  // final CHAVE_NIVEL_SELECIONADO = "CHAVE_NIVEL_SELECIONADO";
-  // final CHAVE_LINGUAGENS = "CHAVE_LINGUAGENS";
-  // final CHAVE_SALARIO_ESCOLHIDO = "CHAVE_SALARIO_ESCOLHIDO";
-  // final CHAVE_TEMPO_EXPERIENCIA = "CHAVE_TEMPO_EXPERIENCIA";
-  // late SharedPreferences storage;
-  //
-  // AppStorage storageClass = AppStorage();
+  int anexoPrincipal = 1;
 
   @override
   void initState() {
-    ramoAtividade= ramoAtividadeRepository.retornaAtividades();
+    ramoAtividade = ramoAtividadeRepository.retornaAtividades();
     segmentoAtividade = segmentoAtividadeRepository.retornaSegmentoAtividade();
     super.initState();
-    // carregarDados();
+    carregarDados();
   }
 
-  // carregarDados() async {
-  //   storage = await SharedPreferences.getInstance();
-  //     ramoAtividade =  storage.getStringList(CHAVE_NIVEIS);
-  //     nomeController.text = await storageClass.getDadosCadastraisNome()??"";
-  //     setState(() {  });
-  // }
+  carregarDados() async {
+    dadosCadastraisRepository = await DadosCadastraisRepository.carregar();
+    dadosCadastraisModel = dadosCadastraisRepository.obterDados();
+    nomeController.text = dadosCadastraisModel.nomeFantasia ?? "";
+    cnpjController.text = dadosCadastraisModel.cnpj ?? "";
+    cepController.text = dadosCadastraisModel.cep ?? "";
+    inscricaoEstadualController.text = dadosCadastraisModel.inscricaoEstadual ?? "";
+    dataAberturaController.text =
+        dadosCadastraisModel.dataAbertura == null ? "" : dadosCadastraisModel.dataAbertura.toString();
+    if (dataAberturaController.text.isNotEmpty) {
+      dataAbertura = DateTime.parse(dataAberturaController.text);
+    }
+
+    ramoSelecionado = dadosCadastraisModel.ramoAtividade??"";
+    segmentoAtividade = dadosCadastraisModel.segmentoAtividade??[];
+    //anexoPrincipal = dadosCadastraisModel.anexoPrincipal??"Anexo I";
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,15 +86,6 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                       const SizedBox(
                         height: 30,
                       ),
-                      // TextField(
-                      //   controller: cnpjController,
-                      //   decoration: InputDecoration(
-                      //       labelText: "CNPJ",
-                      //       border: const OutlineInputBorder(),
-                      //       hintText: "Digite o CNPJ da Empresa",
-                      //       hintStyle:
-                      //           TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.4))),
-                      // ),
                       const SizedBox(
                         height: 10,
                       ),
@@ -105,7 +101,6 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                       const SizedBox(
                         height: 10,
                       ),
-
                       TextField(
                         controller: cnpjController,
                         decoration: InputDecoration(
@@ -161,9 +156,6 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                       const SizedBox(
                         height: 10,
                       ),
-
-
-
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(),
@@ -198,9 +190,6 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                       const SizedBox(
                         height: 10,
                       ),
-
-
-
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(),
@@ -258,7 +247,7 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
                                 ),
-                                value: tempoExperiencia,
+                                value: anexoPrincipal,
                                 icon: const Icon(
                                   Icons.select_all,
                                   color: Colors.green,
@@ -288,10 +277,11 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                                 ],
                                 onChanged: (value) {
                                   setState(() {
-                                    tempoExperiencia = int.parse(value.toString());
+                                    anexoPrincipal = value! ;
                                   });
                                 },
-                              ),
+                              )
+
                             ),
                           ],
                         ),
@@ -333,13 +323,9 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                         height: 10,
                       ),
                       ElevatedButton(
-
                         onPressed: () async {
-                          // await storage.setStringList(CHAVE_LINGUAGENS, atividades);
-                          // await storage.setStringList(CHAVE_LINGUAGENS_SELECIONADAS, segmentoAtividade);
-                          // await storage.setStringList(CHAVE_NIVEIS, atividades);
-                          // await storage.setDouble(CHAVE_SALARIO_ESCOLHIDO, salarioEscolhido);
                           Navigator.pop(context);
+                           dadosCadastraisRepository.salvar(dadosCadastraisModel);
                         },
                         child: const Text("Salvar"),
                       ),
