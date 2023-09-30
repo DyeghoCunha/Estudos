@@ -323,7 +323,7 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                             width: 10,
                           ),
                           Text(
-                            "Shared_Prefere",
+                            "Shared_Preference",
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w500,
