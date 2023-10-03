@@ -12,7 +12,7 @@ class ListViewH extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color:Colors.transparent ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color:Colors.green),
       child:  ListTile(
         leading: Image.asset("assets/images/logo2.png"),
         title: const Text("Simples Nacional"),
@@ -46,8 +46,11 @@ class ListViewH extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage("assets/images/fundo3.png"), fit: BoxFit.cover),
+        decoration:  BoxDecoration(
+          image: DecorationImage(
+              image: Theme.of(context).brightness == Brightness.light
+              ? const AssetImage("assets/images/fundo4.png")
+              : const AssetImage("assets/images/fundo4d.png"), fit: BoxFit.cover),
         ),
         child: ListView(
           children: [

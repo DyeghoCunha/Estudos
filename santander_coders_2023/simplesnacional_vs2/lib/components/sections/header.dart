@@ -11,11 +11,11 @@ class Header extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: Themecolors.headerGradient,
+          colors: ThemeColors.headerGradient,
         ),
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
       ),
-      child: const Padding(
+      child:  Padding(
         padding: EdgeInsets.fromLTRB(16, 80, 16, 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -25,16 +25,18 @@ class Header extends StatelessWidget {
               children: <Widget>[
                 //Text("\$1000.00", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),),
                 Text.rich(
-                  TextSpan(text: "\$", style: TextStyle(fontSize: 16), children: <TextSpan>[
-                    TextSpan(
-                      text: "1000.00",
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                    ),
-                  ]),
+                  TextSpan(
+                    text: "R\$",
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "176.000,00",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
                 ),
                 Text(
-                  "Balanço disponível",
-                  style: TextStyle(fontSize: 16),
+                  "Faturamento dos ultimos 12 meses",
                 ),
               ],
             ),

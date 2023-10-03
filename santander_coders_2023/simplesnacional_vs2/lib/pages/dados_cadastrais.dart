@@ -16,8 +16,6 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
   TextEditingController inscricaoEstadualController = TextEditingController();
   TextEditingController dataAberturaController = TextEditingController();
 
-
-
   DateTime? dataAbertura;
 
   var ramoAtividadeRepository = RamoAtividadeRepository();
@@ -44,7 +42,7 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
 
   @override
   void initState() {
-    ramoAtividade= ramoAtividadeRepository.retornaAtividades();
+    ramoAtividade = ramoAtividadeRepository.retornaAtividades();
     segmentoAtividade = segmentoAtividadeRepository.retornaSegmentoAtividade();
     super.initState();
     // carregarDados();
@@ -63,9 +61,11 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
       child: Scaffold(
         appBar: AppBar(title: const Text("Dados Cadastrais")),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               image: DecorationImage(
-            image: AssetImage("assets/images/fundo3.png"),
+            image: Theme.of(context).brightness == Brightness.light
+                ? const AssetImage("assets/images/fundo0.png")
+                : const AssetImage("assets/images/fundo0d.png"),
             fit: BoxFit.cover,
           )),
           child: SizedBox(
@@ -162,8 +162,6 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                         height: 10,
                       ),
 
-
-
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(),
@@ -198,8 +196,6 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                       const SizedBox(
                         height: 10,
                       ),
-
-
 
                       Container(
                         decoration: BoxDecoration(
@@ -333,7 +329,6 @@ class _DadosCadastraisState extends State<DadosCadastrais> {
                         height: 10,
                       ),
                       ElevatedButton(
-
                         onPressed: () async {
                           // await storage.setStringList(CHAVE_LINGUAGENS, atividades);
                           // await storage.setStringList(CHAVE_LINGUAGENS_SELECIONADAS, segmentoAtividade);

@@ -3,12 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:simplesnacional_vs2/pages/alubank.dart';
 import 'package:simplesnacional_vs2/pages/configuracoes_page.dart';
 import 'package:simplesnacional_vs2/pages/numeros_aleatorios.dart';
-
 import '../pages/dados_cadastrais.dart';
-import '../pages/dados_cadastrais_hive.dart';
-import '../pages/faturamentoDoze.dart';
 import '../pages/login_page.dart';
-import '../pages/testeXML.dart';
 import '../repositories/hiveDb.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -24,9 +20,11 @@ class CustomDrawer extends StatelessWidget {
         ),
       ),
       child: Container(
-        decoration: const BoxDecoration(
+        decoration:BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/fundoDrawer.png"),
+            image: Theme.of(context).brightness == Brightness.light
+                ? const AssetImage("assets/images/fundo3.png")
+                : const AssetImage("assets/images/fundo3d.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -52,9 +50,11 @@ class CustomDrawer extends StatelessWidget {
                             children: [
                               Container(
                                 width: double.infinity,
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                     image: DecorationImage(
-                                        image: AssetImage("assets/images/fundo4.png"), fit: BoxFit.cover)),
+                                        image: Theme.of(context).brightness == Brightness.light
+                                            ? const AssetImage("assets/images/fundo0.png")
+                                            : const AssetImage("assets/images/fundo0d.png"), fit: BoxFit.cover)),
                                 child: Column(
                                   children: [
                                     ListTile(
@@ -167,9 +167,11 @@ class CustomDrawer extends StatelessWidget {
                                   children: [
                                     Container(
                                       width: double.infinity,
-                                      decoration: const BoxDecoration(
+                                      decoration:  BoxDecoration(
                                           image: DecorationImage(
-                                              image: AssetImage("assets/images/fundo4.png"),
+                                              image: Theme.of(context).brightness == Brightness.light
+                                                  ? const AssetImage("assets/images/fundo4.png")
+                                                  : const AssetImage("assets/images/fundo4d.png"),
                                               fit: BoxFit.cover)),
                                       child: Column(
                                         children: [
@@ -200,6 +202,7 @@ class CustomDrawer extends StatelessWidget {
                       child: InkWell(
                         onTap: () {
                           showModalBottomSheet(
+                            isScrollControlled: true,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                             barrierColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
                             barrierLabel: "Teste",
@@ -213,13 +216,15 @@ class CustomDrawer extends StatelessWidget {
                                     children: [
                                       Container(
                                         width: double.infinity,
-                                        decoration: const BoxDecoration(
+                                        decoration:  BoxDecoration(
                                             image: DecorationImage(
-                                                image: AssetImage("assets/images/fundo4.png"),
+                                                image: Theme.of(context).brightness == Brightness.light
+                                                    ? const AssetImage("assets/images/fundo4.png")
+                                                    : const AssetImage("assets/images/fundo4d.png"),
                                                 fit: BoxFit.cover)),
                                         child: const SingleChildScrollView(
                                           child: Padding(
-                                            padding: EdgeInsets.all(8.0),
+                                            padding: EdgeInsets.fromLTRB(8, 16, 8, 50),
                                             child: Text("""Termos de Uso e Privacidade
 
 Bem-vindo ao nosso aplicativo de cálculos do Simples Nacional. Ao utilizar este aplicativo, você concorda com os seguintes termos e condições:
@@ -243,8 +248,10 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                                           ),
                                         ),
                                       ),
+
                                     ],
                                   ),
+
                                 ],
                               );
                             },
@@ -348,7 +355,7 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                         children: [
                           Icon(
                             Icons.line_style_outlined,
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.onBackground,
                           ),
                           const SizedBox(
                             width: 10,
@@ -356,17 +363,16 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                           Text(
                             "Hive",
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Theme.of(context).colorScheme.onBackground,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
                       ),
                     ),
-
                     DividerTheme(
                         data: DividerThemeData(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme.of(context).colorScheme.onBackground,
                           thickness: 1,
                         ),
                         child: const Divider()),

@@ -23,8 +23,10 @@ class _PaginaTesteState extends State<PaginaTeste> {
         Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/fundo3.png"),
-              fit: BoxFit.fill,
+              image: Theme.of(context).brightness == Brightness.light
+                  ? const AssetImage("assets/images/fundo2.png")
+                  : const AssetImage("assets/images/fundo2d.png"),
+              fit: BoxFit.cover,
             ),
           ),
           child: Column(
@@ -125,7 +127,8 @@ class _PaginaTesteState extends State<PaginaTeste> {
                     style: TextStyle(color: Colors.green, fontSize: 95, fontWeight: FontWeight.w300),
                   ),
                 ),
-              )
+              ),
+            const SizedBox(height: 40,),
             ],
           ),
         ),

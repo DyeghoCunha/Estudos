@@ -71,8 +71,10 @@ class _HiveTestState extends State<FaturamentoDoze> {
         shrinkWrap: true,
         children: [
           Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(image: AssetImage("assets/images/fundo3.png"),fit: BoxFit.cover)
+            decoration:  BoxDecoration(
+              image: DecorationImage( image : Theme.of(context).brightness == Brightness.light
+                  ? const AssetImage("assets/images/fundo3.png")
+                  : const AssetImage("assets/images/fundo3d.png"),fit: BoxFit.cover)
             ),
             child: Column(
               children: [

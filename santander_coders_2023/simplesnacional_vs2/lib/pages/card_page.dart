@@ -33,11 +33,11 @@ class _CardPageState extends State<CardPage> {
           return const Text('Nenhum dado disponível');
         } else {
           return Container(
-            decoration:const  BoxDecoration(
+            decoration:  BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                  "assets/images/fundoDrawer.png",
-                ),
+                image: Theme.of(context).brightness == Brightness.light
+                    ? const AssetImage("assets/images/fundo1.png")
+                    : const AssetImage("assets/images/fundo1d.png"),
                 fit: BoxFit.cover
               ),
             ),

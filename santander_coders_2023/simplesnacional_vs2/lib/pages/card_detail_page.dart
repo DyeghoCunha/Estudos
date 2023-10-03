@@ -15,9 +15,11 @@ class CardDetailPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(title: Text(cardDetail.title)),
           body: Container(
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/fundo4.png"),
+                image: Theme.of(context).brightness == Brightness.light
+                    ? const AssetImage("assets/images/fundo0.png")
+                    : const AssetImage("assets/images/fundo0d.png"),
                 fit: BoxFit.cover
               ),
             ),
@@ -32,7 +34,8 @@ class CardDetailPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-                    child: Expanded(child: Text(cardDetail.text)),
+                    child: Expanded(child: Text(cardDetail.text, style: TextStyle(color: Theme.of(context)
+                            .colorScheme.onBackground),)),
                   )
 
                 ],

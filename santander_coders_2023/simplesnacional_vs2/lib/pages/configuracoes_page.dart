@@ -61,6 +61,12 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
         title: const Text("Configurações"),
       ),
       body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(image: Theme.of(context).brightness == Brightness.light
+              ? const AssetImage("assets/images/fundo0.png")
+              : const AssetImage("assets/images/fundo0d.png"),
+          fit: BoxFit.cover)
+        ),
         child: ListView(
           children: [
             Padding(
