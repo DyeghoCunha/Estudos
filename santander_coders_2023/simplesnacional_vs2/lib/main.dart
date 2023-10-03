@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:simplesnacional_vs2/themes/my_theme.dart';
 import 'model/dadosCadastrais_model.dart';
 import 'pages/login_page.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -19,13 +19,11 @@ void main() async {
 
   Intl.defaultLocale = 'pt_BR';
 
-  runApp(MaterialApp(
+  runApp(
+      MaterialApp(
     debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-        primarySwatch: Colors.green,
-        textTheme: GoogleFonts.robotoTextTheme(),
-        splashColor: Colors.yellowAccent),
-    home: MyApp(),
+    theme:MyTheme,
+    home: const MyApp(),
   ));
 }
 

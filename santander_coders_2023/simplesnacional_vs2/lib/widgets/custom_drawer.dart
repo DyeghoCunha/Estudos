@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:simplesnacional_vs2/pages/alubank.dart';
 import 'package:simplesnacional_vs2/pages/configuracoes_page.dart';
 import 'package:simplesnacional_vs2/pages/numeros_aleatorios.dart';
 
@@ -354,6 +355,34 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                           ),
                           Text(
                             "Hive",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    DividerTheme(
+                        data: DividerThemeData(
+                          color: Theme.of(context).colorScheme.primary,
+                          thickness: 1,
+                        ),
+                        child: const Divider()),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => Alubank()));
+                      },
+                      child: Row(
+                        children: [
+                         FaIcon(FontAwesomeIcons.kiwiBird, color: Colors.green,),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "LuBank",
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w500,
