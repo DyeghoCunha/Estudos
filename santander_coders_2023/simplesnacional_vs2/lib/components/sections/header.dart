@@ -40,10 +40,11 @@ class Header extends StatelessWidget {
                 ),
               ],
             ),
-            Icon(
-              Icons.account_circle,
-              size: 42,
-            ),
+          CircleAvatar(
+            radius: 25,
+            backgroundColor: Colors.transparent,
+            child: Image.asset("assets/images/logoSimples.png"),
+          )
           ],
         ),
       ),

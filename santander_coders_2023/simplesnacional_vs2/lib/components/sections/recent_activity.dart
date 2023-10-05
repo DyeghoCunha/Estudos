@@ -41,7 +41,7 @@ class _RecentActivityContent extends StatelessWidget {
                   children: [
                     const Text("Faturamento", style: TextStyle(color: ThemeColors.cinza),),
                     Text(
-                      "\$9900.97",
+                      "\$99.000,97",
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],
@@ -60,7 +60,7 @@ class _RecentActivityContent extends StatelessWidget {
                   children: [
                     const Text("Imposto",style: TextStyle(color: ThemeColors.cinza)),
                     Text(
-                      "\$5940,06",
+                      "\$5.940,06",
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ],
