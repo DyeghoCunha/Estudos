@@ -16,7 +16,7 @@ class Header extends StatelessWidget {
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
       ),
       child:  Padding(
-        padding: EdgeInsets.fromLTRB(16, 80, 16, 16),
+        padding: EdgeInsets.fromLTRB(16, 40, 16, 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

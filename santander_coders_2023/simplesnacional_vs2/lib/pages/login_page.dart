@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                                 borderSide: const BorderSide(color: Colors.yellowAccent),
                                 borderRadius: BorderRadius.circular(10)),
                             hintText: "Digite seu Email",
-                            hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                 color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.7)),
                             prefixIcon: const Icon(Icons.person),
                             prefixIconColor: Theme.of(context).colorScheme.onBackground),
@@ -163,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               borderRadius: BorderRadius.circular(10)),
                           hintText: "Digite a sua senha",
-                          hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.7)),
                           prefixIcon: const Icon(Icons.key_outlined),
                           prefixIconColor: Theme.of(context).colorScheme.onBackground,

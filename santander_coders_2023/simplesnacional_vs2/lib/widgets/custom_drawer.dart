@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:simplesnacional_vs2/pages/PaginaTeste.dart';
 import 'package:simplesnacional_vs2/pages/alubank.dart';
 import 'package:simplesnacional_vs2/pages/configuracoes_page.dart';
 import 'package:simplesnacional_vs2/pages/numeros_aleatorios.dart';
@@ -318,77 +319,77 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                           thickness: 1,
                         ),
                         child: const Divider()),
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.pop(context);
+                    //     Navigator.push(context, MaterialPageRoute(builder: (ctx) => NumerosAleatorios()));
+                    //   },
+                    //   child: Row(
+                    //     children: [
+                    //      FaIcon(FontAwesomeIcons.squareRootVariable,color: Theme.of(context).colorScheme
+                    //          .primary,),
+                    //       const SizedBox(
+                    //         width: 10,
+                    //       ),
+                    //       Text(
+                    //         "Shared_Preference",
+                    //         style: TextStyle(
+                    //           color: Theme.of(context).colorScheme.primary,
+                    //           fontWeight: FontWeight.w500,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // DividerTheme(
+                    //     data: DividerThemeData(
+                    //       color: Theme.of(context).colorScheme.primary,
+                    //       thickness: 1,
+                    //     ),
+                    //     child: const Divider()),
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.pop(context);
+                    //     Navigator.push(context, MaterialPageRoute(builder: (ctx) => HiveDb()));
+                    //   },
+                    //   child: Row(
+                    //     children: [
+                    //       Icon(
+                    //         Icons.line_style_outlined,
+                    //         color: Theme.of(context).colorScheme.onBackground,
+                    //       ),
+                    //       const SizedBox(
+                    //         width: 10,
+                    //       ),
+                    //       Text(
+                    //         "Hive",
+                    //         style: TextStyle(
+                    //           color: Theme.of(context).colorScheme.onBackground,
+                    //           fontWeight: FontWeight.w500,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // DividerTheme(
+                    //     data: DividerThemeData(
+                    //       color: Theme.of(context).colorScheme.onBackground,
+                    //       thickness: 1,
+                    //     ),
+                    //     child: const Divider()),
                     InkWell(
                       onTap: () {
                         Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => NumerosAleatorios()));
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => PaginaTeste()));
                       },
                       child: Row(
                         children: [
-                         FaIcon(FontAwesomeIcons.squareRootVariable,color: Theme.of(context).colorScheme
-                             .primary,),
+                         FaIcon(FontAwesomeIcons.percent, color: Colors.green,),
                           const SizedBox(
                             width: 10,
                           ),
                           Text(
-                            "Shared_Preference",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    DividerTheme(
-                        data: DividerThemeData(
-                          color: Theme.of(context).colorScheme.primary,
-                          thickness: 1,
-                        ),
-                        child: const Divider()),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => HiveDb()));
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.line_style_outlined,
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Hive",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onBackground,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    DividerTheme(
-                        data: DividerThemeData(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          thickness: 1,
-                        ),
-                        child: const Divider()),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => Alubank()));
-                      },
-                      child: Row(
-                        children: [
-                         FaIcon(FontAwesomeIcons.kiwiBird, color: Colors.green,),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "LuBank",
+                            "Alíquota",
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w500,
