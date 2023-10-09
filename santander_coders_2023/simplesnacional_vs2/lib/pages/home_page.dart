@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:simplesnacional_vs2/pages/alubank.dart';
+import 'package:simplesnacional_vs2/themes/theme_colors.dart';
 
 import '../widgets/custom_drawer.dart';
 import 'PaginaTeste.dart';
@@ -40,6 +41,14 @@ class _MainPageState extends State<MainPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          elevation: 3,
+          backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+        decoration:const BoxDecoration(
+        gradient: LinearGradient(
+        colors: ThemeColors.appBarGradient, // Cores do gradiente
+        begin: Alignment.topLeft, // Início do gradiente
+        end: Alignment.bottomRight, )),),// Fim do gradiente
           title: const Text("Simples Nacional"),
           // actions: [
           //   Padding(

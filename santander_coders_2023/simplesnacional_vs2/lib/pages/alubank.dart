@@ -12,18 +12,26 @@ class Alubank extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          SliverAppBar(
+           SliverAppBar(
             // Define a altura da app bar quando ela estiver "enrolada"
-            expandedHeight: 115.0, // Ajuste conforme necessário
+            expandedHeight: 113.0, // Ajuste conforme necessário
             floating: true, // Define se a app bar deve "flutuar" ao fazer rolagem
             pinned: false, // Mantém a app bar fixada no topo
 
             // Conteúdo da app bar
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
-              background: Container(
-                child: Header(),
-
+              background: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft:
+                      Radius.circular(10)),
+                      boxShadow: kElevationToShadow[3],
+                    ),
+                      child:const Header()),
+                   const SizedBox(height: 5,),
+                ],
               ), // Coloque seu widget Header aqui
             ),
           ),
