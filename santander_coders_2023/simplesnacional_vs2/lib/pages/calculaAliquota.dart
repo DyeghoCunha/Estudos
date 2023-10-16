@@ -1,46 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:simplesnacional_vs2/components/box_card.dart';
-import 'package:simplesnacional_vs2/service/aliquotaSimplesNacional.dart';
+import 'package:simplesnacional_vs2/pages/calculaSimples.dart';
+import 'package:simplesnacional_vs2/service/utilidades.dart';
 
+import '../components/box_card.dart';
+import '../service/aliquotaSimplesNacional.dart';
 import '../themes/theme_colors.dart';
 
-class PaginaTeste extends StatefulWidget {
-  const PaginaTeste({Key? key}) : super(key: key);
+class CalculaAliquota extends StatefulWidget {
+  CalculaAliquota({super.key, required this.rbt12, required this.faturamento});
+
+  String rbt12;
+  String faturamento;
 
   @override
-  State<PaginaTeste> createState() => _PaginaTesteState();
+  State<CalculaAliquota> createState() => _CalculaAliquotaState();
 }
 
-class _PaginaTesteState extends State<PaginaTeste> {
+class _CalculaAliquotaState extends State<CalculaAliquota> {
   TextEditingController brt12Controller = TextEditingController();
   SimplesNacionalAliquota aliquota = SimplesNacionalAliquota();
+
   double effectiveTaxRate = 0.0;
+
   final List<String> anexos = ["Anexo I", "Anexo II", "Anexo III", "Anexo IV", "Anexo V"];
   String? selectedAnexo = "Anexo I";
+  String effectiveTaxRateString = "Erro";
 
   @override
   Widget build(BuildContext context) {
+    double rbt12 = double.parse(widget.rbt12);
+    String rbt12String = Utilidades.formatarNumeroComPontoVirgula(rbt12);
+    double faturamento = double.parse(widget.faturamento);
+
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration:const BoxDecoration(
+          decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: ThemeColors.appBarGradient, // Cores do gradiente
-                begin: Alignment.topLeft, // Início do gradiente
-                end: Alignment.bottomRight, )),),
-        title:  ListTile(
-          leading: const Icon(
+            colors: ThemeColors.appBarGradient, // Cores do gradiente
+            begin: Alignment.topLeft, // Início do gradiente
+            end: Alignment.bottomRight,
+          )),
+        ),
+        title: const ListTile(
+          leading: Icon(
             Icons.calculate_outlined,
             color: Colors.white,
             size: 40,
           ),
           splashColor: Colors.green,
-          onTap: (){},
           title: Text("Simule sua Alíquota"),
-          subtitle: Text("Duvidas ?"),
         ),
       ),
-      body: ListView(
+      body: Column(
         children: [
           Expanded(
             child: Container(
@@ -51,26 +63,21 @@ class _PaginaTesteState extends State<PaginaTeste> {
                       : const AssetImage("assets/images/fundo2d.png"),
                   fit: BoxFit.cover,
                 ),
-              ),
+              ),//aa
               child: Column(
                 children: [
-                  const SizedBox(height: 40,),
-                  //  ListTile(
-                  //   leading: const Icon(
-                  //     Icons.calculate_outlined,
-                  //     color: Colors.green,
-                  //     size: 40,
-                  //   ),
-                  //   splashColor: Colors.green,
-                  //   onTap: (){},
-                  //   title: Text("Simule sua Alíquota"),
-                  //   subtitle: Text("Duvidas ?"),
-                  // ),
-                  // const Divider(
-                  //   height: 0,
-                  //   color: Colors.green,
-                  // ),
-                  const SizedBox(height: 30),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ListTile(
+                    trailing: const Icon(Icons.question_mark),
+                    splashColor: Colors.green,
+                    titleAlignment: ListTileTitleAlignment.center,
+                    onTap: () {},
+                    title: const Text("Escolha seu Anexo"),
+                    subtitle: const Text("Anexo de enquadramento Fiscal"),
+                  ),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Container(
@@ -86,7 +93,7 @@ class _PaginaTesteState extends State<PaginaTeste> {
                             padding: const EdgeInsets.only(left: 8),
                             child: Container(
                               color: Colors.transparent,
-                              child: Text("Escolha o Anexo"),
+                              child: const Text("Escolha o Anexo"),
                             ),
                           ),
                           DropdownButton(
@@ -109,41 +116,75 @@ class _PaginaTesteState extends State<PaginaTeste> {
                     ),
                   ),
                   const SizedBox(height: 10),
+                  const Divider(
+                    height: 0,
+                    color: Colors.green,
+                  ),
+                  const SizedBox(height: 10),
+                  const ListTile(
+                    title: Text("Faturamento Acumulado"),
+                    subtitle: Text("Faturamento acumulado dos ultimos 12 meses"),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      controller: brt12Controller,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green),
-                          borderRadius: BorderRadius.circular(8),
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Theme.of(context).colorScheme.primary),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Image.asset(
+                              "assets/images/sifrao.png",
+                              scale: 1.5,
+                              alignment: Alignment.center,
+                              fit: BoxFit.cover,
+                            ),
+                            Text(
+                              rbt12String,
+                              style: TextStyle(fontSize: 38, color: Theme.of(context).colorScheme.primary),
+                            )
+                          ],
                         ),
-                        labelText: "Faturamento Acumulado",
-                        labelStyle: TextStyle(color: Colors.green),
-                        hintText: "Digite o faturamento Acumulado",
                       ),
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          FocusScope.of(context).unfocus();
-                          effectiveTaxRate = aliquota.funcCalculaAliqEfetiva(
-                                  double.tryParse(brt12Controller.text) ?? 0.0, selectedAnexo ?? "Anexo I") ??
-                              0.0;
-                        });
-                      },
-                      child: Text("Calcule"),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(
+                            () {
+                              FocusScope.of(context).unfocus(); //Tirar Depois
+
+                              effectiveTaxRate =
+                                  aliquota.funcCalculaAliqEfetiva(rbt12 ?? 0.0, selectedAnexo ?? "Anexo I") ??
+                                      0.0;
+                              effectiveTaxRateString = effectiveTaxRate > 0.0
+                                  ? Utilidades.formatarNumeroComPontoVirgula(effectiveTaxRate)
+                                  : "Erro";
+                            },
+                          );
+                        },
+                        child: const Text(
+                          "Calcule a sua Aliquota",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 45),
-                  Divider(
-                    color: Colors.green,
-                  ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 15),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Stack(
@@ -156,9 +197,19 @@ class _PaginaTesteState extends State<PaginaTeste> {
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(color: Colors.green, width: 1),
                           ),
-                          child: Text(
-                            effectiveTaxRate.toStringAsFixed(2),
-                            style: TextStyle(color: Colors.green, fontSize: 95, fontWeight: FontWeight.w300),
+                          child: Text.rich(
+                            TextSpan(
+                              text: effectiveTaxRate > 0.0 ? effectiveTaxRateString : "Alíquota",
+                              style: const TextStyle(
+                                  color: Colors.green, fontSize: 75, fontWeight: FontWeight.w400),
+                              children: [
+                                effectiveTaxRate > 0.0 ? const TextSpan(text: "%",style: TextStyle
+                                  (fontSize: 40)) :
+                                const
+                                TextSpan(text:
+                                ""),
+                              ],
+                            ),
                           ),
                         ),
                         effectiveTaxRate > 0
@@ -190,11 +241,38 @@ class _PaginaTesteState extends State<PaginaTeste> {
                                   ),
                                 ))
                             : Container(),
+                        effectiveTaxRate > 0
+                            ? Positioned(
+                                bottom: 8,
+                                right: 8,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CalculaSimples(
+                                          faturamento: faturamento,
+                                          aliquota: effectiveTaxRate,
+                                          anexo: selectedAnexo!,
+                                          rbt12: rbt12,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: const Row(
+                                    children: [
+                                      Text("Calcular o Imposto"),
+                                      Icon(Icons.arrow_forward),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
                   const SizedBox(
-                    height: 100,
+                    height:10,
                   ),
                 ],
               ),
@@ -219,50 +297,51 @@ class _ModalExplicativo extends StatelessWidget {
           "Entenda melhor a sua Alíquota!",
           style: TextStyle(fontSize: Theme.of(context).textTheme.titleMedium!.fontSize),
         ),
-        const SizedBox(height: 50,),
+        const SizedBox(
+          height: 50,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             InkWell(
-              onTap: (){},
+              onTap: () {},
               splashColor: Colors.greenAccent,
               borderRadius: BorderRadius.circular(8),
               child: const BoxCard(
                   boxContent: _AccountActionsContent(
-                    icon: Icon(Icons.question_mark),
-                    text: "Explicação",
-                  )),
+                icon: Icon(Icons.question_mark),
+                text: "Explicação",
+              )),
             ),
             InkWell(
-              onTap: (){},
+              onTap: () {},
               splashColor: Colors.redAccent,
               borderRadius: BorderRadius.circular(8),
               child: const BoxCard(
                   boxContent: _AccountActionsContent(
-                    icon: Icon(Icons.blur_linear_rounded),
-                    text: "Detalhe",
-                  )),
+                icon: Icon(Icons.blur_linear_rounded),
+                text: "Detalhe",
+              )),
             ),
             InkWell(
-              onTap: (){},
+              onTap: () {},
               splashColor: Colors.amberAccent,
               borderRadius: BorderRadius.circular(8),
               child: const BoxCard(
                   boxContent: _AccountActionsContent(
-                    icon: Icon(Icons.query_stats),
-                    text: "Gráficos",
-                  )),
-
+                icon: Icon(Icons.query_stats),
+                text: "Gráficos",
+              )),
             )
           ],
         ),
-       Container(height: 50,)
+        Container(
+          height: 50,
+        )
       ],
     );
   }
 }
-
-
 
 class _AccountActionsContent extends StatelessWidget {
   final Icon icon;
@@ -279,13 +358,17 @@ class _AccountActionsContent extends StatelessWidget {
     return SizedBox(
       width: 70,
       child: Column(
-        children: [Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: icon,
-        ), Text(text, style: TextStyle(fontSize: 12),),
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: icon,
+          ),
+          Text(
+            text,
+            style: TextStyle(fontSize: 12),
+          ),
         ],
       ),
     );
   }
-
 }

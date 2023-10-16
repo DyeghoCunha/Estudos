@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:simplesnacional_vs2/pages/alubank.dart';
+import 'package:simplesnacional_vs2/pages/dashBoardSimplesNacional.dart';
 import 'package:simplesnacional_vs2/themes/theme_colors.dart';
 
 import '../widgets/custom_drawer.dart';
@@ -29,11 +30,13 @@ class _MainPageState extends State<MainPage> {
   int posicaoPagina = 0;
 
   final pages = [
-    const Alubank(),
-    // const PaginaTeste(),
-    const CardPage(),
+    // const Alubank(),
+    DashBoardSimplesNacional(rbt12: 0.00, faturamento: 0.00, dasSimplesNacional: 0.00,
+        impostosDetalhados: const {"":0.00}, alqFutura: 0.00, alqEfetiva: 0.00),
     ListViewH(),
+
     const FaturamentoDoze(),
+    const CardPage(),
   ];
 
   @override
@@ -50,15 +53,6 @@ class _MainPageState extends State<MainPage> {
         begin: Alignment.topLeft, // Início do gradiente
         end: Alignment.bottomRight, )),),// Fim do gradiente
           title: const Text("Simples Nacional"),
-          // actions: [
-          //   Padding(
-          //     padding: const EdgeInsets.only(right: 8),
-          //     child: SizedBox(
-          //         width: 40,
-          //         height: 40,
-          //         child: Image.asset("assets/images/logoSimples.png")),
-          //   )
-          // ],
         ),
         drawer: const CustomDrawer(),
         body: Column(

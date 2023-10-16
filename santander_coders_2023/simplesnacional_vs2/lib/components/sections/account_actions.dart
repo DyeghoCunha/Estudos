@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simplesnacional_vs2/components/box_card.dart';
+import 'package:simplesnacional_vs2/pages/faturamentoMes.dart';
 
 class AccountActions extends StatelessWidget {
   const AccountActions({super.key});
@@ -22,7 +23,9 @@ class AccountActions extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                onTap: (){},
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const FaturamentoMes(),));
+                },
                 splashColor: Colors.greenAccent,
                 borderRadius: BorderRadius.circular(8),
                 child: const BoxCard(

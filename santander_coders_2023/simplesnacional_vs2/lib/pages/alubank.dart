@@ -29,7 +29,7 @@ class Alubank extends StatelessWidget {
                       Radius.circular(10)),
                       boxShadow: kElevationToShadow[3],
                     ),
-                      child:const Header()),
+                      child:Header(rbt12: "0,00",)),
                    const SizedBox(height: 5,),
                 ],
               ), // Coloque seu widget Header aqui
@@ -38,9 +38,10 @@ class Alubank extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                RecentActivity(),
+                RecentActivity(faturamento: "0,00",dasSimplesNacional: "0,00",rbt12: 0.00,alqEfetiva: 0.00,
+                    alqFutura: 0.00,),
                 AccountActions(),
-                TaxDetail(),
+                TaxDetail(impostoDetalhado: {"Sem Valor":0.00},dasSimplesNacional: 0.00),
               ],
             ),
           ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:simplesnacional_vs2/service/yearMonth.dart';
+import 'package:simplesnacional_vs2/widgets/dropdown_month_year.dart';
+import 'package:simplesnacional_vs2/widgets/inputFaturamento.dart';
 
 import '../model/faturamentoAnualModel.dart';
 
@@ -14,23 +17,7 @@ class FaturamentoDoze extends StatefulWidget {
 class _HiveTestState extends State<FaturamentoDoze> {
   TextEditingController _faturamentoController = TextEditingController();
   TextEditingController _dataController = TextEditingController();
-  List<int> years = List.generate(DateTime
-      .now()
-      .year - 2017, (index) => 2018 + index);
-  List<String> months = [
-    'Janeiro',
-    'Fevereiro',
-    'Março',
-    'Abril',
-    'Maio',
-    'Junho',
-    'Julho',
-    'Agosto',
-    'Setembro',
-    'Outubro',
-    'Novembro',
-    'Dezembro'
-  ];
+
 
   final _faturamentoAnual = FaturamentoAnual(anos: {});
   int selectedYear = DateTime.now().year;
@@ -38,12 +25,13 @@ class _HiveTestState extends State<FaturamentoDoze> {
   List<TextEditingController> monthControllers = [];
   late Box boxFaturamentoDoze;
 
+  final yearMonth _yearMonth = yearMonth();
+
 
 
   @override
   void initState() {
     super.initState();
-    // Inicialize os controllers para os 12 meses anteriores
     for (int i = 0; i < 12; i++) {
       monthControllers.add(TextEditingController());
     }
@@ -60,13 +48,9 @@ class _HiveTestState extends State<FaturamentoDoze> {
     // var faturamentoMes =  boxFaturamentoDoze.get("faturamentoMes");
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Simples Nacional'),
-      ),
       body: ListView(
         shrinkWrap: true,
         children: [
@@ -80,7 +64,6 @@ class _HiveTestState extends State<FaturamentoDoze> {
               children: [
                 ListTile(
                   onTap: () {
-                    print(_faturamentoAnual.anos);
                   },
                   subtitle: const Text("Selecione o mês e ano que dejesa apurar o imposto"),
                   title: const Text("Selecione a referência"),
@@ -99,7 +82,7 @@ class _HiveTestState extends State<FaturamentoDoze> {
                             selectedYear = newValue!;
                           });
                         },
-                        items: years.map((int year) {
+                        items: yearMonth.years.map((int year) {
                           return DropdownMenuItem<int>(
                             value: year,
                             child: Text(year.toString()),
@@ -119,7 +102,7 @@ class _HiveTestState extends State<FaturamentoDoze> {
                             updateMonthControllers();
                           });
                         },
-                        items: months.map((String month) {
+                        items: yearMonth.months.map((String month) {
                           return DropdownMenuItem<String>(
                             value: month,
                             child: Text(month),
@@ -129,6 +112,7 @@ class _HiveTestState extends State<FaturamentoDoze> {
                     ],
                   ),
                 ),
+
                 const Divider(color: Colors.green,),
                 ListTile(
                   onTap: () {
@@ -137,17 +121,8 @@ class _HiveTestState extends State<FaturamentoDoze> {
                   subtitle: const Text("É com este faturamento que será calculado o imposto"),
                   title: const Text("Digite o Faturamento do mês atual"),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    controller: _faturamentoController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: "Faturamento de ${selectedMonth} de ${selectedYear}",
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                ),
+              InputFaturamento(faturamentoController: _faturamentoController, selectedMonth: selectedMonth,
+                  selectedYear: selectedYear),
                 const Divider(color: Colors.green,),
                 ListTile(
                   onTap: () {
@@ -163,11 +138,12 @@ class _HiveTestState extends State<FaturamentoDoze> {
                       controller: monthControllers[i],
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: "Faturamento de ${getPreviousMonth(i)} de ${getPreviousYear(i)}",
+                        labelText: "Faturamento de ${_yearMonth.getPreviousMonth(i,selectedMonth)} de "
+                            "${_yearMonth.getPreviousYear(i,selectedMonth,selectedYear)}",
                         border: const OutlineInputBorder(),
                       ),
                       onChanged: (value) {
-                        _faturamentoAnual.adicionarFaturamento(getPreviousYear(i), getPreviousMonth(i),
+                        _faturamentoAnual.adicionarFaturamento(_yearMonth.getPreviousYear(i,selectedMonth,selectedYear), _yearMonth.getPreviousMonth(i,selectedMonth),
                             double.parse(monthControllers[i].text));
 
                       },
@@ -176,8 +152,8 @@ class _HiveTestState extends State<FaturamentoDoze> {
                 ElevatedButton(onPressed: (){
                   boxFaturamentoDoze.put("faturamentoAnual",_faturamentoAnual.anos);
                   boxFaturamentoDoze.put("faturamentoMes",_faturamentoController.text);
-                  print(_faturamentoAnual.anos);
-                  print(_faturamentoController.text);
+                  print("Faturamento 1:${_faturamentoAnual.anos}");
+                  print("Faturamento 2:${_faturamentoController.text}");
                 }, child: const Text("Calcular"),),
                 const SizedBox(height: 50,),
               ],
@@ -187,34 +163,6 @@ class _HiveTestState extends State<FaturamentoDoze> {
       ),
     );
   }
-
-  // Função para obter o nome do mês anterior
-  String getPreviousMonth(int index) {
-    final currentMonthIndex = months.indexOf(selectedMonth);
-    int previousMonthIndex = (currentMonthIndex - index - 1) % 12;
-
-    // Ajuste para considerar anos diferentes
-    if (previousMonthIndex < 0) {
-      previousMonthIndex += 12;
-    }
-
-    return months[previousMonthIndex];
-  }
-
-  // Função para obter o ano anterior
-  int getPreviousYear(int index) {
-    final currentMonthIndex = months.indexOf(selectedMonth);
-    final currentYear = selectedYear;
-    int year = currentYear;
-
-    // Ajuste para considerar anos diferentes
-    if (currentMonthIndex - index <= 0) {
-      year--;
-    }
-
-    return year;
-  }
-
   void updateMonthControllers() {
     for (int i = 0; i < 12; i++) {
       monthControllers[i].text = "";

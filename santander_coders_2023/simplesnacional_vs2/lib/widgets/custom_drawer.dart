@@ -3,7 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:simplesnacional_vs2/pages/PaginaTeste.dart';
 import 'package:simplesnacional_vs2/pages/alubank.dart';
 import 'package:simplesnacional_vs2/pages/configuracoes_page.dart';
+import 'package:simplesnacional_vs2/pages/faturamentoMes.dart';
 import 'package:simplesnacional_vs2/pages/numeros_aleatorios.dart';
+import 'package:simplesnacional_vs2/widgets/LinkTestDrawer.dart';
 import '../pages/dados_cadastrais.dart';
 import '../pages/login_page.dart';
 import '../repositories/hiveDb.dart';
@@ -405,6 +407,7 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                           thickness: 1,
                         ),
                         child: const Divider()),
+                    LinkTestDrawer(titulo: "FaturamentoMes", pagina: const FaturamentoMes())
                   ],
                 ),
               ),

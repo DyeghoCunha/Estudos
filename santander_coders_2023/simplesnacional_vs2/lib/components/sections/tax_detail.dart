@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:simplesnacional_vs2/components/box_card.dart';
 import 'package:simplesnacional_vs2/components/color_dot.dart';
 import 'package:simplesnacional_vs2/components/content_division.dart';
+import 'package:simplesnacional_vs2/service/utilidades.dart';
 import 'package:simplesnacional_vs2/themes/theme_colors.dart';
 
 class TaxDetail extends StatelessWidget {
-  const TaxDetail({super.key});
+  TaxDetail({super.key, required this.dasSimplesNacional, required this.impostoDetalhado});
+
+  double dasSimplesNacional = 0.00;
+  Map<String, double> impostoDetalhado;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    String dasSimplesNacionalString = Utilidades.formatarNumeroComPontoVirgula(dasSimplesNacional);
+
+    return dasSimplesNacionalString.length >4 ? Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
       child: Column(
         children: [
@@ -17,50 +23,75 @@ class TaxDetail extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 16,top: 16),
-                child: Text("Detalhes do Imposto", style: Theme.of(context).textTheme.titleMedium,),
+                padding: const EdgeInsets.only(bottom: 16, top: 16),
+                child: Text(
+                  "Detalhes do Imposto",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
-              const BoxCard(boxContent: _taxDetail()),
+              BoxCard(
+                boxContent: _taxDetail(
+                  dasSimplesNacionalString: dasSimplesNacionalString,
+                  impostoDetalhado: impostoDetalhado,
+                  dasSimplesNacional: dasSimplesNacional,
+                ),
+              ),
             ],
           ),
         ],
       ),
-    );
+    ):Container();
   }
 }
 
-
 class _taxDetail extends StatelessWidget {
-  const _taxDetail({super.key});
+  _taxDetail(
+      {super.key,
+      required this.dasSimplesNacionalString,
+      required this.impostoDetalhado,
+      required this.dasSimplesNacional});
+
+  double dasSimplesNacional;
+  String dasSimplesNacionalString;
+  Map<String, double> impostoDetalhado;
+  List<String> nomeImposto = ["IR", "CSLL", "PIS", "COFINS", "CPP", "ICMS", "ISS", "IPI"];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-       const  Text("Simples Nacional:",style: TextStyle(
-          color: ThemeColors.cinza
-        ),),
-        Text("\$5.940,06", style: Theme.of(context).textTheme.bodyLarge,),
-       Padding(
-         padding: const EdgeInsets.symmetric(vertical: 8.0),
-         child: const ContentDivision(),
-       ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: const Text("Federais:", style: TextStyle(color: ThemeColors.cinza),),
+        const Text(
+          "Simples Nacional:",
+          style: TextStyle(color: ThemeColors.cinza),
         ),
-        _Imposto(imposto: "IR", valor: "1.300,00", cor: Colors.redAccent),
-        _Imposto(imposto: "CSLL", valor: "830,00", cor: Colors.red),
-        _Imposto(imposto: "CPP", valor: "300,00", cor: Colors.orange),
-        Divider(),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: const Text("Estaduais:", style: TextStyle(color: ThemeColors.cinza),),
+        Text.rich(TextSpan(text: "R\$", children: [
+          TextSpan(
+            text: dasSimplesNacionalString,
+            style: Theme.of(context).textTheme.bodyLarge,
+          )
+        ])),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          child: ContentDivision(),
         ),
-        _Imposto(imposto: "ICMS", valor: "2.450,00", cor: Colors.yellowAccent ),
-
-     ]
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 4.0),
+          child: Text(
+            "Detalhamento dos impostos da guia",
+            style: TextStyle(color: ThemeColors.cinza),
+          ),
+        ),
+        for(var imposto in nomeImposto)
+          impostoDetalhado[imposto]! > 0?
+        _Imposto(
+            imposto: imposto,
+            valor: Utilidades.formatarNumeroComPontoVirgula(impostoDetalhado[imposto]!),
+            cor: Colors.green,
+          dasSimplesNacional: dasSimplesNacional,
+          valorDouble: impostoDetalhado[imposto]!,
+        ): Container() ,
+      ],
     );
   }
 }
@@ -68,9 +99,22 @@ class _taxDetail extends StatelessWidget {
 class _Imposto extends StatelessWidget {
   String imposto;
   String valor;
+  double valorDouble;
   Color cor;
+  double dasSimplesNacional;
 
-  _Imposto({super.key, required this.imposto, required this.valor, required this.cor});
+  _Imposto({
+    super.key,
+    required this.imposto,
+    required this.valor,
+    required this.cor,
+    required this.dasSimplesNacional,
+    required this.valorDouble,
+  });
+
+  double CalculaIntensidade(double valor) {
+    return (valor / dasSimplesNacional * 10);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +127,39 @@ class _Imposto extends StatelessWidget {
       minVerticalPadding: 0,
       horizontalTitleGap: 10,
       splashColor: cor,
-      onTap: (){},
-      leading: ColorDot(color: cor),
-      title: Text(imposto,style: TextStyle(fontSize: 12,color: ThemeColors.cinza),),
+      onTap: () {},
+      leading: _ColorDot(color: cor.withOpacity(CalculaIntensidade(valorDouble)>1?1:CalculaIntensidade
+        (valorDouble)),tamanho:CalculaIntensidade(valorDouble) ),
+      title: Text(
+        imposto,
+        style: const TextStyle(fontSize: 12, color: ThemeColors.cinza),
+      ),
       subtitle: Text("R\$ $valor"),
-      trailing: Icon(Icons.question_mark, color: ThemeColors.cinza.withOpacity(0.2),),
+      trailing: Icon(
+        Icons.question_mark,
+        color: ThemeColors.cinza.withOpacity(0.2),
+      ),
+    );
+  }
+}
+
+class _ColorDot extends StatelessWidget {
+  _ColorDot({super.key, required this.color, required this.tamanho});
+
+  final Color color;
+  double tamanho;
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+      alignment: Alignment.center,
+      width: 10+(tamanho*2),
+      height: 10+(tamanho*2),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+      ),
     );
   }
 }

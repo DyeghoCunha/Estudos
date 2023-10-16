@@ -6,13 +6,13 @@ class SimplesNacionalAliquota {
   String anexo = '';
   List<List<double>> _faixa = [];
   double rbt12 = 0;
-
+  double faturamento = 0;
 
   SimplesNacionalAliquota();
 
   double? funcCalculaAliqEfetiva(double rbt12, String anexo) {
     double? alqEfetiva;
-    if(anexo=='Anexo I'){
+    if (anexo == 'Anexo I') {
       _faixa = [
         [180000, 3 / 100, 0],
         [360000, 6.3 / 100, 5939],
@@ -21,7 +21,7 @@ class SimplesNacionalAliquota {
         [3600000, 13.3 / 100, 87299],
         [4800000, 18 / 100, 377999]
       ];
-    }else if(anexo=='Anexo II'){
+    } else if (anexo == 'Anexo II') {
       _faixa = [
         [180000, 4.5 / 100, 0],
         [360000, 7.8 / 100, 5940],
@@ -30,7 +30,7 @@ class SimplesNacionalAliquota {
         [3600000, 14.7 / 100, 85500],
         [4800000, 30 / 100, 720000]
       ];
-    }else if(anexo=='Anexo III'){
+    } else if (anexo == 'Anexo III') {
       _faixa = [
         [180000, 6 / 100, 0],
         [360000, 11.2 / 100, 9360],
@@ -39,7 +39,7 @@ class SimplesNacionalAliquota {
         [3600000, 21 / 100, 125640],
         [4800000, 33 / 100, 648000]
       ];
-    }else if(anexo=='Anexo IV'){
+    } else if (anexo == 'Anexo IV') {
       _faixa = [
         [180000, 4.5 / 100, 0],
         [360000, 9 / 100, 8100],
@@ -48,7 +48,7 @@ class SimplesNacionalAliquota {
         [3600000, 22 / 100, 183780],
         [4800000, 33 / 100, 828000]
       ];
-    }else if(anexo=='Anexo V'){
+    } else if (anexo == 'Anexo V') {
       _faixa = [
         [180000, 15.5 / 100, 0],
         [360000, 18 / 100, 4500],
@@ -57,17 +57,97 @@ class SimplesNacionalAliquota {
         [3600000, 23 / 100, 62100],
         [4800000, 30.5 / 100, 540000]
       ];
-    } else {print('Erro nos Anexos');}
+    } else {
+      print('Erro nos Anexos');
+    }
 
     for (int i = 0; i < _faixa.length; i++) {
       if (rbt12 < _faixa[i][0]) {
         alq = _faixa[i][1];
         pd = _faixa[i][2];
         alqEfetiva = (((rbt12 * alq)) - pd) / rbt12;
-        return (alqEfetiva *100);
+        return (alqEfetiva * 100);
       }
     }
     return null;
+  }
 
+  Map<String,double>? funcCalculaImpostoDetalhado(double faturamento, String anexo,double alqEfetiva) {
+    Map<String, double> impostos = {
+      "IR": 0,
+      "CSLL": 0,
+      "PIS": 0,
+      "COFINS": 0,
+      "CPP": 0,
+      "ICMS": 0,
+      "ISS": 0,
+      "IPI": 0
+    };
+
+    double baseCalculo = faturamento * (alqEfetiva/100);
+
+    if (anexo == 'Anexo I') {
+      _faixa = [
+        [180000, 0.0550, 0.0350, 0.0276, 0.1274, 0.4150, 0.3400, 0, 0],
+        [360000, 0.0550, 0.0350, 0.0276, 0.1274, 0.4150, 0.3400, 0, 0],
+        [720000, 0.0550, 0.0350, 0.0276, 0.1274, 0.4200, 0.3350, 0, 0],
+        [1800000, 0.0550, 0.0350, 0.0276, 0.1274, 0.4200, 0.3350, 0, 0],
+        [3600000, 0.0550, 0.0350, 0.0276, 0.1274, 0.4200, 0.3350, 0, 0],
+        [4800000, 0.1350, 0.1000, 0.0613, 0.2827, 0.4210, 0.0000, 0, 0]
+      ];
+    } else if (anexo == 'Anexo II') {
+      _faixa = [
+        [180000, 0.0550, 0.0350, 0.0249, 0.1151, 0.3750, 0.3200, 0, 0.0750],
+        [360000, 0.0550, 0.0350, 0.0249, 0.1151, 0.3750, 0.3200, 0, 0.0750],
+        [720000, 0.0550, 0.0350, 0.0249, 0.1151, 0.3750, 0.3200, 0, 0.0750],
+        [1800000, 0.0550, 0.0350, 0.0249, 0.1151, 0.3750, 0.3200, 0, 0.0750],
+        [3600000, 0.0550, 0.0350, 0.0249, 0.1151, 0.3750, 0.3200, 0, 0.0750],
+        [4800000, 0.0850, 0.0750, 0.0454, 0.2096, 0.2350, 0.0000, 0, 0.0750]
+      ];
+    } else if (anexo == 'Anexo III') {
+      _faixa = [
+        [180000, 0.0400, 0.0350, 0.0278, 0.1282, 0.4340, 0.0000, 0.3350, 0.000],
+        [360000, 0.0400, 0.0350, 0.0305, 0.1405, 0.4340, 0.0000, 0.3200, 0.000],
+        [720000, 0.0400, 0.0350, 0.0296, 0.1364, 0.4340, 0.0000, 0.3250, 0.0000],
+        [1800000, 0.0400, 0.0350, 0.0296, 0.1364, 0.4340, 0.0000, 0.3250, 0.0000],
+        [3600000, 0.0400, 0.0350, 0.0296, 0.1282, 0.4340, 0.0000, 0.3350, 0.0000],
+        [4800000, 0.3500, 0.1500, 0.0347, 0.1603, 0.3050, 0.0000, 0.0000, 0.0000]
+      ];
+    } else if (anexo == 'Anexo IV') {
+      _faixa = [
+        [180000, 0.1880, 0.1520, 0.0383, 0.1767, 0.0000, 0.0000, 0.4450, 0.000],
+        [360000, 0.1980, 0.1520, 0.0445, 0.2055, 0.0000, 0.0000, 0.4000, 0.000],
+        [720000, 0.2080, 0.1520, 0.0427, 0.1973, 0.0000, 0.0000, 0.4000, 0.0000],
+        [1800000, 0.1780, 0.1920, 0.0410, 0.1890, 0.0000, 0.0000, 0.4000, 0.0000],
+        [3600000, 0.1880, 0.1920, 0.0392, 0.1808, 0.0000, 0.0000, 0.4000, 0.0000],
+        [4800000, 0.2150, 0.2150, 0.0445, 0.2055, 0.0000, 0.0000, 0.0000, 0.0000]
+      ];
+    } else if (anexo == 'Anexo V') {
+      _faixa = [
+        [180000, 0.2500, 0.1500, 0.0305, 0.1410, 0.2885, 0.0000, 0.1400, 0.000],
+        [360000, 0.2300, 0.1500, 0.0305, 0.1410, 0.2785, 0.0000, 0.1700, 0.000],
+        [720000, 0.2400, 0.1500, 0.0323, 0.1492, 0.2385, 0.0000, 0.1900, 0.0000],
+        [1800000, 0.2100, 0.1500, 0.0341, 0.1574, 0.2385, 0.0000, 0.2100, 0.0000],
+        [3600000, 0.2300, 0.1250, 0.0305, 0.1410, 0.2385, 0.0000, 0.2350, 0.0000],
+        [4800000, 0.3500, 0.1550, 0.0356, 0.1644, 0.2950, 0.0000, 0.0000, 0.0000]
+      ];
+    } else {
+      print('Erro nos Anexos');
+    }
+
+    for (int i = 0; i < _faixa.length; i++) {
+      if (rbt12 < _faixa[i][0]) {
+        impostos["IR"] = faturamento * ((alqEfetiva/100) *_faixa[i][1]);
+        impostos["CSLL"] = faturamento * ((alqEfetiva/100) *_faixa[i][2]);
+        impostos["PIS"] = faturamento * ((alqEfetiva/100)  *_faixa[i][3]);
+        impostos["COFINS"] = faturamento * ((alqEfetiva/100)  *_faixa[i][4]);
+        impostos["CPP"] = faturamento * ((alqEfetiva/100)  *_faixa[i][5]);
+        impostos["ICMS"] = faturamento * ((alqEfetiva/100)  *_faixa[i][6]);
+        impostos["ISS"] = faturamento * ((alqEfetiva/100)  *_faixa[i][7]);
+        impostos["IPI"] = faturamento * ((alqEfetiva/100)  *_faixa[i][8]);
+        return impostos;
+      }
+    }
+    return null;
   }
 }
