@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:simplesnacional_vs2/pages/DadosEmpresa.dart';
 import 'package:simplesnacional_vs2/pages/PaginaTeste.dart';
 import 'package:simplesnacional_vs2/pages/alubank.dart';
 import 'package:simplesnacional_vs2/pages/configuracoes_page.dart';
@@ -407,7 +408,8 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                           thickness: 1,
                         ),
                         child: const Divider()),
-                    LinkTestDrawer(titulo: "FaturamentoMes", pagina: const FaturamentoMes())
+                    LinkTestDrawer(titulo: "FaturamentoMes", pagina: const FaturamentoMes()),
+                    LinkTestDrawer(titulo: "DadosEmpresa", pagina: const DadosEmpresa()),
                   ],
                 ),
               ),

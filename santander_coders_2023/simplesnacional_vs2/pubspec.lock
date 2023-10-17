@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  br_api:
+    dependency: "direct main"
+    description:
+      name: br_api
+      sha256: "5b4cdea2935af0016966af3e613abf39164356d0fbc592b942e268d2829a7b0a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   build:
     dependency: transitive
     description:
