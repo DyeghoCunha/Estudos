@@ -127,41 +127,46 @@ class Empresa {
 
   static Future<Map<String, dynamic>> fromCNPJ(String cnpj) async {
     final cnpjAdd = await Company.searchCnpj(cnpj: cnpj);
-    return {
-      'cnpj': cnpj,
-      'razaoSocial': cnpjAdd.socialReason,
-      'nomeFantasia': cnpjAdd.tradingName,
-      'cep': cnpjAdd.cep,
-      'cidade': cnpjAdd.city,
-      'estado': cnpjAdd.uf,
-      'bairro': cnpjAdd.neighborhood,
-      'rua': cnpjAdd.street,
-      'numero': cnpjAdd.complement,
-      'location': Empresa.locationCep(cnpjAdd.cep!),
-      'cnaeFiscal': cnpjAdd.cnaeFiscal,
-      'capitalSocial': cnpjAdd.capitalSocial,
-      'cnaeFiscalDesc': cnpjAdd.cnaeFiscalDesc,
-      'cnaeSecundarios': cnpjAdd.secondaryCnaes,
-      'codigoMunicipal': cnpjAdd.cityCode,
-      'codNatJuridica': cnpjAdd.juridicalNatureCode,
-      'complemento': cnpjAdd.complement,
-      'dataExclusaoSimples': cnpjAdd.dateExclusionSimples,
-      'dataInicioAtividades': cnpjAdd.dateStartActivity,
-      'dataOpcaoSimples': cnpjAdd.simpleOptionDate,
-      'dataSituacaoCadastral': cnpjAdd.dateCadastralSituation,
-      'dataSituacaoEspecial': cnpjAdd.dateSpecialSituation,
-      'dddPhone1': cnpjAdd.dddPhone1,
-      'dddPhone2': cnpjAdd.dddPhone2,
-      'descPorte': cnpjAdd.descCompanySize,
-      'descSituacaoCadastral': cnpjAdd.descriptionCadastralSituation,
-      'descSubsidiaria': cnpjAdd.descriptionSubsidiary,
-      'descTipoLogadouro': cnpjAdd.descStreetType,
-      'isMei': cnpjAdd.optionMei,
-      'isSimples': cnpjAdd.simpleOption,
-      'porteDaEmpresa': cnpjAdd.companySize,
-      'quadSocietario': cnpjAdd.qsa,
-      'situacaoCadastral': cnpjAdd.cadastralSituation,
-    };
+
+    if (cnpjAdd != null) {
+      return {
+        'cnpj': cnpj,
+        'razaoSocial': cnpjAdd.socialReason,
+        'nomeFantasia': cnpjAdd.tradingName,
+        'cep': cnpjAdd.cep,
+        'cidade': cnpjAdd.city,
+        'estado': cnpjAdd.uf,
+        'bairro': cnpjAdd.neighborhood,
+        'rua': cnpjAdd.street,
+        'numero': cnpjAdd.complement,
+        'location': await locationCep(cnpjAdd.cep!),
+        'cnaeFiscal': cnpjAdd.cnaeFiscal,
+        'capitalSocial': cnpjAdd.capitalSocial,
+        'cnaeFiscalDesc': cnpjAdd.cnaeFiscalDesc,
+        'cnaeSecundarios': cnpjAdd.secondaryCnaes,
+        'codigoMunicipal': cnpjAdd.cityCode,
+        'codNatJuridica': cnpjAdd.juridicalNatureCode,
+        'complemento': cnpjAdd.complement,
+        'dataExclusaoSimples': cnpjAdd.dateExclusionSimples,
+        'dataInicioAtividades': cnpjAdd.dateStartActivity,
+        'dataOpcaoSimples': cnpjAdd.simpleOptionDate,
+        'dataSituacaoCadastral': cnpjAdd.dateCadastralSituation,
+        'dataSituacaoEspecial': cnpjAdd.dateSpecialSituation,
+        'dddPhone1': cnpjAdd.dddPhone1,
+        'dddPhone2': cnpjAdd.dddPhone2,
+        'descPorte': cnpjAdd.descCompanySize,
+        'descSituacaoCadastral': cnpjAdd.descriptionCadastralSituation,
+        'descSubsidiaria': cnpjAdd.descriptionSubsidiary,
+        'descTipoLogadouro': cnpjAdd.descStreetType,
+        'isMei': cnpjAdd.optionMei,
+        'isSimples': cnpjAdd.simpleOption,
+        'porteDaEmpresa': cnpjAdd.companySize,
+        'quadSocietario': cnpjAdd.qsa,
+        'situacaoCadastral': cnpjAdd.cadastralSituation,
+      };
+    } else {
+      return {}; // Retorna um mapa vazio em caso de erro
+    }
   }
 
 }
