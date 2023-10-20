@@ -3,39 +3,39 @@ import 'dart:convert';
 import 'package:br_api/br_api.dart';
 
 class Empresa {
-  String? cnpj;
-  String? razaoSocial;
-  String? nomeFantasia;
-  String? cep;
-  String? cidade;
-  String? estado;
-  String? bairro;
-  String? rua;
-  String? numero;
-  Map<String, dynamic>? location;
-  int? situacaoCadastral;
-  int? capitalSocial;
-  int? codigoMunicipal;
-  int? cnaeFiscal;
-  String? cnaeFiscalDesc;
-  List? cnaeSecundarios;
-  String? porteDaEmpresa;
-  String? complemento;
-  String? dataSituacaoCadastral;
-  String? dataExclusaoSimples;
-  String? dataSituacaoEspecial;
-  String? dataInicioAtividades;
-  String? dddPhone1;
-  String? dddPhone2;
-  String? descPorte;
-  String? descSituacaoCadastral;
-  String? descSubsidiaria;
-  String? descTipoLogadouro;
-  int? codNatJuridica;
-  bool? isMei;
-  bool? isSimples;
-  String? dataOpcaoSimples;
-  List? quadSocietario;
+  String? cnpj = "";
+  String? razaoSocial= "";
+  String? nomeFantasia = "";
+  String? cep= "";
+  String? cidade = "";
+  String? estado = "";
+  String? bairro = "";
+  String? rua = "";
+  String? numero = "";
+  Map<String, dynamic>? location = {"":""};
+  int? situacaoCadastral = 0;
+  int? capitalSocial = 0;
+  int? codigoMunicipal = 0;
+  int? cnaeFiscal = 0;
+  String? cnaeFiscalDesc = "";
+  List? cnaeSecundarios = [];
+  String? porteDaEmpresa= "";
+  String? complemento = "";
+  String? dataSituacaoCadastral="";
+  String? dataExclusaoSimples="";
+  String? dataSituacaoEspecial="";
+  String? dataInicioAtividades="";
+  String? dddPhone1 = "";
+  String? dddPhone2 = "";
+  String? descPorte = "";
+  String? descSituacaoCadastral="";
+  String? descSubsidiaria ="";
+  String? descTipoLogadouro = "";
+  int? codNatJuridica = 0;
+  bool? isMei = false;
+  bool? isSimples = false;
+  String? dataOpcaoSimples="";
+  List? quadSocietario=[];
 
   Empresa({
     this.cnpj,
@@ -109,6 +109,7 @@ class Empresa {
     required this.situacaoCadastral,
   });
 
+
   static consultaCep(int cep, Empresa empresa) async {
     final cepAdd = await CepV2.searchCepV2(cep: cep);
     empresa.cep = cep.toString();
@@ -130,7 +131,7 @@ class Empresa {
 
     if (cnpjAdd != null) {
       return {
-        'cnpj': cnpj,
+        'cnpj': cnpj ?? "",
         'razaoSocial': cnpjAdd.socialReason,
         'nomeFantasia': cnpjAdd.tradingName,
         'cep': cnpjAdd.cep,

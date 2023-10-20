@@ -4,9 +4,11 @@ import 'package:simplesnacional_vs2/pages/DadosEmpresa.dart';
 import 'package:simplesnacional_vs2/pages/PaginaTeste.dart';
 import 'package:simplesnacional_vs2/pages/alubank.dart';
 import 'package:simplesnacional_vs2/pages/configuracoes_page.dart';
+import 'package:simplesnacional_vs2/pages/digiteCnpjModal.dart';
 import 'package:simplesnacional_vs2/pages/faturamentoMes.dart';
 import 'package:simplesnacional_vs2/pages/numeros_aleatorios.dart';
 import 'package:simplesnacional_vs2/widgets/LinkTestDrawer.dart';
+import 'package:simplesnacional_vs2/widgets/circularProgressIndicatorCustom.dart';
 import '../pages/dados_cadastrais.dart';
 import '../pages/login_page.dart';
 import '../repositories/hiveDb.dart';
@@ -409,7 +411,30 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                         ),
                         child: const Divider()),
                     LinkTestDrawer(titulo: "FaturamentoMes", pagina: const FaturamentoMes()),
-                    LinkTestDrawer(titulo: "DadosEmpresa", pagina: const DadosEmpresa()),
+                    LinkTestDrawer(titulo: "DadosEmpresa", pagina:  DadosEmpresa(cnpj: "48354621000108",)),
+                    LinkTestDrawer(titulo: "Consulta CNPJ", pagina: const DigiteCnpjModal()),
+                    LinkTestDrawer(titulo: "Circular", pagina: const CircularProgressIndicatorCustom()),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                        _showModal(context) ;
+                      },
+                      child: Row(
+                        children: [
+                          FaIcon(FontAwesomeIcons.percent, color: Colors.green,),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Alíquota",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -477,4 +502,44 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
       ),
     );
   }
+}
+
+_showModal(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(40, 200, 40, 200),
+        child: Card(
+          child: Container(
+            width: double.infinity,
+            height: 200,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Digite o CNPJ',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                const SizedBox(height: 16.0),
+                const Text(
+                  'CNPJ já esta Gerado para Teste',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                const SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> DadosEmpresa(cnpj: "48354621000108")));
+                  },
+                  child: const Text('Continuar'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }
