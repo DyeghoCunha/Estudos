@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 
 class CircularProgressIndicatorCustom extends StatefulWidget {
-  const CircularProgressIndicatorCustom({super.key});
+  const CircularProgressIndicatorCustom({Key? key}) : super(key: key);
 
   @override
-  State<CircularProgressIndicatorCustom> createState() => _CircularProgressIndicatorCustomState();
+  _CircularProgressIndicatorCustomState createState() =>
+      _CircularProgressIndicatorCustomState();
 }
 
-class _CircularProgressIndicatorCustomState extends State<CircularProgressIndicatorCustom> {
-  @override
-
+class _CircularProgressIndicatorCustomState
+    extends State<CircularProgressIndicatorCustom> {
   double loadingPercentage = 0.0;
 
   @override
@@ -24,13 +24,14 @@ class _CircularProgressIndicatorCustomState extends State<CircularProgressIndica
     for (int i = 0; i < totalTasks; i++) {
       // Simulate loading by sleeping for a short time
       await Future.delayed(const Duration(milliseconds: 10));
-      loadingPercentage = (i + 2) / totalTasks;
-      setState(() {}); // Trigger a rebuild to update the UI
+      loadingPercentage = (i + 1) / totalTasks;
+      setState(() {});
     }
 
     // Data loading is complete
   }
 
+  @override
   Widget build(BuildContext context) {
     return Center(
       child: Stack(
@@ -38,26 +39,22 @@ class _CircularProgressIndicatorCustomState extends State<CircularProgressIndica
         children: [
           Container(
             alignment: Alignment.center,
-            width: 85,
-            height: 85,
-            child: Image.asset("assets/images/logoSimples.png",fit: BoxFit.fill),
+            width: 105,
+            height: 105,
+            child: Image.asset("assets/images/logoSimples.png", fit: BoxFit.cover),
           ),
           Container(
-            width: 80,
-            height:80,
+            width: 100,
+            height: 100,
             alignment: Alignment.center,
             child: LiquidCircularProgressIndicator(
               value: loadingPercentage, // Defaults to 0.5.
-              valueColor:   AlwaysStoppedAnimation(Theme.of(context).colorScheme.primary.withOpacity(0.5)), // Defaults to
-              // the
-              // current
-              // Theme's
-              // accentColor.
-              backgroundColor: Colors.transparent, // Defaults to the current Theme's backgroundColor.
+              valueColor: AlwaysStoppedAnimation(
+                  Theme.of(context).colorScheme.primary.withOpacity(0.5)),
+              backgroundColor: Colors.transparent,
               borderColor: Colors.transparent,
               borderWidth: 0.0,
-              direction: Axis.vertical, // The direction the liquid moves (Axis.vertical = bottom to top, Axis
-              // .horizontal = left to right). Defaults to Axis.vertical.
+              direction: Axis.vertical,
               center: const Text(""),
             ),
           ),

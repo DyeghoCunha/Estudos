@@ -410,10 +410,8 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                           thickness: 1,
                         ),
                         child: const Divider()),
-                    LinkTestDrawer(titulo: "FaturamentoMes", pagina: const FaturamentoMes()),
-                    LinkTestDrawer(titulo: "DadosEmpresa", pagina:  DadosEmpresa(cnpj: "48354621000108",)),
-                    LinkTestDrawer(titulo: "Consulta CNPJ", pagina: const DigiteCnpjModal()),
-                    LinkTestDrawer(titulo: "Circular", pagina: const CircularProgressIndicatorCustom()),
+                    LinkTestDrawer(titulo: "Teste Faturamento", pagina: const FaturamentoMes()),
+                    LinkTestDrawer(titulo: "Teste Dados", pagina:  DadosEmpresa(cnpj: "43778721000130",)),
                     InkWell(
                       onTap: () {
                         Navigator.pop(context);
@@ -426,7 +424,7 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
                             width: 10,
                           ),
                           Text(
-                            "Alíquota",
+                            "Consulta CNPJ",
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w500,
@@ -504,7 +502,7 @@ Agradecemos por escolher nosso aplicativo. Esperamos que ele seja útil em seus 
   }
 }
 
-_showModal(BuildContext context) {
+_showModalTeste(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -533,11 +531,76 @@ _showModal(BuildContext context) {
                     Navigator.of(context).pop();
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> DadosEmpresa(cnpj: "48354621000108")));
                   },
-                  child: const Text('Continuar'),
+                  child: const Text('Simples'),
                 ),
+                ElevatedButton(onPressed: (){
+                  Navigator.of(context).pop();
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> DadosEmpresa(cnpj: "41808853000131")));
+                }, child: const Text("ME - Fora Sp")),
+                ElevatedButton(onPressed: (){
+                  Navigator.of(context).pop();
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> DadosEmpresa(cnpj: "33961528000186")));
+                }, child: const Text("MEI")),
+                ElevatedButton(onPressed: (){
+                  Navigator.of(context).pop();
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> DadosEmpresa(cnpj: "51902342000138")));
+                }, child: const Text("EPP")),
+                ElevatedButton(onPressed: (){
+                  Navigator.of(context).pop();
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> DadosEmpresa(cnpj: "14745136000135")));
+                }, child: const Text("Normal"))
               ],
             ),
           ),
+        ),
+      );
+    },
+  );
+
+}
+
+_showModal(BuildContext context) {
+  TextEditingController _cnpjController = TextEditingController();
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Center(
+        child: Wrap(
+          children: [
+            Card(
+              child: Container(
+                width: double.infinity,
+                height: 200,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller:_cnpjController ,
+                        decoration: const InputDecoration(
+                          label: Text("Digite o CNPJF"),
+                          border: OutlineInputBorder(borderSide: BorderSide(color: Colors.green))
+                        ),
+                      ),
+                    ) ,
+                    const SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => DadosEmpresa(cnpj: _cnpjController.text)));
+                      },
+                      child: const Text('Consultar'),
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       );
     },

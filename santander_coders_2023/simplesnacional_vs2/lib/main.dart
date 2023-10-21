@@ -16,8 +16,7 @@ void main() async {
   Hive.registerAdapter(DadosCadastraisModelAdapter());
   // - - - -
   //SQFlite
-
-  Intl.defaultLocale = 'pt_BR';
+  Intl.defaultLocale = 'en_US';
 
   runApp(
       MaterialApp(

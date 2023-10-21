@@ -170,4 +170,15 @@ class Empresa {
     }
   }
 
+  static verificaPorte(String cnpj) async{
+    String porte = "MICRO EMPRESA";
+    final empresa = await Company.searchCnpj(cnpj: cnpj);
+    if(empresa.companySize == "MICRO EMPRESA"){
+      return porte = "ME";
+    } else if(empresa.companySize == "EMPRESA DE PEQUENO PORTE"){
+      return porte = "EPP";
+    } else{
+      return porte = "N";
+    }
+  }
 }

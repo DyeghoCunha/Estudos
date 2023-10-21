@@ -24,7 +24,7 @@ class _DadosEmpresaState extends State<DadosEmpresa> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _empresaFuture = Future.delayed(Duration(seconds: 1), () {
+    _empresaFuture = Future.delayed(Duration(seconds: 2), () {
       return _testeEmpresa();
     });
   }
@@ -73,126 +73,179 @@ class _DadosEmpresaState extends State<DadosEmpresa> {
     } else {
       // Trate o caso em que os dados não foram obtidos com sucesso
       print('Não foi possível obter os dados da empresa.');
-      return null;
+      return empresa = Empresa();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: ThemeColors.appBarGradient,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+        appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: ThemeColors.appBarGradient,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
           ),
+          title: const Text("Dados Empresa"),
         ),
-        title: const Text("Dados Empresa"),
-      ),
-      body: FutureBuilder<Empresa?>(
-        future: _empresaFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicatorCustom());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData) {
-            return const Center(child: Text('No data available'));
-          } else {
-            Empresa empresa = snapshot.data!;
+        body: FutureBuilder<Empresa?>(
+          future: _empresaFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicatorCustom());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData) {
+              return const Center(child: Text('No data available'));
+            } else {
+              Empresa empresa = snapshot.data!;
 
-            return CustomScrollView(
-              slivers: <Widget>[
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    _listTile(
-                      titulo: "Razão Social",
-                      subtitulo: empresa.razaoSocial ?? "",
-                    ),
-                    _listTile(
-                      titulo: "Nome Fantasia",
-                      subtitulo: empresa.nomeFantasia ?? "",
-                    ),
-                    _listTile(
-                      titulo: "CNPJ",
-                      subtitulo: empresa.cnpj ?? "",
-                      isCaps: true,
-                    ),
-                    _CnaeAnexo(
-                      subtitulo: empresa.cnaeFiscal ?? 0,
-                      descricao: empresa.cnaeFiscalDesc ?? "",
-                      anexo: _simplesNacionalAnexo.retornaAnexo(empresa.cnaeFiscal ?? 0),
-                      fatorR: _simplesNacionalAnexo.retornaFatorR(empresa.cnaeFiscal ?? 0),
-                      titulo: "CNAE Principal",
-                    ),
-                  ]),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 14, top: 8),
-                    child: Text("CNAE Secundário",
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.6), fontSize: 16)),
+              return CustomScrollView(
+                slivers: <Widget>[
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      _listTile(
+                        titulo: "Razão Social",
+                        subtitulo: empresa.razaoSocial ?? "",
+                      ),
+                      _listTile(
+                        titulo: "Nome Fantasia",
+                        subtitulo: empresa.nomeFantasia ?? "",
+                      ),
+                      _listTile(
+                        titulo: "CNPJ",
+                        subtitulo: empresa.cnpj ?? "",
+                        isCaps: true,
+                      ),
+                      _CnaeAnexo(
+                        empresa: empresa,
+                        titulo: "CNAE Principal",
+                      ),
+                    ]),
                   ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      var item = empresa.cnaeSecundarios![index];
-                      return _CnaeSecundario(
-                        cnae: item["codigo"],
-                        descricao: item["descricao"],
-                        anexo: _simplesNacionalAnexo.retornaAnexo(item["codigo"] ?? 0),
-                        fatorR: _simplesNacionalAnexo.retornaFatorR(8720499 ?? 0),
-                      );
-                    },
-                    childCount: empresa.cnaeSecundarios?.length ?? 0,
+
+                  empresa.cnaeSecundarios![0]["codigo"] == 0
+                      ? SliverToBoxAdapter(
+                          child: Container(),
+                        )
+                      : SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 14, top: 8),
+                            child: Text("CNAE Secundário",
+                                style: TextStyle(
+                                    color: Theme.of(context).colorScheme.primary.withOpacity(0.6),
+                                    fontSize: 16)),
+                          ),
+                        ),
+
+                  empresa.cnaeSecundarios![0]["codigo"] == 0
+                      ? SliverToBoxAdapter(
+                          child: Container(),
+                        )
+                      : SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              var item =
+                                  empresa.cnaeSecundarios != null ? empresa.cnaeSecundarios![index] : [];
+                              return _CnaeSecundario(
+                                cnae: item["codigo"],
+                                descricao: item["descricao"],
+                                anexo: _simplesNacionalAnexo.retornaAnexo(item["codigo"] ?? 0),
+                                fatorR: _simplesNacionalAnexo.retornaFatorR(item["codigo"] ?? 0),
+                                porteEmpresa: empresa.porteDaEmpresa!,
+                              );
+                            },
+                            childCount: empresa.cnaeSecundarios?.length ?? 0,
+                          ),
+                        ),
+                  //   SliverToBoxAdapter(
+                  //   child: Column(
+                  //     children: [
+                  //       Text(empresa.porteDaEmpresa!),
+                  //       Text(empresa.descSituacaoCadastral!),
+                  //       Text(empresa.isSimples.toString()),
+                  //       Text(empresa.isMei.toString()),
+                  //       Text(empresa.dataInicioAtividades!),
+                  //       Text(empresa.dataOpcaoSimples!),
+                  //       Text(empresa.dataExclusaoSimples!),
+                  //       Text(empresa.codNatJuridica.toString()!),
+                  //       Text(empresa.cnaeSecundarios![0]["codigo"].toString()),
+                  //     ],
+                  //   ),
+                  // ),
+                  const SliverToBoxAdapter(
+                    child: Divider(
+                      height: 0,
+                    ),
                   ),
-                ),
-                const SliverToBoxAdapter(
-                  child: Divider(
-                    height: 0,
+                  SliverToBoxAdapter(
+                    child: _quadroEnquadramento(empresa: empresa),
                   ),
-                ),
-                // SliverToBoxAdapter(
-                //   child: Column(
-                //     children: [
-                //       Text(empresa.porteDaEmpresa!),
-                //       Text(empresa.descSituacaoCadastral!),
-                //       Text(empresa.isSimples.toString()),
-                //       Text(empresa.isMei.toString()),
-                //       Text(empresa.dataInicioAtividades!),
-                //       Text(empresa.dataOpcaoSimples!),
-                //       Text(empresa.dataExclusaoSimples!),
-                //       Text(empresa.codNatJuridica.toString()!),
-                //     ],
-                //   ),
-                //
-                // )
-                SliverToBoxAdapter(
-                  child: _quadroEnquadramento(),
-                )
-              ],
-            );
-          }
-        },
-      ),
-    );
+                ],
+              );
+            }
+          },
+        ));
   }
 }
 
-class _quadroEnquadramento extends StatelessWidget {
-  _quadroEnquadramento({super.key, this.porteEmpresa = "ME"});
+class _quadroEnquadramento extends StatefulWidget {
+  _quadroEnquadramento({
+    super.key,
+    required this.empresa,
+  });
 
-  String porteEmpresa;
-  String? dataSimples = "20/10/2023";
-  String? dataAbertura;
-  String? dataExclusao;
-  bool? isSimples = true;
-  bool? isMei = false;
+  Empresa empresa;
+
+  @override
+  State<_quadroEnquadramento> createState() => _quadroEnquadramentoState();
+}
+
+class _quadroEnquadramentoState extends State<_quadroEnquadramento> {
+  Map<String, dynamic> enquadramento = {
+    "titulo": "",
+    "subtitulo": "",
+    "porte": "",
+  };
+
+  void _alteraCard() {
+    String? dataSimples = widget.empresa.dataOpcaoSimples;
+    String? dataAbertura = widget.empresa.dataInicioAtividades;
+    String? dataExclusao = widget.empresa.dataExclusaoSimples;
+    bool? isSimples = widget.empresa.isSimples;
+    bool? isMei = widget.empresa.isMei;
+    String? porteEmpresa = widget.empresa.porteDaEmpresa;
+
+    if (isSimples == true && isMei == false) {
+      enquadramento["titulo"] = "Optante pelo Simples Nacional";
+      enquadramento["subtitulo"] = "Desde ${Utilidades.dataDDMMYYYY(dataSimples!)}";
+      enquadramento["porte"] = porteEmpresa == "MICRO EMPRESA" ? "ME" : "EPP";
+    } else if (isMei == true && isSimples == true) {
+      enquadramento["titulo"] = "Enquadrado como MEI";
+      enquadramento["subtitulo"] = "Desde ${Utilidades.dataDDMMYYYY(dataAbertura!)}";
+      enquadramento["porte"] = "MEI";
+    } else if (porteEmpresa == "MICRO EMPRESA" ||
+        porteEmpresa == "EMPRESA DE PEQUENO PORTE" && isSimples == false) {
+      enquadramento["titulo"] = "Você não é Simples Nacional";
+      enquadramento["subtitulo"] = Utilidades.verificaDataParaInclusaoSimples(dataAbertura!);
+      enquadramento["porte"] = porteEmpresa == "MICRO EMPRESA" ? "ME" : "EPP";
+    } else {
+      enquadramento["titulo"] = "Você não é Simples Nacional";
+      enquadramento["subtitulo"] = "Apenas empresas ME e EPP podem ser optantes pelo Simples Nacional";
+      enquadramento["porte"] = "N";
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _alteraCard();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,16 +267,17 @@ class _quadroEnquadramento extends StatelessWidget {
               ),
               child: Center(
                   child: Text(
-                porteEmpresa,
+                enquadramento["porte"],
                 style: TextStyle(color: Theme.of(context).colorScheme.primary),
               )),
             ),
           ),
-          title: Text("Opetante pelo Simples Nacional",
-              style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+          title:
+              Text(enquadramento["titulo"], style: TextStyle(color: Theme.of(context).colorScheme.primary)),
           subtitle: Text(
-            "dês de $dataSimples",
+            enquadramento["subtitulo"],
             style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.6)),
+            textAlign: TextAlign.start,
           ),
         ),
       ),
@@ -234,9 +288,9 @@ class _quadroEnquadramento extends StatelessWidget {
 class _listTile extends StatelessWidget {
   _listTile({super.key, required this.titulo, required this.subtitulo, this.isCaps = false});
 
-  String? titulo = "";
-  String? subtitulo = "";
-  bool isCaps;
+  final String? titulo ;
+  final String? subtitulo ;
+  final bool isCaps;
 
   @override
   Widget build(BuildContext context) {
@@ -271,23 +325,28 @@ class _listTile extends StatelessWidget {
 }
 
 class _CnaeAnexo extends StatelessWidget {
-  _CnaeAnexo(
-      {super.key,
-      required this.subtitulo,
-      required this.descricao,
-      required this.anexo,
-      required this.fatorR,
-      required this.titulo});
+  _CnaeAnexo({
+    super.key,
+    required this.titulo,
+    required this.empresa,
+  });
 
+  Empresa empresa;
   String titulo;
-  int subtitulo;
-  String descricao;
-  String? anexo;
-  bool? fatorR = true;
+
+  final SimplesNacionalAnexo _simplesNacionalAnexo = SimplesNacionalAnexo();
 
   @override
   Widget build(BuildContext context) {
-    bool fator = fatorR != null ? fatorR! : true;
+    int subtitulo = empresa.cnaeFiscal ?? 0;
+    String descricao = empresa.cnaeFiscalDesc ?? "";
+    String? anexo = _simplesNacionalAnexo.retornaAnexo(empresa.cnaeFiscal ?? 0);
+    bool? fatorR = _simplesNacionalAnexo.retornaFatorR(empresa.cnaeFiscal ?? 0);
+
+    bool fator = fatorR != null ? fatorR : true;
+    bool isMeEpp = empresa.porteDaEmpresa =="MICRO EMPRESA" || empresa.porteDaEmpresa == "EMPRESA DE "
+        "PEQUENO PORTE"? true:false;
+
 
     return Column(
       children: [
@@ -305,9 +364,10 @@ class _CnaeAnexo extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 12, color: Theme.of(context).colorScheme.primary.withOpacity(0.5)))
                 ])),
-            trailing: _anexoConcomitante(
+            trailing:_anexoConcomitante(
               anexo: anexo!,
               fatorR: fator,
+              isMeEpp: isMeEpp,
             )),
         const Divider(
           height: 0,
@@ -318,31 +378,53 @@ class _CnaeAnexo extends StatelessWidget {
 }
 
 class _CnaeSecundario extends StatelessWidget {
-  _CnaeSecundario(
-      {super.key, required this.descricao, required this.anexo, required this.fatorR, required this.cnae});
+  _CnaeSecundario({
+    super.key,
+    required this.descricao,
+    required this.anexo,
+    required this.fatorR,
+    required this.cnae,
+    required this.porteEmpresa
+  });
 
-  int cnae;
-  String descricao;
-  String? anexo;
-  bool? fatorR = true;
+
+  final String porteEmpresa;
+  final int? cnae;
+  final String? descricao;
+  final String? anexo;
+  final  bool? fatorR;
 
   @override
   Widget build(BuildContext context) {
-    bool fator = fatorR != null ? fatorR! : true;
+    bool? fator = fatorR;
+    bool isMeEpp = porteEmpresa =="MICRO EMPRESA" || porteEmpresa == "EMPRESA DE "
+        "PEQUENO PORTE"? true:false;
+
+
     return Column(
       children: [
         ListTile(
-            titleAlignment: ListTileTitleAlignment.center,
-            title: Text(cnae.toString(),
-                style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12)),
-            subtitle: Text(
-              descricao,
-              style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.primary.withOpacity(0.5)),
-            ),
-            trailing: _anexoConcomitante(
-              anexo: anexo!,
-              fatorR: fator,
-            )),
+          titleAlignment: ListTileTitleAlignment.center,
+          title: Text(cnae.toString(),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 12,
+              )),
+          subtitle: descricao != null
+              ? Text(
+                  descricao!,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                  ),
+                )
+              : Text(""),
+          trailing: _anexoConcomitante(
+            anexo: anexo!,
+            fatorR: fator,
+            isMeEpp: isMeEpp,
+          ),
+        ),
         const Divider(
           height: 0,
         ),
@@ -352,14 +434,15 @@ class _CnaeSecundario extends StatelessWidget {
 }
 
 class _anexoConcomitante extends StatelessWidget {
-  _anexoConcomitante({super.key, required this.fatorR, required this.anexo});
+  _anexoConcomitante({super.key, required this.fatorR, required this.anexo, required this.isMeEpp});
 
-  bool fatorR;
+  bool? fatorR;
   String anexo;
+  bool? isMeEpp;
 
   @override
   Widget build(BuildContext context) {
-    return fatorR
+    return isMeEpp! ? fatorR!
         ? InkWell(
             borderRadius: BorderRadius.circular(8),
             onTap: () {},
@@ -421,6 +504,6 @@ class _anexoConcomitante extends StatelessWidget {
                 ),
               ),
             ),
-          );
+          ):const SizedBox(height: 1,width: 1,);
   }
 }
