@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simplesnacional_vs2/database/empresas.dart';
 import 'package:simplesnacional_vs2/model/EmpresaModel.dart';
 import 'package:simplesnacional_vs2/service/simplesNacionalAnexo.dart';
 import 'package:simplesnacional_vs2/service/utilidades.dart';
@@ -20,6 +21,8 @@ class _DadosEmpresaState extends State<DadosEmpresa> {
   final SimplesNacionalAnexo _simplesNacionalAnexo = SimplesNacionalAnexo();
   Empresa empresa = Empresa();
   late Future<Empresa?> _empresaFuture;
+  EmpresaDb empresaDb = EmpresaDb();
+  List<Empresa>? empresaList = EmpresaDb().empresaListDb;
 
   @override
   void initState() {
@@ -177,17 +180,17 @@ class _DadosEmpresaState extends State<DadosEmpresa> {
                       ),
                     ),
                   ),
-                 const SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         const SizedBox(width: 10,),
                         Expanded(
                             flex:3,
-                            child: CardButton(titulo: "Adicionar Empresa", icone: Icons.add_box_sharp,
-                              splashColor: Colors.green,)),
+                            child:  CardButton(titulo: "Adicionar Empresa", icone: Icons.add_box_sharp,
+                              splashColor: Colors.green,empresa:empresa)),
                         const SizedBox(width: 10,),
-                        Expanded(
+                         Expanded(
                            flex: 3 ,
                             child: CardButton(titulo: "Simular Simples Nacional", icone: Icons
                                 .calculate_outlined)),

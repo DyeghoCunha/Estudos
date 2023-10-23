@@ -5,7 +5,7 @@ import '../widgets/custom_drawer.dart';
 import 'PaginaTeste.dart';
 import 'card_page.dart';
 import 'faturamentoDoze.dart';
-import 'list_view_h.dart';
+import 'listaDeEmpresaPage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -32,7 +32,7 @@ class _MainPageState extends State<MainPage> {
   final pages = [
     const PaginaTeste(),
     const CardPage(),
-    ListViewH(),
+    ListaDeEmpresaPage(),
     const FaturamentoDoze(),
   ];
 

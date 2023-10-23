@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
-import 'package:simplesnacional_vs2/pages/alubank.dart';
 import 'package:simplesnacional_vs2/pages/dashBoardSimplesNacional.dart';
 import 'package:simplesnacional_vs2/themes/theme_colors.dart';
 
@@ -8,7 +7,7 @@ import '../widgets/custom_drawer.dart';
 import 'PaginaTeste.dart';
 import 'card_page.dart';
 import 'faturamentoDoze.dart';
-import 'list_view_h.dart';
+import 'listaDeEmpresaPage.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -31,10 +30,10 @@ class _MainPageState extends State<MainPage> {
 
   final pages = [
     // const Alubank(),
+
     DashBoardSimplesNacional(rbt12: 0.00, faturamento: 0.00, dasSimplesNacional: 0.00,
         impostosDetalhados: const {"":0.00}, alqFutura: 0.00, alqEfetiva: 0.00),
-    ListViewH(),
-
+    ListaDeEmpresaPage(),
     const FaturamentoDoze(),
     const CardPage(),
   ];
@@ -90,7 +89,7 @@ class _MainPageState extends State<MainPage> {
               type: BottomNavigationBarType.fixed,
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-                BottomNavigationBarItem(icon: Icon(Icons.list), label: "Leia"),
+                BottomNavigationBarItem(icon: Icon(Icons.factory_outlined), label: "Empresas"),
                 BottomNavigationBarItem(icon: Icon(Icons.linear_scale_sharp), label: "Simule"),
                 BottomNavigationBarItem(icon: Icon(Icons.leaderboard_rounded), label: "Entenda"),
               ],

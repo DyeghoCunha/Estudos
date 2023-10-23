@@ -17,7 +17,6 @@ class Alubank extends StatelessWidget {
             expandedHeight: 113.0, // Ajuste conforme necessário
             floating: true, // Define se a app bar deve "flutuar" ao fazer rolagem
             pinned: false, // Mantém a app bar fixada no topo
-
             // Conteúdo da app bar
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
