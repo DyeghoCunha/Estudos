@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simplesnacional_vs2/model/EmpresaModel.dart';
 import 'package:simplesnacional_vs2/service/simplesNacionalAnexo.dart';
 import 'package:simplesnacional_vs2/service/utilidades.dart';
+import 'package:simplesnacional_vs2/widgets/cardButton.dart';
 import 'package:simplesnacional_vs2/widgets/circularProgressIndicatorCustom.dart';
 
 import '../themes/theme_colors.dart';
@@ -127,7 +128,6 @@ class _DadosEmpresaState extends State<DadosEmpresa> {
                       ),
                     ]),
                   ),
-
                   empresa.cnaeSecundarios![0]["codigo"] == 0
                       ? SliverToBoxAdapter(
                           child: Container(),
@@ -141,7 +141,6 @@ class _DadosEmpresaState extends State<DadosEmpresa> {
                                     fontSize: 16)),
                           ),
                         ),
-
                   empresa.cnaeSecundarios![0]["codigo"] == 0
                       ? SliverToBoxAdapter(
                           child: Container(),
@@ -162,21 +161,6 @@ class _DadosEmpresaState extends State<DadosEmpresa> {
                             childCount: empresa.cnaeSecundarios?.length ?? 0,
                           ),
                         ),
-                  //   SliverToBoxAdapter(
-                  //   child: Column(
-                  //     children: [
-                  //       Text(empresa.porteDaEmpresa!),
-                  //       Text(empresa.descSituacaoCadastral!),
-                  //       Text(empresa.isSimples.toString()),
-                  //       Text(empresa.isMei.toString()),
-                  //       Text(empresa.dataInicioAtividades!),
-                  //       Text(empresa.dataOpcaoSimples!),
-                  //       Text(empresa.dataExclusaoSimples!),
-                  //       Text(empresa.codNatJuridica.toString()!),
-                  //       Text(empresa.cnaeSecundarios![0]["codigo"].toString()),
-                  //     ],
-                  //   ),
-                  // ),
                   const SliverToBoxAdapter(
                     child: Divider(
                       height: 0,
@@ -185,6 +169,34 @@ class _DadosEmpresaState extends State<DadosEmpresa> {
                   SliverToBoxAdapter(
                     child: _quadroEnquadramento(empresa: empresa),
                   ),
+                  const SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 8),
+                      child: Divider(
+                        height:0,
+                      ),
+                    ),
+                  ),
+                 const SliverToBoxAdapter(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const SizedBox(width: 10,),
+                        Expanded(
+                            flex:3,
+                            child: CardButton(titulo: "Adicionar Empresa", icone: Icons.add_box_sharp,
+                              splashColor: Colors.green,)),
+                        const SizedBox(width: 10,),
+                        Expanded(
+                           flex: 3 ,
+                            child: CardButton(titulo: "Simular Simples Nacional", icone: Icons
+                                .calculate_outlined)),
+                        const SizedBox(width: 10,),
+                      ],
+
+                    ),
+                  ),
+                  const SliverToBoxAdapter(child:  SizedBox(height: 20,),)
                 ],
               );
             }
@@ -288,8 +300,10 @@ class _quadroEnquadramentoState extends State<_quadroEnquadramento> {
 class _listTile extends StatelessWidget {
   _listTile({super.key, required this.titulo, required this.subtitulo, this.isCaps = false});
 
-  final String? titulo ;
-  final String? subtitulo ;
+  final String? titulo;
+
+  final String? subtitulo;
+
   final bool isCaps;
 
   @override
@@ -344,9 +358,12 @@ class _CnaeAnexo extends StatelessWidget {
     bool? fatorR = _simplesNacionalAnexo.retornaFatorR(empresa.cnaeFiscal ?? 0);
 
     bool fator = fatorR != null ? fatorR : true;
-    bool isMeEpp = empresa.porteDaEmpresa =="MICRO EMPRESA" || empresa.porteDaEmpresa == "EMPRESA DE "
-        "PEQUENO PORTE"? true:false;
-
+    bool isMeEpp = empresa.porteDaEmpresa == "MICRO EMPRESA" ||
+            empresa.porteDaEmpresa ==
+                "EMPRESA DE "
+                    "PEQUENO PORTE"
+        ? true
+        : false;
 
     return Column(
       children: [
@@ -364,7 +381,7 @@ class _CnaeAnexo extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 12, color: Theme.of(context).colorScheme.primary.withOpacity(0.5)))
                 ])),
-            trailing:_anexoConcomitante(
+            trailing: _anexoConcomitante(
               anexo: anexo!,
               fatorR: fator,
               isMeEpp: isMeEpp,
@@ -378,28 +395,29 @@ class _CnaeAnexo extends StatelessWidget {
 }
 
 class _CnaeSecundario extends StatelessWidget {
-  _CnaeSecundario({
-    super.key,
-    required this.descricao,
-    required this.anexo,
-    required this.fatorR,
-    required this.cnae,
-    required this.porteEmpresa
-  });
-
+  _CnaeSecundario(
+      {super.key,
+      required this.descricao,
+      required this.anexo,
+      required this.fatorR,
+      required this.cnae,
+      required this.porteEmpresa});
 
   final String porteEmpresa;
   final int? cnae;
   final String? descricao;
   final String? anexo;
-  final  bool? fatorR;
+  final bool? fatorR;
 
   @override
   Widget build(BuildContext context) {
     bool? fator = fatorR;
-    bool isMeEpp = porteEmpresa =="MICRO EMPRESA" || porteEmpresa == "EMPRESA DE "
-        "PEQUENO PORTE"? true:false;
-
+    bool isMeEpp = porteEmpresa == "MICRO EMPRESA" ||
+            porteEmpresa ==
+                "EMPRESA DE "
+                    "PEQUENO PORTE"
+        ? true
+        : false;
 
     return Column(
       children: [
@@ -442,68 +460,73 @@ class _anexoConcomitante extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isMeEpp! ? fatorR!
-        ? InkWell(
-            borderRadius: BorderRadius.circular(8),
-            onTap: () {},
-            child: Ink(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.primary),
-                  boxShadow: kElevationToShadow[2],
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(8)),
-              child: Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 40,
-                  width: 60,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Anexo III",
+    return isMeEpp!
+        ? fatorR!
+            ? InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: () {},
+                child: Ink(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Theme.of(context).colorScheme.primary),
+                      boxShadow: kElevationToShadow[2],
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 40,
+                      width: 60,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Anexo III",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
+                          ),
+                          const Divider(
+                            height: 5,
+                          ),
+                          Text(
+                            "Anexo V",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: () {},
+                child: Ink(
+                  decoration: BoxDecoration(
+                      boxShadow: kElevationToShadow[2],
+                      color: Theme.of(context).colorScheme.surface,
+                      border: Border.all(color: Theme.of(context).colorScheme.primary),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 20,
+                      width: 60,
+                      child: Text(
+                        anexo,
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
                       ),
-                      const Divider(
-                        height: 5,
-                      ),
-                      Text(
-                        "Anexo V",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          )
-        : InkWell(
-            borderRadius: BorderRadius.circular(8),
-            onTap: () {},
-            child: Ink(
-              decoration: BoxDecoration(
-                  boxShadow: kElevationToShadow[2],
-                  color: Theme.of(context).colorScheme.surface,
-                  border: Border.all(color: Theme.of(context).colorScheme.primary),
-                  borderRadius: BorderRadius.circular(8)),
-              child: Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 20,
-                  width: 60,
-                  child: Text(
-                    anexo,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
-                  ),
-                ),
-              ),
-            ),
-          ):const SizedBox(height: 1,width: 1,);
+              )
+        : const SizedBox(
+            height: 1,
+            width: 1,
+          );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:simplesnacional_vs2/components/cartaoDrawer.dart';
 import 'package:simplesnacional_vs2/pages/DadosEmpresa.dart';
 import 'package:simplesnacional_vs2/pages/PaginaTeste.dart';
 import 'package:simplesnacional_vs2/pages/alubank.dart';
@@ -87,32 +88,7 @@ class CustomDrawer extends StatelessWidget {
                     },
                   );
                 },
-                child: UserAccountsDrawerHeader(
-                  currentAccountPicture: Image.asset("assets/images/logo.png"),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey, // Cor da sombra
-                        offset: Offset(4, 4), // Deslocamento para a sombra superior-esquerda
-                        blurRadius: 4, // Raio do desfoque da sombra
-                      ),
-                      BoxShadow(
-                        color: Colors.white, // Cor da sombra interna
-                        offset: Offset(-4, -4), // Deslocamento para a sombra inferior-direita
-                        blurRadius: 4, // Raio do desfoque da sombra
-                      ),
-                    ],
-                    borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(50),
-                      topLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                    ),
-                  ),
-                  accountName: const Text("Dyegho Cunha"),
-                  accountEmail: const Text("email@email.com"),
-                ),
+                child: CartaoDrawer(),
               ),
               const SizedBox(
                 height: 30,
