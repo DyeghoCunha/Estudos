@@ -1,19 +1,29 @@
 import pegaArquivo from "./index.js";
 import fs from "fs";
 import chalk from "chalk";
+import listaValidada from "./http-validacao.js";
 
 
 const caminho = process.argv;
 
-function imprimeLista(resultado, identificador = "") {
-  console.log(
-    chalk.yellow("Lista de Links"),
-    chalk.black.bgGreen(identificador),
-    resultado);
+async function imprimeLista(valida, resultado, identificador = "") {
+
+  if (valida) {
+    console.log(
+      chalk.green.bgGreen("Lista Validada"),
+      chalk.black.bgGreen(identificador),
+    await listaValidada(resultado));
+  } else {
+    console.log(
+      chalk.yellow("Lista de Links"),
+      chalk.black.bgGreen(identificador),
+      resultado);
+  }
 }
 
 async function preocessaTexto(argumentos) {
   const caminho = argumentos[2];
+  const valida = argumentos[3] === "--valida";
 
   try {
     fs.lstatSync(caminho);
@@ -26,12 +36,12 @@ async function preocessaTexto(argumentos) {
 
   if (fs.lstatSync(caminho).isFile()) {
     const resultado = await pegaArquivo(caminho);
-    imprimeLista(resultado);
+    imprimeLista(valida, resultado);
   } else if (fs.lstatSync(caminho).isDirectory()) {
     const arquivos = await fs.promises.readdir(caminho)
     arquivos.forEach(async (nomeDeArquivo) => {
       const lista = await pegaArquivo(`${caminho}/${nomeDeArquivo}`);
-      imprimeLista(lista, nomeDeArquivo);
+      imprimeLista(valida, lista, nomeDeArquivo);
     })
   }
 
