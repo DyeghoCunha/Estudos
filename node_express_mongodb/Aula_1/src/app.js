@@ -1,7 +1,17 @@
 import express from "express";
+import conectaNaDatabase from "./config/dbConnect.js";
+import chalk  from "chalk";
+
+const conexao = await conectaNaDatabase();
+
+conexao.on("error",(erro)=>{console.error(chalk.red("\n---Erro de conexão---\n\n"), erro)});
+
+
+conexao.once("open",()=>{
+  console.log(chalk.green("\n---Conexão com o banco feita com sucesso---\n\n"));
+});
 
 const app = express();
-
 app.use(express.json());
 
 const livros = [
@@ -49,6 +59,9 @@ app.delete("/livros/:id", (req, res) => {
   const index = buscaLivro(req.params.id);
   livros.splice(index, 1);
   res.status(200).send("Livro removido com sucesso");
-});//!tewste
+});
 
 export default app;
+
+
+//
