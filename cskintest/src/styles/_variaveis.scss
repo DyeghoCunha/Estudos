@@ -1,0 +1,141 @@
+//Tipografia
+$fonte-normal: "GandhiSansRegular";
+$fonte-bold: "GandhiSansBold";
+$fonte-normal-SW : 'Alcubierre';
+$fonte-bold-SW: 'ITCSerifGothicLT-Bold';
+$fonte-normal-WTF: "HennyPenny-Regular";
+$fonte-normal-WTF-Goblin:"HennyPenny-Regular";
+$fonte-normal-WTF-Azul:"HennyPenny-Regular";
+$fonte-normal-WTF-Et:"HennyPenny-Regular";
+$fonte-normal-WTF-Planta:"HennyPenny-Regular";
+$fonte-normal-WTF-Fox:"Roboto-Medium";
+$fonte-normal-WTF-Macaco:"HennyPenny-Regular";
+$fonte-normal-WTF-Emote:"HennyPenny-Regular";
+$fonte-normal-WTF-Busca:"HangedLetters";
+
+
+@mixin cardInterno($color) {
+  backdrop-filter: blur(25px);
+  background: rgba($color, 0.3);
+  border: 1px solid rgba($color, 0.5);
+  border-top: 1px solid rgba($color, 0.75);
+  border-left: 1px solid rgba($color, 0.75);
+  box-shadow: inset 0px 10px 10px rgba(0, 0, 0, 0.25),
+    inset -5px -5px 10px rgba(0, 0, 0, 0.15);
+}
+
+@mixin cardExterno($color){
+  backdrop-filter: blur(15px);
+  background: rgba($color, 0.1);
+  border: 1px solid rgba($color, 0.5);
+  border-top: 1px solid rgba($color, 0.75);
+  border-left: 1px solid rgba($color, 0.75);
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+}
+
+@mixin cardInternoSemBlur($color) {
+  background: rgba($color, 0.3);
+  border: 1px solid rgba($color, 0.5);
+  border-top: 1px solid rgba($color, 0.75);
+  border-left: 1px solid rgba($color, 0.75);
+  box-shadow: inset 0px 10px 10px rgba(0, 0, 0, 0.25),
+    inset -5px -5px 10px rgba(0, 0, 0, 0.15);
+}
+
+@mixin cardExternoSemBlur($color){
+  background: rgba($color, 0.1);
+  border: 1px solid rgba($color, 0.5);
+  border-top: 1px solid rgba($color, 0.75);
+  border-left: 1px solid rgba($color, 0.75);
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+}
+
+@mixin container_card(){
+  width: 306px;
+  height: 440.30px;
+  border-radius: 8px;
+  position: relative;
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin tituloPadrao(){
+      font-family: $fonte-normal-WTF;
+      letter-spacing: 3px;
+      color: $colorLetra-Padrao-WTF;
+      text-shadow: 1px 1px 0 $colorBg-WTF,
+        -1px 1px 0 $colorBg-WTF,
+        1px -1px 0 $colorBg-WTF,
+        -1px -1px 0 $colorBg-WTF;
+}
+
+
+$corCyano: rgba(68, 209, 201, 1);
+$cyberpink: rgba(238, 2, 197, 1);
+$cybergreen: rgba(0, 255, 128, 1);
+$cyberblue: rgba(0, 255, 255, 1);
+$cyberorange: rgba(255, 102, 0, 1);
+$cyberyellow: rgba(255, 255, 0, 1);
+$rose-cyberpunk: rgba(255, 83, 108, 1);
+$fucsia-cyberpunk: rgba(242, 0, 118, 1);
+$magenta-cyberpunk: rgba(255, 0, 219, 1);
+/* magenta */
+$pink-cyberpunk: rgba(236, 23, 136, 1);
+/* rosa escuro */
+
+
+
+$colorTribCard: rgba(255,255,255,1);
+$colorTribCampoFundo: rgba(228,228,228,1);
+$colorTribBotao: rgba(25,194,125,1);
+$colorTribDestaque:rgba(151,71,255,1);
+$colorTribDestaqueFade:rgba(151,71,255,0.2);
+
+$colorTribFundo2: rgba(246,246,247,1);
+$colorTribFundo: #009995;
+
+
+//Cores
+$cor-do-texto: #d9d9d9;
+$azul-escuro: #041833;
+$azul-claro: #154580;
+$azul-rodape: #04244f;
+$rosa: #c98cf1;
+$roxo: #7b78e5;
+$cinza-claro: #9d9d9d;
+$tag-color: rgba(148, 163, 184, 0.3);
+
+$corBackgroundBotao: #eaeef0;
+
+
+//Cor Cyber
+
+$corEscura: rgba(40,36,52,1) ;
+$corClara: rgba(116,98,102,1);
+$corFundo: rgba(203,172,156,1);
+$corClaraLuz: rgba(223,192,176,1);
+$corRoxa:  rgba(123,103,163,1);
+$corRoxaClara: rgba(171, 144, 159, 1);
+
+
+
+$corBgBotaoClaro-WTF: rgba(225, 223, 221, 1);
+$corBgBotaoAzulClara-WTF: rgba(97, 178, 205, 1);
+$corBgBotaoEscuro-WTF: rgba(81, 55, 32, 1);
+$corBgBotaoFundo-WTF: rgba(120, 89, 81, 1);
+
+
+$corMaisEscura: rgba(217, 202, 170, 1); // #D9CAAA em RGBA
+
+
+
+$colorBotaoMenu-WTF:rgba(238, 219, 188, 1);
+
+$corBgBotaoAzulEscuro-WTF: rgba(20, 47, 60, 1);
+
+$colorLetra-Padrao-WTF: rgba(100, 70, 81, 1);
+//$colorBg-WTF:rgba(238, 219, 188, 1);
+$colorBg-WTF:rgba(255, 235, 207, 1);
+$colorBg-WTF-Verde:rgb(11, 151, 104);
+$corBgBotaoShadowClara-WTF: rgb(179, 151, 144);

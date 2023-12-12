@@ -1,0 +1,46 @@
+import 'package:flutter_cskinstore_v1/models/skins.dart';
+
+ List<Skin> skinsDb = [
+  Skin(nome: "AK-47|Fuel Injector",
+      cor: "Amarelo",
+      tipo: "Ak47",
+      categoria: "Rifle",
+      tradeLock: 3,
+      imagem: "assets/images/arma1.png",
+      statTrak: false,
+      float:0.1512,
+      pattern: 10,
+      rarity:"none" ,
+      defaultPrice: 1000.50,
+      userMarkup: 200.10,
+      rareFloat: 110.10
+  ),
+  Skin(nome: "Dual Berettas|Melondrama",
+      cor: "Azul",
+      tipo: "Dual Berettas",
+      categoria: "Pistol",
+      tradeLock: 7,
+      imagem: "assets/images/arma2.png",
+      statTrak: false,
+      float:0.1313,
+      pattern: 10,
+      rarity:"none" ,
+      defaultPrice: 2500.50,
+      userMarkup: 300.10,
+      rareFloat: 210.10
+  ),
+  Skin(nome: "FAMAS|Mecha Industries",
+      cor: "Branco",
+      tipo: "Famas",
+      categoria: "Rifle",
+      tradeLock: 1,
+      imagem: "assets/images/arma3.png",
+      statTrak: false,
+      float:0.1355,
+      pattern: 10,
+      rarity:"none" ,
+      defaultPrice: 1500.50,
+      userMarkup: 300.10,
+      rareFloat: 210.10
+  )
+];
