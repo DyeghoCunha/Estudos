@@ -7,9 +7,9 @@ const conexao = await conectaNaDatabase();
 
 conexao.on("error",(erro)=>{console.error(chalk.red("\n---Erro de conexão---\n\n"), erro)});
 
-
+const cor = "Core";
 conexao.once("open",()=>{
-  console.log(chalk.green("\n---Conexão com o banco feita com sucesso---\n\n"));
+  console.log(chalk.green("\n---Conexão com o banco feita com sucesso---\n\n ",));
 });
 
 const app = express();
