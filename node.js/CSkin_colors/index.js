@@ -12,11 +12,13 @@ const listaDeLinks = [
   "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpopbuyLgNv1fX3cih9_92hkYSEkfHLN77HmX5D7ddOh-zF_Jn4t1i1uRQ5fW-mLIWTdFQ8NV6G-QO4xLy8jcPqtZXOwHBrvnZw43fVyRDkiRFKarFxxavJcF3kHwA/"
 ];
 
+const skin2 = 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoo6m1FBRp3_bGcjhQ09-jq5WYh8j3Jq_um25V4dB8teXA54vwxle2qRA4YzyiI46SIA45N1rSqFS9l-jpgsDqv5WcmCAyvCMh5X3cnBKpwUYblsbKgI4/';
+
 const axios = require('axios');
 const ColorThief = require('color-thief-node');
 const fs = require('fs');
-const url = listaDeLinks[0]; // Substitua pelo seu link
-const path = 'D:\\Documentos\\GitHub\\Estudos\\node.js\\CSkin_colors\\imagens\\image.png' // Substitua pelo caminho onde você quer salvar a imagem
+const url = listaDeLinks[1]; // Substitua pelo seu link
+const path = 'D:\\Documentos\\GitHub\\Estudos\\node.js\\CSkin_colors\\imagens\\image1.png' // Substitua pelo caminho onde você quer salvar a imagem
 
  axios({
   url,
