@@ -1,19 +1,12 @@
 import React from 'react'
-import ColorThief from 'colorthief';
+import styles from "./Post.module.css"
 
 
-const names = ["Maximilian","Manuel"];
-
-
-
-function Post() {
- const  chosenName= Math.random()> 0.5 ? names[0] : names[1];
-
-
+function Post(props) {
   return (
-    <div>
-      <p>{chosenName}</p>
-      <p>React.js Is Awesome !</p>
+    <div className={styles.post}>
+      <p className={styles.author}>{props.author}</p>
+      <p className={styles.text}>{props.body}</p>
     </div>
   )
 }
