@@ -4,7 +4,7 @@ export default function MealsPage() {
   return (
     <>
       <div>Meals Page</div>
-      <p><Link href="/meals/share" ></Link></p>
+      <p><Link href="/meals/share" >Share</Link></p>
     </>
   )
 }
