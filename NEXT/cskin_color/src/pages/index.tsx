@@ -1,26 +1,23 @@
 import ItemCard from "@/components/molecules/ItemCard";
 import { DefaultLayout } from "@/components/templates/DefaultLayout";
 import { useWeaponContext } from "@/context/weaponsContext";
-import { Card, Center, Grid, GridItem, Image, Text } from "@chakra-ui/react";
+import { Card, Center, Divider, Grid, GridItem, Image, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 export default function Home() {
-  const { skins, setSkins } = useWeaponContext();
+  const { skins, setSkins, weaponsFinal } = useWeaponContext();
 
 
-  useEffect(() => {
-    console.log(skins);
-  }, [skins]);
+
 
   return (
     <>
-     <Grid templateColumns="repeat(5,1fr)" gap={0}>
-     {skins.slice(0, 3).map((skin) => (
-  <GridItem w="100%">
-    <ItemCard skins={skin}/>   
-  </GridItem>
-))}
-
+      <Grid templateColumns="repeat(5,1fr)" gap={0}>
+        {skins.slice(0,4).map((skin) => (
+          <GridItem w="100%">
+            <ItemCard id={skin.id} skins={skin} />
+          </GridItem>
+        ))}
       </Grid>
     </>
   );

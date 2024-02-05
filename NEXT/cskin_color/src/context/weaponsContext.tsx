@@ -6,17 +6,37 @@ import axios from "axios";
 interface IWeaponContext {
   skins: WeaponType[];
   setSkins: React.Dispatch<React.SetStateAction<WeaponType[]>>;
-buildPalette:any
- quantization:any;
- buildRgb:any;
- colorList:any;
+  weaponWithSkin: WeaponWithColor[];
+  setWeaponWithSkin: React.Dispatch<React.SetStateAction<WeaponWithColor[]>>
+  arrayColorList: Array<Array<string>>;
+  buildPalette: any
+  quantization: any;
+  buildRgb: any;
+  colorList: any;
+  weaponsFinal:WeaponWithColor[];
 
 }
 const WeaponContext = createContext<IWeaponContext | undefined>(undefined);
+class WeaponWithColor {
+  id: string;
+  name: string;
+  image: string;
+  color: Array<string>;
+
+  constructor(id: string, name: string, image: string, color: Array<string>) {
+    this.id = id;
+    this.name = name;
+    this.image = image;
+    this.color = color;
+  }
+}
+
 
 export function WeaponProvider({ children }: { children: React.ReactNode }) {
 
   const [skins, setSkins] = useState<WeaponType[]>([]);
+  const [weaponWithSkin, setWeaponWithSkin] = useState<WeaponWithColor[]>([]);
+const [weaponsFinal, setWeaponsFinal] = useState<WeaponWithColor[]>([]);
 
 
   useEffect(() => {
@@ -38,7 +58,7 @@ export function WeaponProvider({ children }: { children: React.ReactNode }) {
           stattrak: skin.stattrak,
           image: skin.image,
         }));
-        
+
         setSkins(weaponTypes);
 
       } catch (error) {
@@ -51,11 +71,13 @@ export function WeaponProvider({ children }: { children: React.ReactNode }) {
 
   //!!___ColorList
 
-  const [colorList, setColorList] = useState<string[]>([])
+  const [colorList, setColorList] = useState<string[]>([])   //? é este o safadooo
+  const [arrayColorList, setArrayColorList] = useState<Array<WeaponWithColor>>([]);
 
-  const buildPalette = (colorsList: Color[]) => {
+
+  const buildPalette = (colorsList: Color[],skins:any) => {
     const orderedByColor = orderByLuminance(colorsList);
-    let tempColors:any = []; // Variável temporária para armazenar as cores
+    let tempColors: any = []; // Variável temporária para armazenar as cores
 
     for (let i = 0; i < orderedByColor.length; i++) {
       // Se já tivermos 6 cores, interrompemos o loop
@@ -63,7 +85,7 @@ export function WeaponProvider({ children }: { children: React.ReactNode }) {
         break;
       }
 
-      const hexColor:any = rgbToHex(orderedByColor[i]);
+      const hexColor: any = rgbToHex(orderedByColor[i]);
 
       const hslColors: Color[] = convertRGBtoHSL(orderedByColor)
         .map(color => ({
@@ -83,11 +105,33 @@ export function WeaponProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      tempColors.push(hexColor); // Adicione a cor à variável temporária
+      tempColors.push(hexColor);
     }
-    setColorList(tempColors); // Atualize o estado uma vez após o loop
+    setColorList(tempColors);
+    const newWeaponWithColor:any = new WeaponWithColor(skins.id,skins.name,skins.image,tempColors)
+    setArrayColorList(prevArray => [...prevArray, newWeaponWithColor]);
+    ;
   };
 
+  
+
+useEffect(() => {
+  const uniqueWeapons = arrayColorList.reduce((acc: WeaponWithColor[], current: WeaponWithColor) => {
+    const isDuplicate = acc.find(item => item.id === current.id);
+    if (!isDuplicate) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+   
+  setWeaponsFinal(uniqueWeapons);
+}, [arrayColorList]);
+
+
+ useEffect(()=>{
+  //console.log(weaponsFinal)
+ },[weaponsFinal])
 
   const rgbToHex = (pixel: Pixel) => {
     const componentToHex = (c: number) => {
@@ -265,11 +309,11 @@ export function WeaponProvider({ children }: { children: React.ReactNode }) {
   //!!____________
 
 
-return (
-  <WeaponContext.Provider value ={{skins,setSkins, buildPalette,buildRgb,quantization,colorList}}>
-    {children}
-  </WeaponContext.Provider>
-)
+  return (
+    <WeaponContext.Provider value={{ skins, setSkins, buildPalette, buildRgb, quantization, colorList, weaponWithSkin, setWeaponWithSkin, weaponsFinal }}>
+      {children}
+    </WeaponContext.Provider>
+  )
 
 }
 

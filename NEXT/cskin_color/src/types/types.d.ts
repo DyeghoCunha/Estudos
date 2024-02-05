@@ -29,6 +29,9 @@ export class WeaponType {
   }
 }
 
+
+
+
 export type Color = {
   h: number;
   s: number;
