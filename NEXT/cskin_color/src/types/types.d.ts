@@ -1,4 +1,5 @@
-export class WeaponType {
+export interface IItemType {
+
   id: string;
   name: string;
   name_original: string;
@@ -10,26 +11,17 @@ export class WeaponType {
   rarity: string;
   stattrak: boolean;
   image: string;
-  color: string[]
-
   constructor(id: string, name: string, name_original: string, description: string, weapon: string, pattern: string, min_float: number, max_float: number, rarity: string,
-    stattrak: boolean, image: string, color: string[]) {
-    this.id = id;
-    this.name = name;
-    this.name_original = name_original;
-    this.description = description;
-    this.weapon = weapon;
-    this.pattern = pattern;
-    this.min_float = min_float;
-    this.max_float = max_float;
-    this.rarity = rarity;
-    this.stattrak = stattrak;
-    this.image = image;
-    this.color = color
-  }
+    stattrak: boolean, image: string,)
 }
 
-
+export interface IItemWithColor {
+  id: string;
+  name: string;
+  image: string;
+  color: Array<string>;
+  colorHsl: Color[]
+}
 
 
 export type Color = {
@@ -44,6 +36,12 @@ export type Pixel = {
   b: number;
 };
 
+export type IItemCard = {
+  skins: IItemType
+
+}
+
+export type ColorName = "Vermelho" | "Azul" | "Amarelo" | "Rosa" | "Preto" | "Branco" | "Verde" | "Marrom" | "Roxo" | "Cinza" |"Laranja"| "Cor não identificada";
 
 export class ColorList {
   colorList: string[];

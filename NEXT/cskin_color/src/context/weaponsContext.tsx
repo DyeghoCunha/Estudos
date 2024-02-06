@@ -1,42 +1,61 @@
-import { Color, ColorList, Pixel, WeaponType } from '@/types/types';
+import { Color, ColorList, Pixel, IItemType, IItemWithColor, ColorName } from '@/types/types';
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from "axios";
 
 
-interface IWeaponContext {
-  skins: WeaponType[];
-  setSkins: React.Dispatch<React.SetStateAction<WeaponType[]>>;
-  weaponWithSkin: WeaponWithColor[];
-  setWeaponWithSkin: React.Dispatch<React.SetStateAction<WeaponWithColor[]>>
-  arrayColorList: Array<Array<string>>;
+interface IItemContext {
+  skins: IItemType[];
+  setSkins: React.Dispatch<React.SetStateAction<IItemType[]>>;
+  itemWithColor: ItemWithColor[];
   buildPalette: any
   quantization: any;
   buildRgb: any;
-  colorList: any;
-  weaponsFinal:WeaponWithColor[];
+  loadImageFromCanvas: Function;
 
 }
-const WeaponContext = createContext<IWeaponContext | undefined>(undefined);
-class WeaponWithColor {
+const ItemContext = createContext<IItemContext | undefined>(undefined);
+
+
+
+class WeaponWithColor implements IItemWithColor {
+
   id: string;
   name: string;
   image: string;
   color: Array<string>;
-
-  constructor(id: string, name: string, image: string, color: Array<string>) {
+  colorHsl: Color[];
+  constructor(id: string, name: string, image: string, color: Array<string>, colorHsl: Color[]) {
     this.id = id;
     this.name = name;
     this.image = image;
     this.color = color;
+    this.colorHsl = colorHsl
+  }
+}
+class ItemWithColor implements IItemWithColor {
+  id: string;
+  name: string;
+  image: string;
+  color: string[];
+  colorHsl: Color[];
+  colorName: ColorName[];
+  constructor(id: string, name: string, image: string, color: string[], colorHsl: Color[], colorName: ColorName[]) {
+    this.id = id,
+      this.name = name;
+    this.image = image;
+    this.color = color;
+    this.colorHsl = colorHsl
+    this.colorName = colorName;
   }
 }
 
+export function ItemColorProvider({ children }: { children: React.ReactNode }) {
 
-export function WeaponProvider({ children }: { children: React.ReactNode }) {
-
-  const [skins, setSkins] = useState<WeaponType[]>([]);
-  const [weaponWithSkin, setWeaponWithSkin] = useState<WeaponWithColor[]>([]);
-const [weaponsFinal, setWeaponsFinal] = useState<WeaponWithColor[]>([]);
+  const [skins, setSkins] = useState<IItemType[]>([]);
+  const [weaponsWithColor, setWeaponsWithColor] = useState<WeaponWithColor[]>([]);
+  const [itemWithColor, setItemWithColor] = useState<ItemWithColor[]>([]);
+  const [colorList, setColorList] = useState<Array<ItemWithColor>>([]);//? é este o safadooo
+  const [colorName, setColorName] = useState<ColorName[]>([])
 
 
   useEffect(() => {
@@ -45,7 +64,7 @@ const [weaponsFinal, setWeaponsFinal] = useState<WeaponWithColor[]>([]);
         const response = await axios.get(
           "https://bymykel.github.io/CSGO-API/api/pt-BR/skins.json"
         );
-        const weaponTypes: WeaponType[] = response.data.map((skin: any) => ({
+        const itemTypes: IItemType[] = response.data.map((skin: any) => ({
           id: skin.id,
           name: skin.name,
           name_original: skin.name_original,
@@ -59,8 +78,7 @@ const [weaponsFinal, setWeaponsFinal] = useState<WeaponWithColor[]>([]);
           image: skin.image,
         }));
 
-        setSkins(weaponTypes);
-
+        setSkins(itemTypes);
       } catch (error) {
         console.error(error);
       }
@@ -69,30 +87,36 @@ const [weaponsFinal, setWeaponsFinal] = useState<WeaponWithColor[]>([]);
     getSkins();
   }, []);
 
-  //!!___ColorList
+  async function loadImageFromCanvas(imageUrl: string, canvasRef: React.RefObject<HTMLCanvasElement>, skins: any) {
+    const image = new Image();
+    image.crossOrigin = "anonymous";
+    image.onload = async () => {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx!.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const imageData = ctx!.getImageData(0, 0, canvas.width, canvas.height);
+        const rgbArray = buildRgb(imageData.data);
+        const quantColors = quantization(rgbArray, 0);
+        buildPalette(quantColors, skins);
+      }
+    };
+    image.src = imageUrl;
+  };
 
-  const [colorList, setColorList] = useState<string[]>([])   //? é este o safadooo
-  const [arrayColorList, setArrayColorList] = useState<Array<WeaponWithColor>>([]);
-
-
-  const buildPalette = (colorsList: Color[],skins:any) => {
+  const buildPalette = (colorsList: Color[], skins: any) => {
     const orderedByColor = orderByLuminance(colorsList);
-    let tempColors: any = []; // Variável temporária para armazenar as cores
-
+    let tempColors: any = [];
+    let _hslColors: Color[] = []
+    let _colorName: ColorName[] = []
     for (let i = 0; i < orderedByColor.length; i++) {
-      // Se já tivermos 6 cores, interrompemos o loop
-      if (tempColors.length >= 6) {
+      if (tempColors.length >= 3) {
         break;
       }
 
       const hexColor: any = rgbToHex(orderedByColor[i]);
 
-      const hslColors: Color[] = convertRGBtoHSL(orderedByColor)
-        .map(color => ({
-          h: color.h,
-          s: parseFloat(color.s),
-          l: parseFloat(color.l),
-        }));
+      const hslColor: any = convertRGBtoHSL([orderedByColor[i]])[0];
 
       if (i > 0) {
         const difference = calculateColorDifference(
@@ -104,34 +128,35 @@ const [weaponsFinal, setWeaponsFinal] = useState<WeaponWithColor[]>([]);
           continue;
         }
       }
-
+ 
+  
+  //TODO Refinar a função de Nomes para HSL
       tempColors.push(hexColor);
+      _hslColors.push(hslColor);
+      _colorName.push(colorNameFromHsl(hslColor.h, hslColor.s, hslColor.l)); // Adicionado esta linha
     }
-    setColorList(tempColors);
-    const newWeaponWithColor:any = new WeaponWithColor(skins.id,skins.name,skins.image,tempColors)
-    setArrayColorList(prevArray => [...prevArray, newWeaponWithColor]);
-    ;
+
+    const newItemWithColor: any = new ItemWithColor(skins.id, skins.name, skins.image, tempColors, _hslColors, _colorName)
+    setColorList(prevArray => [...prevArray, newItemWithColor]);
   };
 
-  
 
-useEffect(() => {
-  const uniqueWeapons = arrayColorList.reduce((acc: WeaponWithColor[], current: WeaponWithColor) => {
-    const isDuplicate = acc.find(item => item.id === current.id);
-    if (!isDuplicate) {
-      return acc.concat([current]);
-    } else {
-      return acc;
-    }
-  }, []);
-   
-  setWeaponsFinal(uniqueWeapons);
-}, [arrayColorList]);
+  useEffect(() => {
+    const uniqueItem = colorList.reduce((acc: ItemWithColor[], current: ItemWithColor) => {
+      const isDuplicate = acc.find(item => item.id === current.id);
+      if (!isDuplicate) {
+        return acc.concat([current]);
+      } else {
+        return acc;
+      }
+    }, []);
 
+    setItemWithColor(uniqueItem);
+  }, [colorList]);
 
- useEffect(()=>{
-  //console.log(weaponsFinal)
- },[weaponsFinal])
+  useEffect(() => {
+    console.log(itemWithColor)
+  }, [itemWithColor])
 
   const rgbToHex = (pixel: Pixel) => {
     const componentToHex = (c: number) => {
@@ -179,23 +204,18 @@ useEffect(() => {
 
       hue = hue * 60;
 
-
       if (hue < 0) {
         hue = hue + 360;
       }
-      const satur: number = saturation * 100;
-      const saturString: any = satur.toString;
-      const lumin: number = luminance * 100;
-      const luminString: any = lumin.toString;
+
 
       return {
-        h: Math.round(hue) + 180,
-        s: parseFloat(saturString).toFixed(2),
-        l: parseFloat(luminString).toFixed(2),
+        h: hue,
+        s: parseFloat((saturation * 100).toFixed(2)),
+        l: parseFloat((luminance * 100).toFixed(2)),
       };
     });
   };
-
 
   const orderByLuminance = (rgbValues: any) => {
     const calculateLuminance = (p: any) => {
@@ -306,19 +326,45 @@ useEffect(() => {
   };
 
 
-  //!!____________
+  function colorNameFromHsl(h: number, s: number, l: number): ColorName {
+    // if (l < 0.2) return "Preto";
+    // if (l > 0.8) return "Branco";
+    // if (s < 0.2) return "Cinza";
+  
+    if (h >= 0 && h < 15) return "Vermelho";
+    else if (h >= 15 && h < 45) return "Laranja";
+    else if (h >= 45 && h < 70) return "Amarelo";
+    else if (h >= 70 && h < 170) return "Verde";
+    else if (h >= 170 && h < 240) return "Azul";
+    else if (h >= 240 && h < 280) return "Roxo";
+    else if (h >= 280 && h < 320) return "Rosa";
+    else if (h >= 320 && h < 360) return "Vermelho";
+  
+    if (h >= 15 && h < 50 && s > 0.2 && l < 0.5) return "Marrom";
+
+    return "Cor não identificada";
+  }
+  
 
 
   return (
-    <WeaponContext.Provider value={{ skins, setSkins, buildPalette, buildRgb, quantization, colorList, weaponWithSkin, setWeaponWithSkin, weaponsFinal }}>
+    <ItemContext.Provider value={{
+      skins,
+      setSkins,
+      buildPalette,
+      buildRgb,
+      quantization,
+      itemWithColor,
+      loadImageFromCanvas,
+    }}>
       {children}
-    </WeaponContext.Provider>
+    </ItemContext.Provider>
   )
 
 }
 
-export const useWeaponContext = () => {
-  const context = useContext(WeaponContext);
+export const useItemColorContext = () => {
+  const context = useContext(ItemContext);
   if (!context) {
     throw new Error("useWeaponContext deve ser utilizado dentro de um WeaponProvider");
   }

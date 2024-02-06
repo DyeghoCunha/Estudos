@@ -2,7 +2,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { theme } from "../styles/theme";
-import { WeaponProvider } from "@/context/weaponsContext";
+import { ItemColorProvider } from "@/context/weaponsContext";
 import { ColorListProvider } from "@/context/colorListContext";
 
 
@@ -20,11 +20,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <ChakraProvider theme={theme}>
-      <WeaponProvider>
+      <ItemColorProvider>
         <ColorListProvider>
         {getLayout(<Component {...pageProps} />)}
         </ColorListProvider>
-      </WeaponProvider>
+      </ItemColorProvider>
     </ChakraProvider>
   );
 }
