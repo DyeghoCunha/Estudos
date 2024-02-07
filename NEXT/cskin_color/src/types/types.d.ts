@@ -24,13 +24,13 @@ export interface IItemWithColor {
 }
 
 
-export type Color = {
+export interface Color {
   h: number;
   s: number;
   l: number;
 };
 
-export type Pixel = {
+export interface Pixel  {
   r: number;
   g: number;
   b: number;

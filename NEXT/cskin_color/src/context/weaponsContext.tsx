@@ -11,6 +11,8 @@ interface IItemContext {
   quantization: any;
   buildRgb: any;
   loadImageFromCanvas: Function;
+  allColorsHEX: any
+  groupColorsFinal: any;
 
 }
 const ItemContext = createContext<IItemContext | undefined>(undefined);
@@ -56,7 +58,9 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
   const [itemWithColor, setItemWithColor] = useState<ItemWithColor[]>([]);
   const [colorList, setColorList] = useState<Array<ItemWithColor>>([]);//? é este o safadooo
   const [colorName, setColorName] = useState<ColorName[]>([])
-
+  const [allColorsHSL, setAllColorsHSL] = useState<Array<Color>>([])
+  const [allColorsHEX, setAllColorsHEX] = useState<Array<ItemWithColor>>([])
+  const [groupColorsFinal, setGroupColorsFinal] = useState<{ [key: string]: HSLColor[] }>({})
 
   useEffect(() => {
     async function getSkins() {
@@ -128,9 +132,10 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
           continue;
         }
       }
- 
-  
-  //TODO Refinar a função de Nomes para HSL
+
+      setAllColorsHSL(prev => [...prev, hslColor])
+      setAllColorsHEX(prev => [...prev, hexColor])
+      //TODO Refinar a função de Nomes para HSL
       tempColors.push(hexColor);
       _hslColors.push(hslColor);
       _colorName.push(colorNameFromHsl(hslColor.h, hslColor.s, hslColor.l)); // Adicionado esta linha
@@ -154,9 +159,7 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
     setItemWithColor(uniqueItem);
   }, [colorList]);
 
-  useEffect(() => {
-    console.log(itemWithColor)
-  }, [itemWithColor])
+
 
   const rgbToHex = (pixel: Pixel) => {
     const componentToHex = (c: number) => {
@@ -210,7 +213,7 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
 
 
       return {
-        h: hue,
+        h: Math.round(hue),
         s: parseFloat((saturation * 100).toFixed(2)),
         l: parseFloat((luminance * 100).toFixed(2)),
       };
@@ -330,7 +333,7 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
     // if (l < 0.2) return "Preto";
     // if (l > 0.8) return "Branco";
     // if (s < 0.2) return "Cinza";
-  
+
     if (h >= 0 && h < 15) return "Vermelho";
     else if (h >= 15 && h < 45) return "Laranja";
     else if (h >= 45 && h < 70) return "Amarelo";
@@ -339,13 +342,69 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
     else if (h >= 240 && h < 280) return "Roxo";
     else if (h >= 280 && h < 320) return "Rosa";
     else if (h >= 320 && h < 360) return "Vermelho";
-  
+
     if (h >= 15 && h < 50 && s > 0.2 && l < 0.5) return "Marrom";
 
     return "Cor não identificada";
   }
-  
 
+
+  class HSLColor implements Color {
+    h: number;
+    s: number;
+    l: number;
+    constructor(h: number, s: number, l: number) {
+      this.h = h;
+      this.s = s;
+      this.l = l;
+    }
+  }
+
+  function groupColors(hslColors: HSLColor[], hueThreshold: number, saturationThreshold: number, lightnessThreshold: number): {[key: string]: HSLColor[]} {
+    let groups: {[key: string]: HSLColor[]} = {};
+    for (let color of hslColors) {
+        let addedToGroup = false;
+        for (let groupName in groups) {
+            let groupColor = groups[groupName][0];
+            if (Math.abs(groupColor.h - color.h) < hueThreshold && 
+                Math.abs(groupColor.s - color.s) < saturationThreshold && 
+                Math.abs(groupColor.l - color.l) < lightnessThreshold) {
+                // Verifique se a cor já existe no grupo
+                if (!groups[groupName].some(groupColor => groupColor.h === color.h && groupColor.s === color.s && groupColor.l === color.l)) {
+                    groups[groupName].push(color);
+                }
+                addedToGroup = true;
+                break;
+            }
+        }
+        if (!addedToGroup) {
+            let groupName = `Grupo ${Object.keys(groups).length + 1}`;
+            groups[groupName] = [color];
+        }
+    }
+    return groups;
+}
+
+  //!!______________________________________________________________________________________
+
+  useEffect(() => {
+
+    let hueThreshold = 10;  // Define o limiar de diferença de matiz para agrupar cores
+let saturationThreshold = 2;  // Define o limiar de diferença de saturação para agrupar cores
+let lightnessThreshold = 2;  // Define o limiar de diferença de luminosidade para agrupar cores
+let colorGroups = groupColors(allColorsHSL, hueThreshold, saturationThreshold, lightnessThreshold);  // Define o limiar de diferença de matiz para agrupar cores
+    setGroupColorsFinal(colorGroups)
+
+    console.log(colorGroups);
+
+    /*
+        console.log(itemWithColor)
+        console.log("____________")
+        console.log(allColorsHSL)
+        console.log("____________")
+        console.log(allColorsHEX)
+        console.log("____________")*/
+  }, [itemWithColor])
 
   return (
     <ItemContext.Provider value={{
@@ -356,6 +415,8 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
       quantization,
       itemWithColor,
       loadImageFromCanvas,
+      allColorsHEX,
+      groupColorsFinal,
     }}>
       {children}
     </ItemContext.Provider>
