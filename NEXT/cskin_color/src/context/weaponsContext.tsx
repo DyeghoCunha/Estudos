@@ -17,8 +17,8 @@ interface IItemContext {
   loadImageFromCanvas: Function;
   allColorsHEX: any
   groupColorsFinal: any;
-  similarColors: any
-
+  similarColors: any;
+ sortedColorGroups:any;
 }
 const ItemContext = createContext<IItemContext | undefined>(undefined);
 
@@ -67,6 +67,7 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
   const [allColorsHEX, setAllColorsHEX] = useState<Array<ItemWithColor>>([])
   const [groupColorsFinal, setGroupColorsFinal] = useState<{ [key: string]: HSLColor[] }>({})
   const [similarColors, setSimilarColors] = useState();
+  const [sortedColorGroups, setSortedColorGroups] = useState({})
 
   useEffect(() => {
     async function getSkins() {
@@ -426,16 +427,48 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const extractedColorHSL = itemWithColor.map(item => item.colorHsl);
-    const flattenedColorHSL:any = extractedColorHSL.flat();
+    const flattenedColorHSL: any = extractedColorHSL.flat();
     setColorHSLArrays(flattenedColorHSL);
-}, [itemWithColor]);
+  }, [itemWithColor]);
 
-function removerArraysIdenticos(arr: any[]): any[] {
-  return arr.filter((valor, indice, array) => {
-    // Converte cada objeto para uma string JSON e verifica a ocorrência
-    return array.findIndex(obj => JSON.stringify(obj) === JSON.stringify(valor)) === indice;
-  });
-}
+  function removerArraysIdenticos(arr: any[]): any[] {
+    return arr.filter((valor, indice, array) => {
+      // Converte cada objeto para uma string JSON e verifica a ocorrência
+      return array.findIndex(obj => JSON.stringify(obj) === JSON.stringify(valor)) === indice;
+    });
+  }
+
+  //type Color = { h: number; s: number; l: number };
+  type ColorGroup = { [key: string]: Color[] };
+
+  function groupAndSortColors(colorArray: Color[]): ColorGroup {
+    const colorNames = ["Vermelho", "Laranja", "Amarelo", "Verde claro", "Verde", "Verde-azulado", "Ciano", "Azul claro", "Azul", "Violeta", "Magenta", "Rosa"];
+    const colorGroups: ColorGroup = {};
+
+    // Agrupar cores por nome
+    for (const color of colorArray) {
+      const hue = color.h;
+      const index = Math.floor(hue / 30);
+      const colorName = colorNames[index];
+
+      if (!colorGroups[colorName]) {
+        colorGroups[colorName] = [];
+      }
+
+      colorGroups[colorName].push(color);
+    }
+
+    // Ordenar cada grupo do mais claro para o mais escuro
+    for (const colorName in colorGroups) {
+      colorGroups[colorName].sort((a, b) => b.l - a.l);
+    }
+
+    return colorGroups;
+  }
+
+  // Exemplo de uso
+
+
 
   useEffect(() => {
     let hueThreshold = 20;  // Define o limiar de diferença de matiz para agrupar cores
@@ -444,13 +477,23 @@ function removerArraysIdenticos(arr: any[]): any[] {
     let colorGroups = groupColors(colorHSLArrays, hueThreshold, saturationThreshold, lightnessThreshold);  // Define o limiar de diferença de matiz para agrupar cores
     setGroupColorsFinal(colorGroups)
     const groups: any = groupSimilarColors(colorHSLArrays);
-    const fattenedGroups:any = groups.flat()
-    const arraySemDuplicatas:any = removerArraysIdenticos(fattenedGroups)
+    const fattenedGroups: any = groups.flat()
+    const arraySemDuplicatas: any = removerArraysIdenticos(fattenedGroups)
     setSimilarColors(arraySemDuplicatas);
+    const sortedColorGroup: any = groupAndSortColors(colorHSLArrays);
+    setSortedColorGroups(sortedColorGroup)
+
     console.log("___ColorHSLArrays___")
     console.log(colorHSLArrays)
     console.log("____________________\n\n")
   }, [colorHSLArrays])
+
+
+  useEffect(()=>{
+    console.log("___SortedColorGroups___")
+    console.log(sortedColorGroups)
+    console.log("____________________\n\n")
+  },[sortedColorGroups])
 
   useEffect(() => {
     console.log("___GroupColorsFinal___")
@@ -458,7 +501,7 @@ function removerArraysIdenticos(arr: any[]): any[] {
     console.log("____________________\n\n")
   }, [groupColorsFinal])
 
- useEffect(() => {
+  useEffect(() => {
     console.log("___SimilarColors___")
     console.log(similarColors)
     console.log("____________________\n\n")
@@ -475,7 +518,8 @@ function removerArraysIdenticos(arr: any[]): any[] {
       loadImageFromCanvas,
       allColorsHEX,
       groupColorsFinal,
-      similarColors
+      similarColors,
+      sortedColorGroups
     }}>
       {children}
     </ItemContext.Provider>
