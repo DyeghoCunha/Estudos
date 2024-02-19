@@ -1,8 +1,10 @@
+
 import { Color, ColorList, Pixel, IItemType, IItemWithColor, ColorName } from '@/types/types';
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from "axios";
 import { lab } from 'd3-color';
 import { Delaunay } from 'd3-delaunay';
+import escreveTxt from "../lib/actions.js"
 
 
 
@@ -483,12 +485,12 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
     const sortedColorGroup: any = groupAndSortColors(colorHSLArrays);
     setSortedColorGroups(sortedColorGroup)
 
-    console.log("___ColorHSLArrays___")
-    console.log(colorHSLArrays)
-    console.log("____________________\n\n")
+   // console.log("___ColorHSLArrays___")
+   // console.log(colorHSLArrays)
+   // console.log("____________________\n\n")
   }, [colorHSLArrays])
 
-
+/*
   useEffect(()=>{
     console.log("___SortedColorGroups___")
     console.log(sortedColorGroups)
@@ -506,6 +508,14 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
     console.log(similarColors)
     console.log("____________________\n\n")
   }, [similarColors])
+
+*/
+
+
+
+
+
+
 
   return (
     <ItemContext.Provider value={{

@@ -51,7 +51,10 @@
     "swiper": "^9.4.1",
     "typescript": "^5.1.6",
     "vanilla-tilt": "^1.8.1",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "slugify": "^1.6.6",
+    "xss": "^1.0.14",
+    "better-sqlite3": "^9.4.1"
   },
   "devDependencies": {
     "@types/d3-color": "^3.1.3",
