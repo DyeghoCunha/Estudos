@@ -1,10 +1,10 @@
-
+"use server"
 import { Color, ColorList, Pixel, IItemType, IItemWithColor, ColorName } from '@/types/types';
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from "axios";
 import { lab } from 'd3-color';
 import { Delaunay } from 'd3-delaunay';
-import escreveTxt from "../lib/actions.js"
+import { getSkins } from '@/lib/steamDb';
 
 
 
@@ -71,33 +71,13 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
   const [similarColors, setSimilarColors] = useState();
   const [sortedColorGroups, setSortedColorGroups] = useState({})
 
-  useEffect(() => {
-    async function getSkins() {
-      try {
-        const response = await axios.get(
-          "https://bymykel.github.io/CSGO-API/api/pt-BR/skins.json"
-        );
-        const itemTypes: IItemType[] = response.data.map((skin: any) => ({
-          id: skin.id,
-          name: skin.name,
-          name_original: skin.name_original,
-          description: skin.description,
-          weapon: skin.weapon,
-          pattern: skin.pattern,
-          min_float: skin.min_float,
-          max_float: skin.max_float,
-          rarity: skin.rarity,
-          stattrak: skin.stattrak,
-          image: skin.image,
-        }));
-
-        setSkins(itemTypes);
-      } catch (error) {
-        console.error(error);
-      }
+useEffect(() => {
+    async function fetchSkins() {
+      const skins = await getSkins();
+      setSkins(skins);
+      //console.log(skins);
     }
-
-    getSkins();
+    fetchSkins();
   }, []);
 
   async function loadImageFromCanvas(imageUrl: string, canvasRef: React.RefObject<HTMLCanvasElement>, skins: any) {
@@ -167,8 +147,6 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
 
     setItemWithColor(uniqueItem);
   }, [colorList]);
-
-
 
   const rgbToHex = (pixel: Pixel) => {
     const componentToHex = (c: number) => {
@@ -508,11 +486,7 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
     console.log(similarColors)
     console.log("____________________\n\n")
   }, [similarColors])
-
 */
-
-
-
 
 
 

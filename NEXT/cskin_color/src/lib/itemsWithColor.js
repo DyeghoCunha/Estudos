@@ -1,10 +1,9 @@
+"use server"
 import sql from "better-sqlite3"
-import fs from "node:fs"
 
 const db = sql("itemsWithColor.db");
 
 export async function getItens() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
   return db.prepare("SELECT * FROM itemsWithColor").all();
 }
 
@@ -13,28 +12,39 @@ export function getItemByName(name) {
 }
 
 export async function saveItemWithColor(itemWithColor) {
-   const fileName = `${itemWithColor.name}.png`
+  const tableExists = db.prepare(`
+    SELECT name FROM sqlite_master WHERE type='table' AND name='itemsWithColor';
+  `).get();
 
-  const stream = fs.createWriteStream(`public/images/${fileName}`)
-  const bufferedImage = await itemWithColor.image.arrayBuffer();
-  stream.write(Buffer.from(bufferedImage), (error) => {
-    if (error) {
-      throw new Error("saving image failed!!")
-    }
-  });
+  if (!tableExists) {
+    db.prepare(`
+      CREATE TABLE IF NOT EXISTS itemsWithColor (
+        id TEXT PRIMARY KEY,
+        name TEXT ,
+        image TEXT ,
+        color TEXT ,
+        colorHsl TEXT ,
+        colorName TEXT 
+      )
+    `).run();
+  }
 
-
-  itemWithColor.image = `public/images/${fileName}`
-  console.log(itemWithColor.image)
   db.prepare(`
-  INSERT INTO itemsWithColor (id,name,image,color,colorHsl,colorName)
-  VALUES(
-    @id,
-    @name,
-    @image,
-    @color,
-    @colorHsl,
-    @colorName
-  )
-  `).run(itemWithColor);
+    INSERT OR REPLACE INTO itemsWithColor (id,name,image,color,colorHsl,colorName)
+    VALUES(
+      @id,
+      @name,
+      @image,
+      @color,
+      @colorHsl,
+      @colorName
+    )
+  `).run({
+    id: itemWithColor.id,
+    name: itemWithColor.name,
+    image: itemWithColor.image,
+    color: JSON.stringify(itemWithColor.color),
+    colorHsl: JSON.stringify(itemWithColor.colorHsl),
+    colorName: JSON.stringify(itemWithColor.colorName)
+  });
 }

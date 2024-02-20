@@ -1,11 +1,8 @@
 "use server"
 
-import saveItemWithColor from "../lib/itemsWithColor.js"
-
-
+import { saveItemWithColor } from "../lib/itemsWithColor.js"
 
 export async function saveItem(itemWithColor) {
-  // Certifique-se de que os campos do objeto correspondem aos campos esperados pela função saveItemWithColor
   const item = {
     id: itemWithColor.get("id"),
     name: itemWithColor.get("name"),
@@ -16,4 +13,16 @@ export async function saveItem(itemWithColor) {
   }
 
   await saveItemWithColor(item);
+}
+
+export default async function saveAllItemWithColor(itemWithColor) {
+  if (itemWithColor) {
+    try {
+      const promises = itemWithColor.map(saveItem);
+      await Promise.all(promises);
+      console.log('Todos os itens foram salvos com sucesso!');
+    } catch (error) {
+      console.error('Ocorreu um erro ao salvar os itens:', error);
+    }
+  }
 }

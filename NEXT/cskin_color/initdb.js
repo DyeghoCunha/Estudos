@@ -1,3 +1,4 @@
+"use server"
 const sql = require('better-sqlite3');
 const db = sql('itemsWithColor.db');
 
@@ -327,11 +328,11 @@ const dummyItemsWithColor = [
 db.prepare(`
    CREATE TABLE IF NOT EXISTS itemsWithColor (
        id TEXT PRIMARY KEY,
-       name TEXT NOT NULL,
-       image TEXT NOT NULL,
-       color TEXT NOT NULL,
-       colorHsl TEXT NOT NULL,
-       colorName TEXT NOT NULL
+       name TEXT ,
+       image TEXT ,
+       color TEXT ,
+       colorHsl TEXT ,
+       colorName TEXT 
     )
 `).run();
 
