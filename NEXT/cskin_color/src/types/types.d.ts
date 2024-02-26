@@ -19,8 +19,9 @@ export interface IItemWithColor {
   id: string;
   name: string;
   image: string;
-  color: Array<string>;
-  colorHsl: Color[]
+  color: string[];
+  colorHsl: { h: number; s: number; l: number }[];
+  colorName: string[];
 }
 
 

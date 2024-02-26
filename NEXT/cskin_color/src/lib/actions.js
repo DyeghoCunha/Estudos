@@ -1,7 +1,6 @@
 "use server"
 import connectDB from './db';
 import WeaponSkin from './itemsColorSchema';
-import { saveItemWithColor } from "../lib/itemsWithColor.js"
 
 export async function saveItem(itemWithColor) {
   const item = {
@@ -28,24 +27,25 @@ export default async function saveAllItemWithColor(itemWithColor) {
   }
 }
 
-connectDB();
 
-const saveData = (itemWithColor) => {
-  // Crie uma nova instância do modelo WeaponSkin
 
-  for(const item in itemWithColor){
-      const weaponSkin = new WeaponSkin(item);
 
-  // Salve a instância no banco de dados
-  weaponSkin.save((error) => {
-    if (error) {
-      console.error('Erro ao salvar no MongoDB:', error);
-    } else {
-      console.log('Dados salvos com sucesso no MongoDB!');
-    }
+
+export async function sendData(itemWithColor) {
+
+
+  const response = await fetch('/api/saveData', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(itemWithColor),
   });
+
+  if (response.ok) {
+    console.log('Dados enviados com sucesso!');
+  } else {
+    console.error('Erro ao enviar dados:', response.statusText);
   }
+}
 
-};
-
-export  {saveData}

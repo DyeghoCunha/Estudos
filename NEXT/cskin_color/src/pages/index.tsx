@@ -2,23 +2,22 @@
 import ItemCard from "@/components/molecules/ItemCard";
 import { DefaultLayout } from "@/components/templates/DefaultLayout";
 import { useItemColorContext } from "@/context/weaponsContext";
-import { getItens } from "@/lib/itemsWithColor";
 import { Box, Button, Card, Center, Divider, Grid, GridItem, HStack, Image, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect } from "react";
-import {saveData} from "@/lib/actions.js"
+import {sendData} from "@/lib/actions.js"
+import { IItemWithColor } from "@/types/types";
 
 export default function Home() {
-  const { skins, similarColors, groupColorsFinal, sortedColorGroups, itemWithColor } = useItemColorContext();
+  const { skins, itemWithColor } = useItemColorContext();
 
-  let quantidade = 10;
 
-  useEffect(() => {
-    if (itemWithColor.length === 10) {
-      console.log(itemWithColor)
-    }
 
-  }, [itemWithColor])
+function handleClick(itemWithColor:IItemWithColor[]){
+  for (var item of itemWithColor){
+            sendData(item);
+  }
+}
 
   return (
     <>
@@ -26,7 +25,7 @@ export default function Home() {
         <Link href="/filter">Filtro de Cores</Link>
       </Box>
 
-      <Button onClick={()=>{}}>Salvar no Banco</Button>
+      <Button onClick={()=>handleClick(itemWithColor)}>Salvar no Banco</Button>
 
       <Grid templateColumns="repeat(5,1fr)" gap={0}>
         {skins.slice(0, 10).map((skin) => (
