@@ -32,8 +32,10 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "src/pages/itensWithDb/index.js"  ],
+    ".next/types/**/*.ts",
+    "src/pages/filter/index.js",
+    "seedData.js"
+, "src/lib/itemsColorSchema.ts", "src/lib/db.ts"  ],
   "exclude": [
     "node_modules"
   ]

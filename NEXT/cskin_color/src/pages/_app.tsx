@@ -21,9 +21,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <ChakraProvider theme={theme}>
       <ItemColorProvider>
-        <ColorListProvider>
+       
         {getLayout(<Component {...pageProps} />)}
-        </ColorListProvider>
+       
       </ItemColorProvider>
     </ChakraProvider>
   );
