@@ -336,7 +336,7 @@ db.prepare(`
     )
 `).run();
 
-async function initData() {
+export async function initData(itemWithColor) {
    const stmt = db.prepare(`
       INSERT INTO itemsWithColor VALUES (
          @id,
@@ -349,7 +349,7 @@ async function initData() {
    `);
 
 
-   for (const skin of dummyItemsWithColor) {
+   for (const skin of itemWithColor) {
       stmt.run({
          id: skin.id,
          name: skin.name,
@@ -360,4 +360,4 @@ async function initData() {
       });
    }
 }
-initData();
+//initData();
