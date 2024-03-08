@@ -4,8 +4,9 @@ import { redirect } from "next/navigation";
 import { saveMeal } from "./meals";
 
 function isInvalidText(text) {
-  return !text || text.trim() === ""
+  return !text || (typeof text === 'string' && text.trim() === "");
 }
+
 
 export async function shareMeal(prevState, formData) {
   const meal = {
@@ -23,6 +24,7 @@ export async function shareMeal(prevState, formData) {
 
     }
   }
-  await saveMeal(meal)
+  await saveMeal(meal);
+  revalidatePath("/meals");
   redirect("/meals");
 }

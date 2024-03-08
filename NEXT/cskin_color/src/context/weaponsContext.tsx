@@ -20,7 +20,9 @@ interface IItemContext {
   allColorsHEX: any
   groupColorsFinal: any;
   similarColors: any;
- sortedColorGroups:any;
+  sortedColorGroups: any;
+  weaponFromDb:IItemWithColor[];
+  isLoading:boolean;
 }
 const ItemContext = createContext<IItemContext | undefined>(undefined);
 
@@ -33,15 +35,17 @@ class WeaponWithColor implements IItemWithColor {
   image: string;
   color: Array<string>;
   colorHsl: Color[];
-  constructor(id: string, name: string, image: string, color: Array<string>, colorHsl: Color[]) {
+  colorName: string[];
+  constructor(id: string, name: string, image: string, color: Array<string>, colorHsl: Color[], colorName: string[]) {
     this.id = id;
     this.name = name;
     this.image = image;
     this.color = color;
     this.colorHsl = colorHsl
+    this.colorName = colorName
   }
 }
-class ItemWithColor implements IItemWithColor {
+export class ItemWithColor implements IItemWithColor {
   id: string;
   name: string;
   image: string;
@@ -70,8 +74,10 @@ export function ItemColorProvider({ children }: { children: React.ReactNode }) {
   const [groupColorsFinal, setGroupColorsFinal] = useState<{ [key: string]: HSLColor[] }>({})
   const [similarColors, setSimilarColors] = useState();
   const [sortedColorGroups, setSortedColorGroups] = useState({})
+  const [isLoading, setIsLoading] = useState(true);
+  const [weaponFromDb, setWeaponFromDb] = useState<IItemWithColor[]>([])
 
-useEffect(() => {
+  useEffect(() => {
     async function fetchSkins() {
       const skins = await getSkins();
       setSkins(skins);
@@ -79,6 +85,16 @@ useEffect(() => {
     }
     fetchSkins();
   }, []);
+
+  useEffect(() => {
+  fetch('/api/saveData')
+    .then(response => response.json())
+    .then(data => {setWeaponFromDb(data)
+      console.log(data);
+    setIsLoading(false)})
+    .catch(error => console.error('Erro ao buscar no MongoDB:', error));
+}, []);
+
 
   async function loadImageFromCanvas(imageUrl: string, canvasRef: React.RefObject<HTMLCanvasElement>, skins: any) {
     const image = new Image();
@@ -317,9 +333,9 @@ useEffect(() => {
 
 
   function colorNameFromHsl(h: number, s: number, l: number): ColorName {
-    // if (l < 0.2) return "Preto";
-    // if (l > 0.8) return "Branco";
-    // if (s < 0.2) return "Cinza";
+    if (l < 13) return "Preto";
+    if (l > 80) return "Branco";
+    if (s < 20) return "Cinza";
 
     if (h >= 0 && h < 15) return "Vermelho";
     else if (h >= 15 && h < 45) return "Laranja";
@@ -346,147 +362,129 @@ useEffect(() => {
       this.l = l;
     }
   }
-
-  function groupColors(hslColors: HSLColor[], hueThreshold: number, saturationThreshold: number, lightnessThreshold: number): { [key: string]: HSLColor[] } {
-    let groups: { [key: string]: HSLColor[] } = {};
-    for (let color of hslColors) {
-      let addedToGroup = false;
-      for (let groupName in groups) {
-        let groupColor = groups[groupName][0];
-        if (Math.abs(groupColor.h - color.h) < hueThreshold &&
-          Math.abs(groupColor.s - color.s) < saturationThreshold &&
-          Math.abs(groupColor.l - color.l) < lightnessThreshold) {
-          // Verifique se a cor já existe no grupo
-          if (!groups[groupName].some(groupColor => groupColor.h === color.h && groupColor.s === color.s && groupColor.l === color.l)) {
-            groups[groupName].push(color);
+  /*
+    function groupColors(hslColors: HSLColor[], hueThreshold: number, saturationThreshold: number, lightnessThreshold: number): { [key: string]: HSLColor[] } {
+      let groups: { [key: string]: HSLColor[] } = {};
+      for (let color of hslColors) {
+        let addedToGroup = false;
+        for (let groupName in groups) {
+          let groupColor = groups[groupName][0];
+          if (Math.abs(groupColor.h - color.h) < hueThreshold &&
+            Math.abs(groupColor.s - color.s) < saturationThreshold &&
+            Math.abs(groupColor.l - color.l) < lightnessThreshold) {
+            // Verifique se a cor já existe no grupo
+            if (!groups[groupName].some(groupColor => groupColor.h === color.h && groupColor.s === color.s && groupColor.l === color.l)) {
+              groups[groupName].push(color);
+            }
+            addedToGroup = true;
+            break;
           }
-          addedToGroup = true;
-          break;
+        }
+        if (!addedToGroup) {
+          let groupName = `Grupo ${Object.keys(groups).length + 1}`;
+          groups[groupName] = [color];
         }
       }
-      if (!addedToGroup) {
-        let groupName = `Grupo ${Object.keys(groups).length + 1}`;
-        groups[groupName] = [color];
-      }
+      return groups;
     }
-    return groups;
-  }
-
-  /// Converte uma cor HSL para o espaço Lab
-  function hslToLab(hsl: { h: number, s: number, l: number }) {
-    const { h, s, l } = hsl;
-    const color = `hsl(${h}, ${s}%, ${l}%)`;
-    const { l: labL, a: labA, b: labB } = lab(color);
-    return [labL, labA, labB];
-  }
-
-  // Agrupa cores semelhantes
-  function groupSimilarColors(allColorsHSK: { h: number, s: number, l: number }[]) {
-    // Converte todas as cores para o espaço Lab
-    const labColors: any = allColorsHSK.map(hslToLab);
-
-    // Cria uma triangulação de Delaunay com as cores
-    const delaunay = Delaunay.from(labColors);
-
+  
+    /// Converte uma cor HSL para o espaço Lab
+    function hslToLab(hsl: { h: number, s: number, l: number }) {
+      const { h, s, l } = hsl;
+      const color = `hsl(${h}, ${s}%, ${l}%)`;
+      const { l: labL, a: labA, b: labB } = lab(color);
+      return [labL, labA, labB];
+    }
+  
     // Agrupa cores semelhantes
-    const groups = [];
-    for (let i = 0; i < delaunay.triangles.length; i += 3) {
-      const group = [
-        allColorsHSK[delaunay.triangles[i]],
-        allColorsHSK[delaunay.triangles[i + 1]],
-        allColorsHSK[delaunay.triangles[i + 2]]
-      ];
-      groups.push(group);
-    }
-
-    return groups;
-  }
-
-  //!!______________________________________________________________________________________
-  const [colorHSLArrays, setColorHSLArrays] = useState([]);
-
-  useEffect(() => {
-    const extractedColorHSL = itemWithColor.map(item => item.colorHsl);
-    const flattenedColorHSL: any = extractedColorHSL.flat();
-    setColorHSLArrays(flattenedColorHSL);
-  }, [itemWithColor]);
-
-  function removerArraysIdenticos(arr: any[]): any[] {
-    return arr.filter((valor, indice, array) => {
-      // Converte cada objeto para uma string JSON e verifica a ocorrência
-      return array.findIndex(obj => JSON.stringify(obj) === JSON.stringify(valor)) === indice;
-    });
-  }
-
-  //type Color = { h: number; s: number; l: number };
-  type ColorGroup = { [key: string]: Color[] };
-
-  function groupAndSortColors(colorArray: Color[]): ColorGroup {
-    const colorNames = ["Vermelho", "Laranja", "Amarelo", "Verde claro", "Verde", "Verde-azulado", "Ciano", "Azul claro", "Azul", "Violeta", "Magenta", "Rosa"];
-    const colorGroups: ColorGroup = {};
-
-    // Agrupar cores por nome
-    for (const color of colorArray) {
-      const hue = color.h;
-      const index = Math.floor(hue / 30);
-      const colorName = colorNames[index];
-
-      if (!colorGroups[colorName]) {
-        colorGroups[colorName] = [];
+    function groupSimilarColors(allColorsHSK: { h: number, s: number, l: number }[]) {
+      // Converte todas as cores para o espaço Lab
+      const labColors: any = allColorsHSK.map(hslToLab);
+  
+      // Cria uma triangulação de Delaunay com as cores
+      const delaunay = Delaunay.from(labColors);
+  
+      // Agrupa cores semelhantes
+      const groups = [];
+      for (let i = 0; i < delaunay.triangles.length; i += 3) {
+        const group = [
+          allColorsHSK[delaunay.triangles[i]],
+          allColorsHSK[delaunay.triangles[i + 1]],
+          allColorsHSK[delaunay.triangles[i + 2]]
+        ];
+        groups.push(group);
       }
-
-      colorGroups[colorName].push(color);
+  
+      return groups;
     }
-
-    // Ordenar cada grupo do mais claro para o mais escuro
-    for (const colorName in colorGroups) {
-      colorGroups[colorName].sort((a, b) => b.l - a.l);
+  
+    //!!______________________________________________________________________________________
+    const [colorHSLArrays, setColorHSLArrays] = useState([]);
+  
+    useEffect(() => {
+      const extractedColorHSL = itemWithColor.map(item => item.colorHsl);
+      const flattenedColorHSL: any = extractedColorHSL.flat();
+      setColorHSLArrays(flattenedColorHSL);
+    }, [itemWithColor]);
+  
+    function removerArraysIdenticos(arr: any[]): any[] {
+      return arr.filter((valor, indice, array) => {
+        // Converte cada objeto para uma string JSON e verifica a ocorrência
+        return array.findIndex(obj => JSON.stringify(obj) === JSON.stringify(valor)) === indice;
+      });
     }
-
-    return colorGroups;
-  }
-
-  // Exemplo de uso
-
-
-
-  useEffect(() => {
-    let hueThreshold = 20;  // Define o limiar de diferença de matiz para agrupar cores
-    let saturationThreshold = 50;  // Define o limiar de diferença de saturação para agrupar cores
-    let lightnessThreshold = 50;  // Define o limiar de diferença de luminosidade para agrupar cores
-    let colorGroups = groupColors(colorHSLArrays, hueThreshold, saturationThreshold, lightnessThreshold);  // Define o limiar de diferença de matiz para agrupar cores
-    setGroupColorsFinal(colorGroups)
-    const groups: any = groupSimilarColors(colorHSLArrays);
-    const fattenedGroups: any = groups.flat()
-    const arraySemDuplicatas: any = removerArraysIdenticos(fattenedGroups)
-    setSimilarColors(arraySemDuplicatas);
-    const sortedColorGroup: any = groupAndSortColors(colorHSLArrays);
-    setSortedColorGroups(sortedColorGroup)
-
-   // console.log("___ColorHSLArrays___")
-   // console.log(colorHSLArrays)
-   // console.log("____________________\n\n")
-  }, [colorHSLArrays])
-
-/*
-  useEffect(()=>{
-    console.log("___SortedColorGroups___")
-    console.log(sortedColorGroups)
-    console.log("____________________\n\n")
-  },[sortedColorGroups])
-
-  useEffect(() => {
-    console.log("___GroupColorsFinal___")
-    console.log(groupColorsFinal)
-    console.log("____________________\n\n")
-  }, [groupColorsFinal])
-
-  useEffect(() => {
-    console.log("___SimilarColors___")
-    console.log(similarColors)
-    console.log("____________________\n\n")
-  }, [similarColors])
-*/
+  
+    //type Color = { h: number; s: number; l: number };
+    type ColorGroup = { [key: string]: Color[] };
+  
+    function groupAndSortColors(colorArray: Color[]): ColorGroup {
+      const colorNames = ["Vermelho", "Laranja", "Amarelo", "Verde claro", "Verde", "Verde-azulado", "Ciano", "Azul claro", "Azul", "Violeta", "Magenta", "Rosa"];
+      const colorGroups: ColorGroup = {};
+  
+      // Agrupar cores por nome
+      for (const color of colorArray) {
+        const hue = color.h;
+        const index = Math.floor(hue / 30);
+        const colorName = colorNames[index];
+  
+        if (!colorGroups[colorName]) {
+          colorGroups[colorName] = [];
+        }
+  
+        colorGroups[colorName].push(color);
+      }
+  
+      // Ordenar cada grupo do mais claro para o mais escuro
+      for (const colorName in colorGroups) {
+        colorGroups[colorName].sort((a, b) => b.l - a.l);
+      }
+  
+      return colorGroups;
+    }
+  
+   
+  
+  
+  
+    useEffect(() => {
+      let hueThreshold = 20;  // Define o limiar de diferença de matiz para agrupar cores
+      let saturationThreshold = 50;  // Define o limiar de diferença de saturação para agrupar cores
+      let lightnessThreshold = 50;  // Define o limiar de diferença de luminosidade para agrupar cores
+      let colorGroups = groupColors(colorHSLArrays, hueThreshold, saturationThreshold, lightnessThreshold);  // Define o limiar de diferença de matiz para agrupar cores
+      setGroupColorsFinal(colorGroups)
+      const groups: any = groupSimilarColors(colorHSLArrays);
+      const fattenedGroups: any = groups.flat()
+      const arraySemDuplicatas: any = removerArraysIdenticos(fattenedGroups)
+      setSimilarColors(arraySemDuplicatas);
+      const sortedColorGroup: any = groupAndSortColors(colorHSLArrays);
+      setSortedColorGroups(sortedColorGroup)
+  
+     // console.log("___ColorHSLArrays___")
+     // console.log(colorHSLArrays)
+     // console.log("____________________\n\n")
+    }, [colorHSLArrays])
+  
+  */
 
 
 
@@ -503,13 +501,20 @@ useEffect(() => {
       allColorsHEX,
       groupColorsFinal,
       similarColors,
-      sortedColorGroups
+      sortedColorGroups,
+      weaponFromDb,
+      isLoading,
     }}>
       {children}
     </ItemContext.Provider>
   )
 
 }
+
+
+
+
+
 
 export const useItemColorContext = () => {
   const context = useContext(ItemContext);

@@ -6,7 +6,7 @@ import axios from 'axios';
 export async function getSkins() {
   try {
     const response = await axios.get(
-      "https://bymykel.github.io/CSGO-API/api/pt-BR/skins.json"
+      "https://bymykel.github.io/CSGO-API/api/pt-BR/stickers.json"
     );
     const skin: IItemType[] = response.data.map((skin: any) => ({
       id: skin.id,

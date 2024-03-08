@@ -28,11 +28,7 @@ export default async function saveAllItemWithColor(itemWithColor) {
 }
 
 
-
-
-
 export async function sendData(itemWithColor) {
-
 
   const response = await fetch('/api/saveData', {
     method: 'POST',
@@ -48,4 +44,5 @@ export async function sendData(itemWithColor) {
     console.error('Erro ao enviar dados:', response.statusText);
   }
 }
+
 

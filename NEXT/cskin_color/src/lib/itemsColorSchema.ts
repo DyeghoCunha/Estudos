@@ -1,15 +1,9 @@
+import { ItemWithColor } from '@/context/weaponsContext';
 import mongoose, { Model } from 'mongoose';
 
-interface WeaponSkin {
-  id: string;
-  name: string;
-  image: string;
-  color: string[];
-  colorHsl: { h: number; s: number; l: number }[];
-  colorName: string[];
-}
 
-const weaponSkinSchema = new mongoose.Schema<WeaponSkin>({
+
+const weaponSkinSchema = new mongoose.Schema<ItemWithColor>({
   id: { type: String, required:false, unique: true },
   name: { type: String, required: false},
   image: { type: String, required: false},
@@ -18,7 +12,7 @@ const weaponSkinSchema = new mongoose.Schema<WeaponSkin>({
   colorName: { type: [String], required: false},
 });
 
-let WeaponSkinModel: Model<WeaponSkin> | null = null;
+let WeaponSkinModel: Model<ItemWithColor> | null = null;
 
 try {
   WeaponSkinModel = mongoose.model('WeaponSkin');
