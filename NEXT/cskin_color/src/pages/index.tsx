@@ -35,8 +35,8 @@ export default function Home() {
       <Grid templateColumns="repeat(5,1fr)" gap={0}>
         {isLoading ? (<Skeleton w={200} h={300} />) :
           (
-            weaponFromDb.map((skin) => (
-              <GridItem id={skin.id} w="100%">
+            weaponFromDb.map((skin,index) => (
+              <GridItem key={index} id={skin.id} w="100%">
                 <ItemCardDb skins={skin} />
               </GridItem>
             )))}

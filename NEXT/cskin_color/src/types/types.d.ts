@@ -31,7 +31,7 @@ export interface Color {
   l: number;
 };
 
-export interface Pixel  {
+export interface Pixel {
   r: number;
   g: number;
   b: number;
@@ -42,12 +42,30 @@ export type IItemCard = {
 
 }
 
-export type ColorName = "Vermelho" | "Azul" | "Amarelo" | "Rosa" | "Preto" | "Branco" | "Verde" | "Marrom" | "Roxo" | "Cinza" |"Laranja"| "Cor não identificada";
+export type ColorName = "Vermelho" | "Azul" | "Amarelo" | "Rosa" | "Preto" | "Branco" | "Verde" | "Marrom" | "Roxo" | "Cinza" | "Laranja" | "Cor não identificada";
 
 export class ColorList {
   colorList: string[];
 
   constructor(colorList: string[]) {
     this.colorList = colorList;
+  }
+}
+
+export interface IItemNameColor {
+  id: string;
+  name: string;
+  color: string[];
+}
+
+export class ItemNameColor implements IItemNameColor {
+  id: string;
+  name: string;
+  color: string[];
+  constructor(id: string, name: string, color: string[]) {
+
+    this.id = id;
+    this.color = color;
+    this.name = name;
   }
 }
