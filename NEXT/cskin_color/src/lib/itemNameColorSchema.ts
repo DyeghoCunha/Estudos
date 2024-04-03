@@ -18,4 +18,4 @@ try {
   ItemNameColorModel = mongoose.model('ItemNameColor', ItemNameColorSchema);
 }
 
-export default ItemNameColor;
+export default ItemNameColorModel;

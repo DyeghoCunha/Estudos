@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { sendData } from "@/lib/actions.js"
 import { IItemWithColor } from "@/types/types";
+import { ItemNameColor } from "@/types/types";
+
 import ItemCardDb from "@/components/molecules/ItemCardDb";
 
 export default function Home() {
@@ -18,10 +20,15 @@ export default function Home() {
 
 
   function handleClick(itemWithColor: IItemWithColor[]) {
+    let delay = 0; // Inicia o atraso em 0 milissegundos
     for (var item of itemWithColor) {
-      sendData(item);
+      const newItem = new ItemNameColor(item.id, item.name, item.colorName);
+      setTimeout(() => sendData(newItem), delay);
+      delay += 100; // Aumenta o atraso em 1000 milissegundos (1 segundo) para cada item
     }
   }
+  
+
 
   return (
     <>
@@ -29,13 +36,13 @@ export default function Home() {
         <Link href="/filter">Filtro de Cores</Link>
       </Box>
 
-      {//<Button onClick={()=>handleClick(itemWithColor)}>Salvar no Banco</Button>
-      }
+      <Button onClick={() => handleClick(weaponFromDb)}>Salvar no Banco</Button>
+
 
       <Grid templateColumns="repeat(5,1fr)" gap={0}>
         {isLoading ? (<Skeleton w={200} h={300} />) :
           (
-            weaponFromDb.map((skin,index) => (
+            weaponFromDb.map((skin, index) => (
               <GridItem key={index} id={skin.id} w="100%">
                 <ItemCardDb skins={skin} />
               </GridItem>

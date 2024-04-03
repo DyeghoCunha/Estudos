@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import connectDB from '../../lib/db';
 import WeaponSkin from '../../lib/itemsColorSchema';
+import ItemNameColor from "@/lib/itemNameColorSchema"
 
 // Conecte-se ao banco de dados
 connectDB();
@@ -27,7 +28,7 @@ export default async function handler(
 
     // Atualize o documento existente ou crie um novo
     try {
-      await WeaponSkin.findOneAndUpdate(
+      await ItemNameColor.findOneAndUpdate(
         { id: itemWithColor.id }, // encontre um documento com este id
         itemWithColor, // os dados para atualizar
         { upsert: true, new: true, runValidators: true } // opções

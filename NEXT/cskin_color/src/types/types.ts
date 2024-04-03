@@ -15,14 +15,7 @@ export interface IItemType {
     stattrak: boolean, image: string,)
 }
 
-export interface IItemWithColor {
-  id: string;
-  name: string;
-  image: string;
-  color: string[];
-  colorHsl: { h: number; s: number; l: number }[];
-  colorName: string[];
-}
+
 
 
 export interface Color {
@@ -68,4 +61,12 @@ export class ItemNameColor implements IItemNameColor {
     this.color = color;
     this.name = name;
   }
+}
+export interface IItemWithColor {
+  id: string;
+  name: string;
+  image: string;
+  color: string[];
+  colorHsl: { h: number; s: number; l: number }[];
+  colorName: string[];
 }
